@@ -23,6 +23,10 @@ Route::group(['prefix' => 'kegiatan'], function () {
 Route::group(['prefix' => 'realisasi'], function () {
     //GET
     Route::get('/', 'RealisasiController@index');
+    Route::get('/ddd', 'RealisasiController@makeNomorKwitansi');
+    //STORE
+    Route::post('/store', 'RealisasiController@store');
+    Route::post('/store-lampiran', 'RealisasiController@storeLampiran');
 });
 // TAHUN
 Route::group(['prefix' => 'tahun'], function () {

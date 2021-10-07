@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.2
+-- version 5.0.4
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 07, 2021 at 09:01 AM
--- Server version: 10.4.11-MariaDB
--- PHP Version: 7.4.6
+-- Generation Time: Oct 07, 2021 at 10:51 AM
+-- Server version: 10.4.17-MariaDB
+-- PHP Version: 7.4.15
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -42,24 +42,24 @@ CREATE TABLE `bidang` (
 --
 
 INSERT INTO `bidang` (`id`, `nama`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, 'INSPEKTORAT WILAYAH I', '2021-10-06 02:31:39', NULL, NULL),
-(2, 'INSPEKTORAT WILAYAH II', '2021-10-06 02:31:39', NULL, NULL),
-(3, 'INSPEKTORAT WILAYAH III', '2021-10-06 02:31:39', NULL, NULL),
-(4, 'INSPEKTORAT WILAYAH IV', '2021-10-06 02:31:39', NULL, NULL),
-(5, 'INSPEKTORAT WILAYAH V', '2021-10-06 02:31:39', NULL, NULL),
-(6, 'INSPEKTORAT WILAYAH VI', '2021-10-06 02:31:39', NULL, NULL),
-(7, 'BAGIAN UMUM', '2021-10-06 02:31:39', NULL, NULL),
-(8, 'BAGIAN KEPEGAWAIAN', '2021-10-06 02:31:39', NULL, NULL),
-(9, 'BAGIAN PROGRAM HUBUNGAN MASYARAKAT DAN PELAPORAN', '2021-10-06 02:31:39', NULL, NULL),
-(10, 'BAGIAN KEUANGAN', '2021-10-06 02:31:39', NULL, NULL),
-(11, 'BAGIAN SISTEM INFORMASI PENGAWASAN', '2021-10-06 02:31:39', NULL, NULL),
-(12, 'BENDAHARA INSPEKTORAT JENDERAL', '2021-10-06 02:31:39', NULL, NULL),
-(13, 'SUB BAGIAN RT DAN PERLENGKAPAN', '2021-10-06 02:31:39', NULL, NULL),
-(14, 'SUB BAGIAN KEUANGAN', '2021-10-06 02:31:39', NULL, NULL),
-(15, 'SUB BAGIAN TU INSPEKTORAT JENDERAL', '2021-10-06 02:31:39', NULL, NULL),
-(16, 'SUB BAGIAN TU PIMPINAN', '2021-10-06 02:31:39', NULL, NULL),
-(17, 'KHUSUS', '2021-10-06 02:31:39', NULL, NULL),
-(18, 'ADMIN', '2021-10-06 02:31:39', NULL, NULL);
+(1, 'INSPEKTORAT WILAYAH I', '2021-10-05 19:31:39', NULL, NULL),
+(2, 'INSPEKTORAT WILAYAH II', '2021-10-05 19:31:39', NULL, NULL),
+(3, 'INSPEKTORAT WILAYAH III', '2021-10-05 19:31:39', NULL, NULL),
+(4, 'INSPEKTORAT WILAYAH IV', '2021-10-05 19:31:39', NULL, NULL),
+(5, 'INSPEKTORAT WILAYAH V', '2021-10-05 19:31:39', NULL, NULL),
+(6, 'INSPEKTORAT WILAYAH VI', '2021-10-05 19:31:39', NULL, NULL),
+(7, 'BAGIAN UMUM', '2021-10-05 19:31:39', NULL, NULL),
+(8, 'BAGIAN KEPEGAWAIAN', '2021-10-05 19:31:39', NULL, NULL),
+(9, 'BAGIAN PROGRAM HUBUNGAN MASYARAKAT DAN PELAPORAN', '2021-10-05 19:31:39', NULL, NULL),
+(10, 'BAGIAN KEUANGAN', '2021-10-05 19:31:39', NULL, NULL),
+(11, 'BAGIAN SISTEM INFORMASI PENGAWASAN', '2021-10-05 19:31:39', NULL, NULL),
+(12, 'BENDAHARA INSPEKTORAT JENDERAL', '2021-10-05 19:31:39', NULL, NULL),
+(13, 'SUB BAGIAN RT DAN PERLENGKAPAN', '2021-10-05 19:31:39', NULL, NULL),
+(14, 'SUB BAGIAN KEUANGAN', '2021-10-05 19:31:39', NULL, NULL),
+(15, 'SUB BAGIAN TU INSPEKTORAT JENDERAL', '2021-10-05 19:31:39', NULL, NULL),
+(16, 'SUB BAGIAN TU PIMPINAN', '2021-10-05 19:31:39', NULL, NULL),
+(17, 'KHUSUS', '2021-10-05 19:31:39', NULL, NULL),
+(18, 'ADMIN', '2021-10-05 19:31:39', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -85,7 +85,7 @@ CREATE TABLE `kegiatan` (
 --
 
 INSERT INTO `kegiatan` (`id`, `kode`, `nama`, `dipa`, `milik`, `bidang_id`, `tahun_id`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, '1563.321.051.A.524111', 'Evaluasi Usulan Satker WBK/WBBM-Belanja Perjalanan Dinas Biasa', 240046000, 'INSPEKTORAT WILAYAH I', 1, 1, '2021-10-06 03:04:18', '2021-10-06 03:04:18', NULL);
+(1, '1563.321.051.A.524111', 'Evaluasi Usulan Satker WBK/WBBM-Belanja Perjalanan Dinas Biasa', 240046000, 'INSPEKTORAT WILAYAH I', 1, 1, '2021-10-05 20:04:18', '2021-10-05 20:04:18', NULL);
 
 -- --------------------------------------------------------
 
@@ -357,7 +357,7 @@ INSERT INTO `pegawai` (`id`, `nama`, `nip`) VALUES
 
 CREATE TABLE `realisasi` (
   `id` int(11) NOT NULL,
-  `nomor_kwitansi` int(15) NOT NULL,
+  `nomor_kwitansi` varchar(255) NOT NULL,
   `uraian` text NOT NULL,
   `nominal` double NOT NULL,
   `status` enum('MENUNGGU','DISETUJUI','DITOLAK') NOT NULL,
@@ -377,7 +377,33 @@ CREATE TABLE `realisasi` (
 --
 
 INSERT INTO `realisasi` (`id`, `nomor_kwitansi`, `uraian`, `nominal`, `status`, `kegiatan_id`, `tanggal_spb`, `maker_id`, `checker_id`, `tahun_id`, `bidang_id`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, 1, 'BELI SEPEDAH', 1000000, 'MENUNGGU', 1, '2021-10-06', 1, 2, 1, 1, '2021-10-06 04:07:09', NULL, NULL);
+(1, '2021-1', 'BELI SEPEDAH', 1000000, 'MENUNGGU', 1, '2021-10-06', 1, 2, 1, 1, '2021-10-05 21:07:09', NULL, NULL),
+(46, '2021-2', 'sadasd', 20000, 'MENUNGGU', 1, '2021-10-07', 1, 21, 1, 1, '2021-10-07 01:26:45', '2021-10-07 01:26:45', NULL),
+(47, '2021-3', 'sadasd', 200000, 'MENUNGGU', 1, '2021-10-07', 3, 3, 1, 1, '2021-10-07 01:50:41', '2021-10-07 01:50:41', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `realisasi_lampiran`
+--
+
+CREATE TABLE `realisasi_lampiran` (
+  `id` int(11) NOT NULL,
+  `realisasi_id` int(11) NOT NULL,
+  `nama` varchar(255) NOT NULL,
+  `file` varchar(255) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `realisasi_lampiran`
+--
+
+INSERT INTO `realisasi_lampiran` (`id`, `realisasi_id`, `nama`, `file`, `created_at`, `updated_at`) VALUES
+(7, 47, 'Permintaan IMPLEMENTASI Panca Program sd Okt 2021.docx', 'uploads/Permintaan IMPLEMENTASI Panca Program sd Okt 2021.docx', '2021-10-07 01:50:41', '2021-10-07 01:50:41'),
+(8, 47, 'Lomba esport.pdf', 'uploads/Lomba esport.pdf', '2021-10-07 01:50:41', '2021-10-07 01:50:41'),
+(9, 47, 'WhatsApp Image 2021-10-07 at 9.00.43 AM.jpeg', 'uploads/WhatsApp Image 2021-10-07 at 9.00.43 AM.jpeg', '2021-10-07 01:50:41', '2021-10-07 01:50:41');
 
 -- --------------------------------------------------------
 
@@ -450,6 +476,12 @@ ALTER TABLE `realisasi`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `realisasi_lampiran`
+--
+ALTER TABLE `realisasi_lampiran`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `tahun`
 --
 ALTER TABLE `tahun`
@@ -481,7 +513,13 @@ ALTER TABLE `kegiatan`
 -- AUTO_INCREMENT for table `realisasi`
 --
 ALTER TABLE `realisasi`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
+
+--
+-- AUTO_INCREMENT for table `realisasi_lampiran`
+--
+ALTER TABLE `realisasi_lampiran`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `tahun`

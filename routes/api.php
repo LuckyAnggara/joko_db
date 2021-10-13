@@ -13,20 +13,42 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+// AUTH
+Route::group(['prefix' => 'auth'], function () {
+    //POST
+    Route::post('/login', 'AuthController@login');
+});
+
+// BIDANG
+Route::group(['prefix' => 'bidang'], function () {
+    //GET
+    Route::get('/', 'BidangController@index');
+
+});
 
 // KEGIATAN / MAK
 Route::group(['prefix' => 'kegiatan'], function () {
     //GET
     Route::get('/', 'KegiatanController@index');
+    //POST
+    Route::post('/store', 'KegiatanController@store');
+    Route::post('/cek-kode-mak', 'KegiatanController@cekMak');
+    //DELETE
+    Route::delete('/delete-kegiatan', 'KegiatanController@destroy');
 });
 // REALISASI
 Route::group(['prefix' => 'realisasi'], function () {
     //GET
     Route::get('/', 'RealisasiController@index');
-    Route::get('/ddd', 'RealisasiController@makeNomorKwitansi');
+    Route::get('/show', 'RealisasiController@show');
+    Route::get('/download-lampiran', 'RealisasiController@downloadLampiran');
+    Route::get('/laporan-rincian', 'RealisasiController@laporanRincian');
     //STORE
     Route::post('/store', 'RealisasiController@store');
-    Route::post('/store-lampiran', 'RealisasiController@storeLampiran');
+    Route::post('/upload-lampiran', 'RealisasiController@uploadLampiran');
+    Route::post('/update-status', 'RealisasiController@updateStatus');
+    //DESTROY
+    Route::delete('/delete-realisasi', 'RealisasiController@destroy');
 });
 // TAHUN
 Route::group(['prefix' => 'tahun'], function () {

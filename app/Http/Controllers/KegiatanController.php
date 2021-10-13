@@ -21,7 +21,7 @@ class KegiatanController extends Controller
         }
         foreach ($master as $key => $value) {
             $value->realisasi = Realisasi::where('kegiatan_id',$value->id)->where('tahun_id', $tahun_id)->where('bidang_id', $bidang_id)->where('status','SELESAI')->sum('nominal');
-            $value->unrealisasi = Realisasi::where('kegiatan_id',$value->id)->where('tahun_id', $tahun_id)->where('bidang_id', $bidang_id)->where('status', ['VERIFIKASI','PEMBAYARAN'])->sum('nominal');
+            $value->unrealisasi = Realisasi::where('kegiatan_id',$value->id)->where('tahun_id', $tahun_id)->where('bidang_id', $bidang_id)->whereIn ('status', ['VERIFIKASI','PEMBAYARAN'])->sum('nominal');
             $value->bidang = Bidang::find($value->bidang_id);
         }
 

@@ -40,14 +40,14 @@ class RealisasiController extends Controller
             'nomor_kwitansi' => $payload->tahun['nama'].'-'.$this->makeNomorKwitansi(),
             'uraian' => $payload->uraian,
             'nominal' => $payload->nominal,
-            'status' => 'MENUNGGU',
+            'status' => 'VERIFIKASI',
             'kegiatan_id' => $payload->kegiatan['id'],
             'tanggal_spb' => $payload->tanggal_spb,
             'maker_id' => $payload->maker['id'],
             'checker_id' => $payload->checker['id'],
             'tahun_id' => $payload->tahun['id'],
             'bidang_id' => $payload->userData['bidang_id'],
-            'user_id' => $payload->userData['user_id'],
+            'user_id' => $payload->userData['id'],
         ]);
 
         // $lampiran = RealisasiLampiran::create([

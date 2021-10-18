@@ -23,7 +23,6 @@ Route::group(['prefix' => 'auth'], function () {
 Route::group(['prefix' => 'bidang'], function () {
     //GET
     Route::get('/', 'BidangController@index');
-
 });
 
 // KEGIATAN / MAK
@@ -55,10 +54,15 @@ Route::group(['prefix' => 'tahun'], function () {
     //GET
     Route::get('/', 'TahunController@index');
 });
-// TAHUN
+// PEGAWAI
 Route::group(['prefix' => 'pegawai'], function () {
     //GET
     Route::get('/', 'PegawaiController@index');
+});
+// PERAN
+Route::group(['prefix' => 'peran'], function () {
+    //GET
+    Route::get('/', 'PeranController@index');
 });
 
 
@@ -73,5 +77,4 @@ Route::group(['prefix' => 'master'], function () {
     // //DELETE
     //DELETE
      Route::delete('/rkt/delete/{id}', 'RktController@destroyRKT');
-    // Route::delete('/lampiran/delete/{id}', 'RktController@destroy');
 });

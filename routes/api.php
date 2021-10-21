@@ -64,6 +64,16 @@ Route::group(['prefix' => 'peran'], function () {
     //GET
     Route::get('/', 'PeranController@index');
 });
+// KANTOR WILAYAH
+Route::group(['prefix' => 'kanwil'], function () {
+    //GET
+    Route::get('/', 'KanwilController@index');
+});
+// URUSAN
+Route::group(['prefix' => 'urusan'], function () {
+    //GET
+    Route::get('/', 'UrusanController@index');
+});
 
 
 // MASTER

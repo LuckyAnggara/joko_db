@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.4
+-- version 5.0.2
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 14, 2021 at 10:34 AM
--- Server version: 10.4.17-MariaDB
--- PHP Version: 7.4.15
+-- Generation Time: Oct 26, 2021 at 07:48 AM
+-- Server version: 10.4.11-MariaDB
+-- PHP Version: 7.4.6
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -42,24 +42,44 @@ CREATE TABLE `bidang` (
 --
 
 INSERT INTO `bidang` (`id`, `nama`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, 'INSPEKTORAT WILAYAH I', '2021-10-05 05:31:39', NULL, NULL),
-(2, 'INSPEKTORAT WILAYAH II', '2021-10-05 05:31:39', NULL, NULL),
-(3, 'INSPEKTORAT WILAYAH III', '2021-10-05 05:31:39', NULL, NULL),
-(4, 'INSPEKTORAT WILAYAH IV', '2021-10-05 05:31:39', NULL, NULL),
-(5, 'INSPEKTORAT WILAYAH V', '2021-10-05 05:31:39', NULL, NULL),
-(6, 'INSPEKTORAT WILAYAH VI', '2021-10-05 05:31:39', NULL, NULL),
-(7, 'BAGIAN UMUM', '2021-10-05 05:31:39', NULL, NULL),
-(8, 'BAGIAN KEPEGAWAIAN', '2021-10-05 05:31:39', NULL, NULL),
-(9, 'BAGIAN PROGRAM HUBUNGAN MASYARAKAT DAN PELAPORAN', '2021-10-05 05:31:39', NULL, NULL),
-(10, 'BAGIAN KEUANGAN', '2021-10-05 05:31:39', NULL, NULL),
-(11, 'BAGIAN SISTEM INFORMASI PENGAWASAN', '2021-10-05 05:31:39', NULL, NULL),
-(12, 'BENDAHARA INSPEKTORAT JENDERAL', '2021-10-05 05:31:39', NULL, NULL),
-(13, 'SUB BAGIAN RT DAN PERLENGKAPAN', '2021-10-05 05:31:39', NULL, NULL),
-(14, 'SUB BAGIAN KEUANGAN', '2021-10-05 05:31:39', NULL, NULL),
-(15, 'SUB BAGIAN TU INSPEKTORAT JENDERAL', '2021-10-05 05:31:39', NULL, NULL),
-(16, 'SUB BAGIAN TU PIMPINAN', '2021-10-05 05:31:39', NULL, NULL),
-(17, 'KHUSUS', '2021-10-05 05:31:39', NULL, NULL),
-(18, 'ADMIN', '2021-10-05 05:31:39', NULL, NULL);
+(1, 'INSPEKTORAT WILAYAH I', '2021-10-04 22:31:39', NULL, NULL),
+(2, 'INSPEKTORAT WILAYAH II', '2021-10-04 22:31:39', NULL, NULL),
+(3, 'INSPEKTORAT WILAYAH III', '2021-10-04 22:31:39', NULL, NULL),
+(4, 'INSPEKTORAT WILAYAH IV', '2021-10-04 22:31:39', NULL, NULL),
+(5, 'INSPEKTORAT WILAYAH V', '2021-10-04 22:31:39', NULL, NULL),
+(6, 'INSPEKTORAT WILAYAH VI', '2021-10-04 22:31:39', NULL, NULL),
+(7, 'BAGIAN UMUM', '2021-10-04 22:31:39', NULL, NULL),
+(8, 'BAGIAN KEPEGAWAIAN', '2021-10-04 22:31:39', NULL, NULL),
+(9, 'BAGIAN PROGRAM HUBUNGAN MASYARAKAT DAN PELAPORAN', '2021-10-04 22:31:39', NULL, NULL),
+(10, 'BAGIAN KEUANGAN', '2021-10-04 22:31:39', NULL, NULL),
+(11, 'BAGIAN SISTEM INFORMASI PENGAWASAN', '2021-10-04 22:31:39', NULL, NULL),
+(12, 'BENDAHARA INSPEKTORAT JENDERAL', '2021-10-04 22:31:39', NULL, NULL),
+(13, 'SUB BAGIAN RT DAN PERLENGKAPAN', '2021-10-04 22:31:39', NULL, NULL),
+(14, 'SUB BAGIAN KEUANGAN', '2021-10-04 22:31:39', NULL, NULL),
+(15, 'SUB BAGIAN TU INSPEKTORAT JENDERAL', '2021-10-04 22:31:39', NULL, NULL),
+(16, 'SUB BAGIAN TU PIMPINAN', '2021-10-04 22:31:39', NULL, NULL),
+(17, 'KHUSUS', '2021-10-04 22:31:39', NULL, NULL),
+(18, 'ADMIN', '2021-10-04 22:31:39', NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `kanwil`
+--
+
+CREATE TABLE `kanwil` (
+  `id` int(11) NOT NULL,
+  `nama` varchar(255) NOT NULL,
+  `alamat` varchar(512) NOT NULL,
+  `nomor_telepon` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `kanwil`
+--
+
+INSERT INTO `kanwil` (`id`, `nama`, `alamat`, `nomor_telepon`) VALUES
+(1, 'ACEH', 'JL ACEH', '23123123');
 
 -- --------------------------------------------------------
 
@@ -85,10 +105,10 @@ CREATE TABLE `kegiatan` (
 --
 
 INSERT INTO `kegiatan` (`id`, `kode`, `nama`, `dipa`, `bidang_id`, `tahun_id`, `user_id`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, '1563.321.051.A.524111', 'Evaluasi Usulan Satker WBK/WBBM-Belanja Perjalanan Dinas Biasa', 240046000, 1, 1, 1, '2021-10-05 06:04:18', '2021-10-08 23:26:47', NULL),
-(2, '1563.321.051.A.524112', 'Evaluasi Usulan Satker WBK/WBBM-Belanja Perjalanan Dinas Biasa', 200000000, 2, 1, 1, '2021-10-08 23:48:34', '2021-10-08 23:48:34', NULL),
-(3, '1563.321.051.A.524113', 'Evaluasi Usulan Satker WBK/WBBM-Belanja Perjalanan Dinas Biasa', 3000000, 3, 1, 1, '2021-10-09 00:05:25', '2021-10-09 00:05:25', NULL),
-(4, '14141.14141', 'Perjalanan Dinas', 100000000, 1, 1, 1, '2021-10-12 21:21:25', '2021-10-12 21:21:25', NULL);
+(1, '1563.321.051.A.524111', 'Evaluasi Usulan Satker WBK/WBBM-Belanja Perjalanan Dinas Biasa', 240046000, 1, 1, 1, '2021-10-04 23:04:18', '2021-10-08 16:26:47', NULL),
+(2, '1563.321.051.A.524112', 'Evaluasi Usulan Satker WBK/WBBM-Belanja Perjalanan Dinas Biasa', 200000000, 2, 1, 1, '2021-10-08 16:48:34', '2021-10-08 16:48:34', NULL),
+(3, '1563.321.051.A.524113', 'Evaluasi Usulan Satker WBK/WBBM-Belanja Perjalanan Dinas Biasa', 3000000, 3, 1, 1, '2021-10-08 17:05:25', '2021-10-08 17:05:25', NULL),
+(4, '14141.14141', 'Perjalanan Dinas', 100000000, 1, 1, 1, '2021-10-12 14:21:25', '2021-10-12 14:21:25', NULL);
 
 -- --------------------------------------------------------
 
@@ -376,6 +396,176 @@ INSERT INTO `peran` (`id`, `nama`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `perjadin`
+--
+
+CREATE TABLE `perjadin` (
+  `id` int(11) NOT NULL,
+  `surat_perintah_id` int(11) NOT NULL,
+  `mak_id` int(11) NOT NULL,
+  `jumlah_hari` double NOT NULL DEFAULT 0,
+  `tujuan` varchar(255) DEFAULT NULL,
+  `keberangkatan` varchar(255) DEFAULT NULL,
+  `tanggal_berangkat` datetime NOT NULL DEFAULT current_timestamp(),
+  `tanggal_kembali` datetime NOT NULL DEFAULT current_timestamp(),
+  `status` enum('PENGAJUAN','REVISI','VERIFIKASI KEUANGAN','PELAKSANAAN','VERIFIKASI PPK','SELESAI') NOT NULL DEFAULT 'PENGAJUAN',
+  `tahun_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `bidang_id` int(11) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `perjadin`
+--
+
+INSERT INTO `perjadin` (`id`, `surat_perintah_id`, `mak_id`, `jumlah_hari`, `tujuan`, `keberangkatan`, `tanggal_berangkat`, `tanggal_kembali`, `status`, `tahun_id`, `user_id`, `bidang_id`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(1, 1, 1, 3, 'Jakarta', 'Jakarta', '2021-10-25 00:00:00', '2021-10-28 00:00:00', 'PENGAJUAN', 1, 1, 1, '2021-10-24 21:47:52', '2021-10-24 21:47:52', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `perjadin_hasil`
+--
+
+CREATE TABLE `perjadin_hasil` (
+  `id` int(11) NOT NULL,
+  `perjadin_id` int(11) NOT NULL,
+  `file` varchar(255) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `perjadin_lampiran`
+--
+
+CREATE TABLE `perjadin_lampiran` (
+  `id` int(11) NOT NULL,
+  `perjadin_id` int(11) NOT NULL,
+  `jenis` enum('sp','rab','lainnya','') NOT NULL,
+  `nama` varchar(255) NOT NULL,
+  `file` varchar(512) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `perjadin_obrik`
+--
+
+CREATE TABLE `perjadin_obrik` (
+  `id` int(11) NOT NULL,
+  `perjadin_id` int(11) NOT NULL,
+  `satker_id` int(11) NOT NULL,
+  `urusan_id` int(11) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `perjadin_obrik`
+--
+
+INSERT INTO `perjadin_obrik` (`id`, `perjadin_id`, `satker_id`, `urusan_id`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(1, 1, 1, 3, '2021-10-24 21:45:22', '2021-10-24 21:45:22', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `perjadin_rab`
+--
+
+CREATE TABLE `perjadin_rab` (
+  `id` int(11) NOT NULL,
+  `perjadin_id` int(11) NOT NULL,
+  `susunan_tim_perjadin_id` int(11) NOT NULL,
+  `jumlah_hari` double NOT NULL,
+  `uang_harian` double NOT NULL,
+  `jumlah_malam` double NOT NULL,
+  `uang_hotel` double NOT NULL,
+  `udara` double NOT NULL,
+  `laut` double NOT NULL,
+  `darat` double NOT NULL,
+  `taksi_jakarta` double NOT NULL,
+  `taksi_provinsi` double NOT NULL,
+  `representatif` double NOT NULL,
+  `total` double NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `perjadin_rab`
+--
+
+INSERT INTO `perjadin_rab` (`id`, `perjadin_id`, `susunan_tim_perjadin_id`, `jumlah_hari`, `uang_harian`, `jumlah_malam`, `uang_hotel`, `udara`, `laut`, `darat`, `taksi_jakarta`, `taksi_provinsi`, `representatif`, `total`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(1, 1, 1, 3, 200000, 0, 0, 0, 0, 0, 0, 0, 0, 600000, '2021-10-24 21:47:52', '2021-10-24 21:47:52', NULL),
+(2, 1, 2, 2, 100000, 0, 0, 0, 0, 0, 0, 0, 0, 200000, '2021-10-24 21:47:52', '2021-10-24 21:47:52', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `perjadin_realisasi`
+--
+
+CREATE TABLE `perjadin_realisasi` (
+  `id` int(11) NOT NULL,
+  `perjadin_id` int(11) NOT NULL,
+  `susunan_tim_perjadin_id` int(11) NOT NULL,
+  `jumlah_hari` double NOT NULL,
+  `uang_harian` double NOT NULL,
+  `jumlah_malam` double NOT NULL,
+  `uang_hotel` double NOT NULL,
+  `udara` double NOT NULL,
+  `laut` double NOT NULL,
+  `darat` double NOT NULL,
+  `taksi_jakarta` double NOT NULL,
+  `taksi_provinsi` double NOT NULL,
+  `representatif` double NOT NULL,
+  `total` double NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `perjadin_susunan_tim`
+--
+
+CREATE TABLE `perjadin_susunan_tim` (
+  `id` int(11) NOT NULL,
+  `perjadin_id` int(11) NOT NULL,
+  `pegawai_id` int(11) NOT NULL,
+  `peran_id` int(11) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `perjadin_susunan_tim`
+--
+
+INSERT INTO `perjadin_susunan_tim` (`id`, `perjadin_id`, `pegawai_id`, `peran_id`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(1, 1, 4, 4, '2021-10-24 21:47:52', '2021-10-24 21:47:52', NULL),
+(2, 1, 26, 1, '2021-10-24 21:47:52', '2021-10-24 21:47:52', NULL);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `realisasi`
 --
 
@@ -404,10 +594,10 @@ CREATE TABLE `realisasi` (
 --
 
 INSERT INTO `realisasi` (`id`, `nomor_kwitansi`, `uraian`, `nominal`, `status`, `kegiatan_id`, `tanggal_spb`, `maker_id`, `checker_id`, `tahun_id`, `bidang_id`, `user_id`, `created_at`, `updated_at`, `verified_at`, `paid_at`, `deleted_at`) VALUES
-(58, '2021-1', 'Kegiatan asdjlaksjd lakjsdlkasjd laksjdlaks dlaksjd alksdj alskdj', 200000000, 'SELESAI', 1, '2021-10-15', 2, 12, 1, 1, 1, '2021-10-08 12:29:16', '2021-10-10 00:55:46', '2021-10-09 12:54:57', '2021-10-09 12:55:46', NULL),
-(59, '2021-2', 'Beli Bakso', 1000000, 'SELESAI', 3, '2021-10-09', 6, 18, 1, 3, 3, '2021-10-09 00:09:53', '2021-10-10 00:47:17', '2021-10-10 07:50:09', '2021-10-10 07:50:09', NULL),
-(60, '2021-3', 'Rapat Evaluasi WBK WBBM', 1000000, 'SELESAI', 1, '2021-10-13', 3, 6, 1, 1, 1, '2021-10-12 20:14:21', '2021-10-12 20:17:05', '2021-10-12 20:15:46', '2021-10-12 20:17:05', NULL),
-(61, '2021-4', 'beli baju', 2000000, 'SELESAI', 1, '2021-10-13', 2, 105, 1, 1, 1, '2021-10-12 21:12:56', '2021-10-12 21:15:32', '2021-10-12 21:14:26', '2021-10-12 21:15:32', NULL);
+(58, '2021-1', 'Kegiatan asdjlaksjd lakjsdlkasjd laksjdlaks dlaksjd alksdj alskdj', 200000000, 'SELESAI', 1, '2021-10-15', 2, 12, 1, 1, 1, '2021-10-08 05:29:16', '2021-10-09 17:55:46', '2021-10-09 05:54:57', '2021-10-09 05:55:46', NULL),
+(59, '2021-2', 'Beli Bakso', 1000000, 'SELESAI', 3, '2021-10-09', 6, 18, 1, 3, 3, '2021-10-08 17:09:53', '2021-10-09 17:47:17', '2021-10-10 00:50:09', '2021-10-10 00:50:09', NULL),
+(60, '2021-3', 'Rapat Evaluasi WBK WBBM', 1000000, 'SELESAI', 1, '2021-10-13', 3, 6, 1, 1, 1, '2021-10-12 13:14:21', '2021-10-12 13:17:05', '2021-10-12 13:15:46', '2021-10-12 13:17:05', NULL),
+(61, '2021-4', 'beli baju', 2000000, 'SELESAI', 1, '2021-10-13', 2, 105, 1, 1, 1, '2021-10-12 14:12:56', '2021-10-12 14:15:32', '2021-10-12 14:14:26', '2021-10-12 14:15:32', NULL);
 
 -- --------------------------------------------------------
 
@@ -429,21 +619,42 @@ CREATE TABLE `realisasi_lampiran` (
 --
 
 INSERT INTO `realisasi_lampiran` (`id`, `realisasi_id`, `nama`, `file`, `created_at`, `updated_at`) VALUES
-(52, 58, 'hehehe (1).pdf', 'realisasi/e6L8RJNX1zEWpixComawb1457ERNhEW6OK39nLQw.pdf', '2021-10-08 12:29:16', '2021-10-08 12:29:16'),
-(53, 58, 'hehehe.pdf', 'realisasi/7HJPkoIkQNBC3WIFrYSRhPSRC7clILHchaWvx0eC.pdf', '2021-10-08 12:29:16', '2021-10-08 12:29:16'),
-(54, 58, 'LAPORAN CABANG KADUNGORA (3).pdf', 'realisasi/LF0vmgCfc5QnIDWVuQnr3mHFk12QMBjbtFvLXnFl.pdf', '2021-10-08 12:29:16', '2021-10-08 12:29:16'),
-(55, 58, 'LAPORAN CABANG KADUNGORA (2).pdf', 'realisasi/j8zxV7Gl99C6a6p9QlUMsZOMfadCeH58sprHxPkz.pdf', '2021-10-08 12:29:16', '2021-10-08 12:29:16'),
-(56, 59, 'hehehe (1).pdf', 'realisasi/87mJIRGZFuo66ID6S5P3jyexabI1LyCDMWA2G6il.pdf', '2021-10-09 00:09:53', '2021-10-09 00:09:53'),
-(57, 59, 'hehehe.pdf', 'realisasi/uSzfRCwj4ktzfOcMG4ssPk9eMFzyOq2sp5T3li0Z.pdf', '2021-10-09 00:09:53', '2021-10-09 00:09:53'),
-(58, 59, 'LAPORAN CABANG KADUNGORA (3).pdf', 'realisasi/uWVghwnJwfpYk6eEqhwZhah0GklBhLu6x07L1kbd.pdf', '2021-10-09 00:09:53', '2021-10-09 00:09:53'),
-(59, 60, 'Jadwal Gemar Oktober.pdf', 'realisasi/jd07YooHTY8aPITzW9BObjxS74dVhpwVKlHgBwxq.pdf', '2021-10-12 20:14:21', '2021-10-12 20:14:21'),
-(60, 60, 'Lomba esport.pdf', 'realisasi/U6zlC4oZ2TFNCWUGs0Te071mGHtQAq8pDs541wgJ.pdf', '2021-10-12 20:14:21', '2021-10-12 20:14:21'),
-(61, 60, 'Jadwal Gemar Oktober.pdf', 'realisasi/XEAUGwprgynrx9TMbm6dn710CSicazqOb5ob15X3.pdf', '2021-10-12 20:14:21', '2021-10-12 20:14:21'),
-(62, 60, 'Lomba esport.pdf', 'realisasi/ROweoclQ1mQk1lpPHni6x8uZ5RCUWeeFwHiYO2GV.pdf', '2021-10-12 20:14:21', '2021-10-12 20:14:21'),
-(63, 60, 'Ktp.pdf', 'realisasi/bxhU526ABUehTPhg1yLJXuYkUzCMI9OxtshjCFIa.pdf', '2021-10-12 20:14:21', '2021-10-12 20:14:21'),
-(64, 60, 'Kalender Layanan bulan Oktober 2021 Eselon I.pdf', 'realisasi/CmyboKcSdGir22ug8b7doraZFUX9qq6ki5V2VkFs.pdf', '2021-10-12 20:14:21', '2021-10-12 20:14:21'),
-(65, 61, 'Jadwal Gemar Oktober.pdf', 'realisasi/TgNVDfrR7bIU1hNYDVmwjFrz4i4ABihLbUSONvan.pdf', '2021-10-12 21:12:57', '2021-10-12 21:12:57'),
-(66, 61, 'Lomba esport.pdf', 'realisasi/UFJG8be9oJZnILT04qp2P1S0dDj5tV0I4djj7KVB.pdf', '2021-10-12 21:12:57', '2021-10-12 21:12:57');
+(52, 58, 'hehehe (1).pdf', 'realisasi/e6L8RJNX1zEWpixComawb1457ERNhEW6OK39nLQw.pdf', '2021-10-08 05:29:16', '2021-10-08 05:29:16'),
+(53, 58, 'hehehe.pdf', 'realisasi/7HJPkoIkQNBC3WIFrYSRhPSRC7clILHchaWvx0eC.pdf', '2021-10-08 05:29:16', '2021-10-08 05:29:16'),
+(54, 58, 'LAPORAN CABANG KADUNGORA (3).pdf', 'realisasi/LF0vmgCfc5QnIDWVuQnr3mHFk12QMBjbtFvLXnFl.pdf', '2021-10-08 05:29:16', '2021-10-08 05:29:16'),
+(55, 58, 'LAPORAN CABANG KADUNGORA (2).pdf', 'realisasi/j8zxV7Gl99C6a6p9QlUMsZOMfadCeH58sprHxPkz.pdf', '2021-10-08 05:29:16', '2021-10-08 05:29:16'),
+(56, 59, 'hehehe (1).pdf', 'realisasi/87mJIRGZFuo66ID6S5P3jyexabI1LyCDMWA2G6il.pdf', '2021-10-08 17:09:53', '2021-10-08 17:09:53'),
+(57, 59, 'hehehe.pdf', 'realisasi/uSzfRCwj4ktzfOcMG4ssPk9eMFzyOq2sp5T3li0Z.pdf', '2021-10-08 17:09:53', '2021-10-08 17:09:53'),
+(58, 59, 'LAPORAN CABANG KADUNGORA (3).pdf', 'realisasi/uWVghwnJwfpYk6eEqhwZhah0GklBhLu6x07L1kbd.pdf', '2021-10-08 17:09:53', '2021-10-08 17:09:53'),
+(59, 60, 'Jadwal Gemar Oktober.pdf', 'realisasi/jd07YooHTY8aPITzW9BObjxS74dVhpwVKlHgBwxq.pdf', '2021-10-12 13:14:21', '2021-10-12 13:14:21'),
+(60, 60, 'Lomba esport.pdf', 'realisasi/U6zlC4oZ2TFNCWUGs0Te071mGHtQAq8pDs541wgJ.pdf', '2021-10-12 13:14:21', '2021-10-12 13:14:21'),
+(61, 60, 'Jadwal Gemar Oktober.pdf', 'realisasi/XEAUGwprgynrx9TMbm6dn710CSicazqOb5ob15X3.pdf', '2021-10-12 13:14:21', '2021-10-12 13:14:21'),
+(62, 60, 'Lomba esport.pdf', 'realisasi/ROweoclQ1mQk1lpPHni6x8uZ5RCUWeeFwHiYO2GV.pdf', '2021-10-12 13:14:21', '2021-10-12 13:14:21'),
+(63, 60, 'Ktp.pdf', 'realisasi/bxhU526ABUehTPhg1yLJXuYkUzCMI9OxtshjCFIa.pdf', '2021-10-12 13:14:21', '2021-10-12 13:14:21'),
+(64, 60, 'Kalender Layanan bulan Oktober 2021 Eselon I.pdf', 'realisasi/CmyboKcSdGir22ug8b7doraZFUX9qq6ki5V2VkFs.pdf', '2021-10-12 13:14:21', '2021-10-12 13:14:21'),
+(65, 61, 'Jadwal Gemar Oktober.pdf', 'realisasi/TgNVDfrR7bIU1hNYDVmwjFrz4i4ABihLbUSONvan.pdf', '2021-10-12 14:12:57', '2021-10-12 14:12:57'),
+(66, 61, 'Lomba esport.pdf', 'realisasi/UFJG8be9oJZnILT04qp2P1S0dDj5tV0I4djj7KVB.pdf', '2021-10-12 14:12:57', '2021-10-12 14:12:57');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `satker`
+--
+
+CREATE TABLE `satker` (
+  `id` int(11) NOT NULL,
+  `kanwil_id` int(11) NOT NULL,
+  `nama` varchar(255) NOT NULL,
+  `alamat` varchar(512) NOT NULL,
+  `nomor_telepon` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `satker`
+--
+
+INSERT INTO `satker` (`id`, `kanwil_id`, `nama`, `alamat`, `nomor_telepon`) VALUES
+(1, 1, 'RUTAN LOHKNGA', 'ACEH', '123123');
 
 -- --------------------------------------------------------
 
@@ -456,12 +667,20 @@ CREATE TABLE `surat_perintah` (
   `nomor_surat` varchar(255) DEFAULT NULL,
   `tanggal_surat` datetime DEFAULT NULL,
   `perihal` varchar(512) DEFAULT NULL,
+  `perjadin` enum('YA','TIDAK') NOT NULL,
   `user_id` int(11) NOT NULL,
   `bidang_id` int(11) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `surat_perintah`
+--
+
+INSERT INTO `surat_perintah` (`id`, `nomor_surat`, `tanggal_surat`, `perihal`, `perjadin`, `user_id`, `bidang_id`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(1, 'abcd', '2021-10-25 00:00:00', 'asdasd', 'YA', 1, 1, '2021-10-24 21:47:52', '2021-10-24 21:47:52', NULL);
 
 -- --------------------------------------------------------
 
@@ -550,6 +769,12 @@ ALTER TABLE `bidang`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `kanwil`
+--
+ALTER TABLE `kanwil`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `kegiatan`
 --
 ALTER TABLE `kegiatan`
@@ -568,6 +793,48 @@ ALTER TABLE `peran`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `perjadin`
+--
+ALTER TABLE `perjadin`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `perjadin_hasil`
+--
+ALTER TABLE `perjadin_hasil`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `perjadin_lampiran`
+--
+ALTER TABLE `perjadin_lampiran`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `perjadin_obrik`
+--
+ALTER TABLE `perjadin_obrik`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `perjadin_rab`
+--
+ALTER TABLE `perjadin_rab`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `perjadin_realisasi`
+--
+ALTER TABLE `perjadin_realisasi`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `perjadin_susunan_tim`
+--
+ALTER TABLE `perjadin_susunan_tim`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `realisasi`
 --
 ALTER TABLE `realisasi`
@@ -577,6 +844,18 @@ ALTER TABLE `realisasi`
 -- Indexes for table `realisasi_lampiran`
 --
 ALTER TABLE `realisasi_lampiran`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `satker`
+--
+ALTER TABLE `satker`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `surat_perintah`
+--
+ALTER TABLE `surat_perintah`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -608,6 +887,12 @@ ALTER TABLE `bidang`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
+-- AUTO_INCREMENT for table `kanwil`
+--
+ALTER TABLE `kanwil`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
 -- AUTO_INCREMENT for table `kegiatan`
 --
 ALTER TABLE `kegiatan`
@@ -620,6 +905,48 @@ ALTER TABLE `peran`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
+-- AUTO_INCREMENT for table `perjadin`
+--
+ALTER TABLE `perjadin`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `perjadin_hasil`
+--
+ALTER TABLE `perjadin_hasil`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `perjadin_lampiran`
+--
+ALTER TABLE `perjadin_lampiran`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `perjadin_obrik`
+--
+ALTER TABLE `perjadin_obrik`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `perjadin_rab`
+--
+ALTER TABLE `perjadin_rab`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `perjadin_realisasi`
+--
+ALTER TABLE `perjadin_realisasi`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `perjadin_susunan_tim`
+--
+ALTER TABLE `perjadin_susunan_tim`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
 -- AUTO_INCREMENT for table `realisasi`
 --
 ALTER TABLE `realisasi`
@@ -630,6 +957,18 @@ ALTER TABLE `realisasi`
 --
 ALTER TABLE `realisasi_lampiran`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=67;
+
+--
+-- AUTO_INCREMENT for table `satker`
+--
+ALTER TABLE `satker`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `surat_perintah`
+--
+ALTER TABLE `surat_perintah`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `tahun`

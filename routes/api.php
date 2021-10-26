@@ -74,6 +74,17 @@ Route::group(['prefix' => 'urusan'], function () {
     //GET
     Route::get('/', 'UrusanController@index');
 });
+// PERJADIN
+Route::group(['prefix' => 'perjadin'], function () {
+    //GET
+    Route::get('/', 'PerjadinController@index');
+    //POST
+    Route::post('/store', 'PerjadinController@store');
+});
+
+
+
+
 
 
 // MASTER

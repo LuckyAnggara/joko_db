@@ -17,6 +17,9 @@ use App\Models\Tahun;
 use App\Models\Urusan;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\URL;
 
 
 class PerjadinController extends Controller
@@ -74,6 +77,7 @@ class PerjadinController extends Controller
                 'mak_id'=> $request->umum['mak']['id'],
                 'jumlah_hari'=> $request->umum['jumlah_hari'],
                 'tujuan'=> $request->umum['tujuan'],
+                'tahun_id' => $request->tahun['id'],
                 'keberangkatan'=> $request->umum['keberangkatan'],
                 'tanggal_berangkat'=> $request->umum['tanggal_berangkat'],
                 'tanggal_kembali'=> $request->umum['tanggal_kembali'],
@@ -132,6 +136,83 @@ class PerjadinController extends Controller
 
 
         }
+        return response()->json($perjadin, 200);
      
+    }
+
+    public function show(Request $request){
+        $id = $request->input('id');
+
+        $master = Perjadin::find($id);
+        if($master){
+            $master->surat_perintah = SuratPerintah::find($value->surat_perintah_id);
+            $master->susunan_tim = PerjadinSusunanTim::where('perjadin_id',$value->id)->get();
+            $master->mak = Kegiatan::find($value->mak_id);
+            $master->tahun = Tahun::find($value->tahun_id);
+        }
+    }
+
+    public function uploadLampiran(Request $payload){
+        $output = [];
+        $id = $payload->id;
+        $jenis = $payload->jenis;
+        
+        foreach ($payload->file('lampiran_sp') as $file) {
+            $path = Storage::disk('public')->put('perjadin',$file);
+            $nama = $id.'_SP_'.$file->getClientOriginalName();
+            $data = PerjadinLampiran::create([
+                'perjadin_id' => $id,
+                'jenis' => 'SP',
+                'nama' => $nama,
+                'file' => $path,
+            ]);
+            $output[] = $data;
+        }
+
+        foreach ($payload->file('lampiran_rab') as $file) {
+            $path = Storage::disk('public')->put('perjadin',$file);
+            $nama = $id.'_RAB_'.$file->getClientOriginalName();
+            $data = PerjadinLampiran::create([
+                'perjadin_id' => $id,
+                'jenis' => 'RAB',
+                'nama' => $nama,
+                'file' => $path,
+            ]);
+            $output[] = $data;
+        }
+
+        foreach ($payload->file('lampiran_lainnya') as $file) {
+            $path = Storage::disk('public')->put('perjadin',$file);
+            $nama = $id.'_LAINNYA_'.$file->getClientOriginalName();
+            $data = PerjadinLampiran::create([
+                'perjadin_id' => $id,
+                'jenis' => 'LAINNYA',
+                'nama' => $nama,
+                'file' => $path,
+            ]);
+            $output[] = $data;
+        }
+       
+
+        return response()->json($output, 200);
+    }
+
+    public function status(Request $request){
+        $response = 404;
+        $id = $request->id;
+        $status = $request->status;
+
+        $master = Perjadin::find($id);
+
+        if($master){
+            $response = 200;
+
+            $master->status = $status;
+            $master->save();
+            $messages = $master;
+        }
+
+        return response()->json($master, $response);
+
     }
 }

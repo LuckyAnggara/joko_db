@@ -80,6 +80,8 @@ Route::group(['prefix' => 'perjadin'], function () {
     Route::get('/', 'PerjadinController@index');
     //POST
     Route::post('/store', 'PerjadinController@store');
+    Route::post('/upload-lampiran', 'PerjadinController@uploadLampiran');
+    Route::post('/status', 'PerjadinController@status');
 });
 
 

@@ -78,10 +78,13 @@ Route::group(['prefix' => 'urusan'], function () {
 Route::group(['prefix' => 'perjadin'], function () {
     //GET
     Route::get('/', 'PerjadinController@index');
+    Route::get('/download-lampiran', 'PerjadinController@downloadLampiran');
     //POST
     Route::post('/store', 'PerjadinController@store');
     Route::post('/upload-lampiran', 'PerjadinController@uploadLampiran');
     Route::post('/status', 'PerjadinController@status');
+    //DELETE
+    Route::delete('/delete-perjadin', 'PerjadinController@destroy');
 });
 
 

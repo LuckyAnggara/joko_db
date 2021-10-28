@@ -85,4 +85,12 @@ class KegiatanController extends Controller
         return response()->json($message, 200);
     }
 
+    public function saldo($id, $tahun_id, $bidang_id){
+
+        $output['realisasi'] = Realisasi::where('kegiatan_id',$id)->where('tahun_id', $tahun_id)->where('bidang_id', $bidang_id)->where('status','SELESAI')->sum('nominal');
+        $output['unrealisasi'] = Realisasi::where('kegiatan_id',$id)->where('tahun_id', $tahun_id)->where('bidang_id', $bidang_id)->whereIn ('status', ['VERIFIKASI','PEMBAYARAN'])->sum('nominal');
+        
+        return response()->json($output, 200);
+    }
+
 }

@@ -289,7 +289,7 @@ class PerjadinController extends Controller
 
             $master->status =  $request->status;
             $master->save();
-            $this->storeLog($master->id,$request->status_log, $request->message_log. $request->user_data['nama'], $request->user_data);
+            $this->storeLog($master->id,$request->status_log, $request->message_log.' '. $request->user_data['nama'], $request->user_data);
 
             $messages = $master;
 

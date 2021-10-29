@@ -45,7 +45,7 @@ class PerjadinController extends Controller
             // DETAIL SUSUNAN TIM
             foreach ($value->susunan_tim as $key => $tim) {
                 $tim->pegawai = Pegawai::find($tim->pegawai_id);
-                $tim->anggaran = PerjadinRAB::find($tim->id);
+                $tim->anggaran = PerjadinRAB::find($tim->perjadin_rab_id);
                 $tim->peran = Peran::find($tim->peran_id);
             }
 
@@ -190,8 +190,10 @@ class PerjadinController extends Controller
                         'udara'=> $request->rencana_anggaran[$key]['udara'],
                         'total'=> $request->rencana_anggaran[$key]['total'],
                     ]);
+                    $anggota->perjadin_rab_id = $anggaran->id;
+                    $anggota->save();
 
-                    $anggota->anggaran = $anggaran;
+                    // $anggota->anggaran = $anggaran;
                 }
 
                 $tim[] = $anggota;

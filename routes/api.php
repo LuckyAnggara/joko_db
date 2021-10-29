@@ -86,6 +86,11 @@ Route::group(['prefix' => 'perjadin'], function () {
     //DELETE
     Route::delete('/delete-perjadin', 'PerjadinController@destroy');
 });
+// PRINT
+Route::group(['prefix' => 'print'], function () {
+    //GET
+    Route::get('/download-spd', 'PrintController@printSpd');
+});
 
 
 

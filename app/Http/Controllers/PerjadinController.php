@@ -12,6 +12,7 @@ use App\Models\PerjadinLog;
 use App\Models\PerjadinObrik;
 use App\Models\PerjadinRAB;
 use App\Models\PerjadinRealisasi;
+use App\Models\PerjadinRealisasiLampiran;
 use App\Models\PerjadinSusunanTim;
 use App\Models\Realisasi;
 use App\Models\Satker;
@@ -46,6 +47,10 @@ class PerjadinController extends Controller
             foreach ($value->susunan_tim as $key => $tim) {
                 $tim->pegawai = Pegawai::find($tim->pegawai_id);
                 $tim->anggaran = PerjadinRAB::find($tim->perjadin_rab_id);
+                $tim->realisasi = PerjadinRealisasi::find($tim->perjadin_realisasi_id);
+                if($tim->realisasi){
+                    $tim->realisasi['lampiran'] = PerjadinRealisasiLampiran::where('perjadin_realisasi_id', $tim->realisasi['id'])->get();
+                }
                 $tim->peran = Peran::find($tim->peran_id);
             }
 
@@ -61,9 +66,10 @@ class PerjadinController extends Controller
             $value->bidang = Bidang::find($value->bidang_id);
             $value->user = User::find($value->user_id);
             $value->user['pegawai'] = Pegawai::find($value->user['pegawai_id']);
-            $value->log = PerjadinLog::where('perjadin_id',$value->id)->get();
+            $value->log = PerjadinLog::where('perjadin_id',$value->id)->orderBy('id','DESC')->get();
             foreach ($value->log as $key => $log) {
                 $log->ago = $log->created_at->diffForHumans();
+                $log->pegawai = Pegawai::find($log->user_id);
             }
         }
 
@@ -100,14 +106,27 @@ class PerjadinController extends Controller
                 $rab->delete();
             }
 
+            $realisasi = PerjadinRealisasi::where('perjadin_id', $master->id)->get();
+            foreach ($realisasi as $key => $realisasi) {
+                $realisasi->delete();
+                $perjadin_realisasi = PerjadinRealisasiLampiran::where('perjadin_realisasi_id', $realisasi->id);
+                foreach ($perjadin_realisasi as $key => $perjadin_realisasi) {
+                    if (Storage::disk('public')->exists($perjadin_realisasi->file)) {
+                        Storage::disk('public')->delete($perjadin_realisasi->file);
+                   }
+                }
+               
+            }
+
+
             $lampiran = PerjadinLampiran::where('perjadin_id', $master->id)->get();
             foreach ($lampiran as $key => $lampiran) {
                 $lampiran->delete();
 
-                $file_path = public_path() .$lampiran->file;
                 
-                if(file_exists($file_path)){ 
-                    unlink($file_path);
+                // return $master;
+                if (Storage::disk('public')->exists($lampiran->file)) {
+                     Storage::disk('public')->delete($lampiran->file);
                 }
             }
         }
@@ -134,9 +153,12 @@ class PerjadinController extends Controller
             }
             $perjadin = Perjadin::create([
                 'surat_perintah_id'=> $surat_perintah->id,
+                'no_perjadin' => $this->generateKodePerjadin($request->user_data['bidang_id']),
                 'mak_id'=> $request->umum['mak']['id'],
                 'jumlah_hari'=> $request->umum['jumlah_hari'],
-                'keterangan'=> $request->umum['keterangan'],
+                'maksud'=> $request->umum['maksud'],
+                'ppk_id'=> $request->umum['ppk']['id'],
+                'bendahara_id'=> $request->umum['bendahara']['id'],
                 'tujuan'=> $request->umum['tujuan'],
                 'tahun_id' => $request->tahun['id'],
                 'keberangkatan'=> $request->umum['keberangkatan'],
@@ -155,16 +177,19 @@ class PerjadinController extends Controller
             $obrik = [];
             $tim = [];
 
-            $this->storeLog($perjadin->id,'PENGAJUAN', 'PERJADIN TELAH DIBUAT, OLEH '.$request->user_data['nama'], $request->user_data);
+            $this->storeLog($perjadin->id,'PENGAJUAN', 'PERJADIN TELAH DIBUAT, OLEH '.$request->user_data['nama'], $request->user_data,null);
             
             foreach ($request->obrik['detail'] as $key => $satker) {
-                $object = PerjadinObrik::create([
-                    'perjadin_id' => $perjadin->id,
-                    'satker_id'=> $satker['satker']['id'],
-                    'urusan_id'=> $satker['urusan']['id'],
-                ]);
-                $obrik[] = $object;
-                $perjadin->obrik = $obrik;
+                if($satker['satker'] !== null){
+                    $object = PerjadinObrik::create([
+                        'perjadin_id' => $perjadin->id,
+                        'satker_id'=> $satker['satker']['id'],
+                        'urusan_id'=> $satker['urusan']['id'],
+                    ]);
+                    $obrik[] = $object;
+                    $perjadin->obrik = $obrik;
+                }
+
             }
 
             foreach ($request->susunan_tim as $key => $tim) {
@@ -189,6 +214,8 @@ class PerjadinController extends Controller
                         'uang_hotel'=> $request->rencana_anggaran[$key]['uang_hotel'],
                         'udara'=> $request->rencana_anggaran[$key]['udara'],
                         'total'=> $request->rencana_anggaran[$key]['total'],
+                        'tanggal_berangkat'=> $request->rencana_anggaran[$key]['tanggal_berangkat'],
+                        'tanggal_kembali'=> $request->rencana_anggaran[$key]['tanggal_kembali'],
                     ]);
                     $anggota->perjadin_rab_id = $anggaran->id;
                     $anggota->save();
@@ -206,17 +233,69 @@ class PerjadinController extends Controller
      
     }
 
-    // public function show(Request $request){
-    //     $id = $request->input('id');
+    public function storeRealisasi(Request $request){
+        
+        $output = [];
+        $total_realisasi = 0;
+        $master = Perjadin::find($request->perjadin['id']);
+        foreach ($request->realisasi as $key => $realisasi) {
+            $tim = PerjadinSusunanTim::find($realisasi['pegawai']['susunan_tim_id']);
+            if($tim){
+                $realisasi = PerjadinRealisasi::create([
+                    'perjadin_id' => $request->perjadin['id'],
+                    'susunan_tim_perjadin_id' => $realisasi['pegawai']['susunan_tim_id'],
+                    'jumlah_hari'=> $realisasi['jumlah_hari'],
+                    'jumlah_malam'=> $realisasi['jumlah_malam'],
+                    'darat'=> $realisasi['darat'],
+                    'laut'=> $realisasi['laut'],
+                    'representatif'=> $realisasi['representatif'],
+                    'taksi_jakarta'=> $realisasi['taksi_jakarta'],
+                    'taksi_provinsi'=> $realisasi['taksi_provinsi'],
+                    'uang_harian'=> $realisasi['uang_harian'],
+                    'uang_hotel'=>$realisasi['uang_hotel'],
+                    'udara'=> $realisasi['udara'],
+                    'total'=>$realisasi['total'],
+                    'tanggal_berangkat'=> $realisasi['tanggal_berangkat'],
+                    'tanggal_kembali'=> $realisasi['tanggal_kembali'],
+                ]);
 
-    //     $master = Perjadin::find($id);
-    //     if($master){
-    //         $master->surat_perintah = SuratPerintah::find($value->surat_perintah_id);
-    //         $master->susunan_tim = PerjadinSusunanTim::where('perjadin_id',$value->id)->get();
-    //         $master->mak = Kegiatan::find($value->mak_id);
-    //         $master->tahun = Tahun::find($value->tahun_id);
-    //     }
-    // }
+                if($realisasi){
+                    $total_realisasi += $realisasi['total'];
+
+                    $master->total_realisasi = $total_realisasi;
+                    $master->status_realisasi = 'SUDAH';
+                    $master->save();
+                    
+                    $tim->perjadin_realisasi_id = $realisasi->id;
+                    $tim->save();
+
+                    $output[]= $realisasi;
+                }
+            }
+        }
+        return response()->json($output, 200);
+       
+    }
+
+    public function uploadPerjadinRealisasiLampiran(Request $payload){
+        $output = [];
+        $id = $payload->id;
+        
+        if($payload->file('lampiran')){
+            foreach ($payload->file('lampiran') as $file) {
+            $path = Storage::disk('public')->put('perjadin/lampiran',$file);
+            $nama = $file->getClientOriginalName();
+            $data = PerjadinRealisasiLampiran::create([
+                'perjadin_realisasi_id' => $id,
+                'nama' => $nama,
+                'file' => $path,
+            ]);
+            $output[] = $data;
+            }
+        }
+        return response()->json($output, 200);
+
+    }
 
     public function uploadLampiran(Request $payload){
         $output = [];
@@ -272,7 +351,12 @@ class PerjadinController extends Controller
 
     public function downloadLampiran(Request $payload){
         $id = $payload->id;
+        $jenis = $payload->jenis;
+        
         $master = PerjadinLampiran::find($id);
+        if($jenis == 'realisasi'){
+            $master = PerjadinRealisasiLampiran::find($id);
+        }
         // return $master;
         if (Storage::disk('public')->exists($master->file)) {
             return Storage::disk('public')->download($master->file);
@@ -291,7 +375,7 @@ class PerjadinController extends Controller
 
             $master->status =  $request->status;
             $master->save();
-            $this->storeLog($master->id,$request->status_log, $request->message_log.' '. $request->user_data['nama'], $request->user_data);
+            $this->storeLog($master->id,$request->status_log, $request->message_log.' oleh '. $request->user_data['pegawai']['nama'], $request->user_data, $request->catatan);
 
             $messages = $master;
 
@@ -302,10 +386,12 @@ class PerjadinController extends Controller
 
     }
 
-    public function storeLog($id, $status_log, $message_log, $user_data){
+    public function storeLog($id, $status_log, $message_log, $user_data, $catatan = null){
         $log = PerjadinLog::create([
             'perjadin_id' => $id,
+            'perjadin_id' => $id,
             'status' => $status_log,
+            'catatan'=> $catatan,
             'bidang_id'=> $user_data['bidang_id'],
             'user_id'=> $user_data['id'],
             'keterangan' => $message_log,
@@ -319,5 +405,24 @@ class PerjadinController extends Controller
         $output['unrealisasi'] = Realisasi::where('kegiatan_id',$id)->where('tahun_id', $tahun_id)->where('bidang_id', $bidang_id)->whereIn ('status', ['VERIFIKASI','PEMBAYARAN'])->sum('nominal');
         $output['saldo'] =  $mak->dipa -  $output['realisasi'] -  $output['unrealisasi'];
         return $output;
+    }
+
+    public function generateKodePerjadin($bidang_id){
+        $data = Perjadin::all();
+        $output = collect($data)->last();
+        $date = date("dmy");
+
+        if($output){
+            $dd = $output->no_perjadin;
+            $str = explode('-', $dd);
+            if($str[1] == $date){
+                $last_prefix = $str[2]+ 1;
+                return $bidang_id.'-'.$date.'-'.$last_prefix;
+            }
+
+            return $bidang_id.'-'.$date.'-'.'1';
+           
+        }
+        return $bidang_id.'-'.$date.'-'.'1';      
     }
 }

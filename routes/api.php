@@ -19,11 +19,6 @@ Route::group(['prefix' => 'auth'], function () {
     Route::post('/login', 'AuthController@login');
 });
 
-// BIDANG
-Route::group(['prefix' => 'bidang'], function () {
-    //GET
-    Route::get('/', 'BidangController@index');
-});
 
 // KEGIATAN / MAK
 Route::group(['prefix' => 'kegiatan'], function () {
@@ -59,6 +54,12 @@ Route::group(['prefix' => 'pegawai'], function () {
     //GET
     Route::get('/', 'PegawaiController@index');
 });
+// BIDANG
+Route::group(['prefix' => 'bidang'], function () {
+    //GET
+    Route::get('/', 'BidangController@index');
+});
+
 // PERAN
 Route::group(['prefix' => 'peran'], function () {
     //GET
@@ -78,10 +79,13 @@ Route::group(['prefix' => 'urusan'], function () {
 Route::group(['prefix' => 'perjadin'], function () {
     //GET
     Route::get('/', 'PerjadinController@index');
+    Route::get('/generate', 'PerjadinController@generateKodePerjadin');
     Route::get('/download-lampiran', 'PerjadinController@downloadLampiran');
     //POST
     Route::post('/store', 'PerjadinController@store');
+    Route::post('/store-realisasi', 'PerjadinController@storeRealisasi');
     Route::post('/upload-lampiran', 'PerjadinController@uploadLampiran');
+    Route::post('/upload-perjadin-realisasi-lampiran', 'PerjadinController@uploadPerjadinRealisasiLampiran');
     Route::post('/status', 'PerjadinController@status');
     //DELETE
     Route::delete('/delete-perjadin', 'PerjadinController@destroy');

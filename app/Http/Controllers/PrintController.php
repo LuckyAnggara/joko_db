@@ -10,6 +10,7 @@ use App\Models\PerjadinRAB;
 use App\Models\PerjadinSusunanTim;
 use App\Models\SuratPerintah;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class PrintController extends Controller
 {
@@ -68,9 +69,14 @@ class PrintController extends Controller
         // END SET TABLE
         // //save template with table
         $template_document->saveAs(storage_path('app\public\spd\spd_'.$nama.'.docx'));
-        $phpWord = \PhpOffice\PhpWord\IOFactory::load(storage_path('app\public\spd\spd_'.$nama.'.docx')); 
-        $xmlWriter = \PhpOffice\PhpWord\IOFactory::createWriter($phpWord , 'PDF');
-        $xmlWriter->save(storage_path('app\public\spd\spd_'.$nama.'.pdf')); 
-        return response()->download(storage_path('app\public\spd\spd_'.$nama.'.pdf'));
+        return Storage::disk('public')->download('spd\spd_'.$nama.'.docx');
+        // return response()->download('spd\spd_'.$nama.'.docx');
+        // $mpdf = base_path('vendor/mpdf');
+        // $phpWord = \PhpOffice\PhpWord\IOFactory::load(storage_path('app\public\spd\spd_'.$nama.'.docx')); 
+        // \PhpOffice\PhpWord\Settings::setPdfRendererPath($mpdf);
+        // \PhpOffice\PhpWord\Settings::setPdfRendererName('MPDF');
+        // $xmlWriter = \PhpOffice\PhpWord\IOFactory::createWriter($phpWord , 'PDF');
+        // $xmlWriter->save(storage_path('app\public\spd\spd_'.$nama.'.pdf')); 
+        // return response()->download(storage_path('app\public\spd\spd_'.$nama.'.pdf'));
     }
 }

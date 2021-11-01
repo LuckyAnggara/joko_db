@@ -63,13 +63,16 @@ class PerjadinController extends Controller
             }
 
             $value->lampiran = PerjadinLampiran::where('perjadin_id',$value->id)->get();
+            foreach ($value->lampiran as $key => $lampiran) {
+                $lampiran->pegawai = Pegawai::find(User::find($lampiran->user_id)->pegawai_id);
+            }
             $value->bidang = Bidang::find($value->bidang_id);
             $value->user = User::find($value->user_id);
             $value->user['pegawai'] = Pegawai::find($value->user['pegawai_id']);
             $value->log = PerjadinLog::where('perjadin_id',$value->id)->orderBy('id','DESC')->get();
             foreach ($value->log as $key => $log) {
                 $log->ago = $log->created_at->diffForHumans();
-                $log->pegawai = Pegawai::find($log->user_id);
+                $log->pegawai = Pegawai::find(User::find($log->user_id)->pegawai_id);
             }
         }
 
@@ -300,7 +303,7 @@ class PerjadinController extends Controller
     public function uploadLampiran(Request $payload){
         $output = [];
         $id = $payload->id;
-        $jenis = $payload->jenis;
+        $user_id = $payload->user_id;
         
         if($payload->file('lampiran_sp')){
             foreach ($payload->file('lampiran_sp') as $file) {
@@ -311,6 +314,7 @@ class PerjadinController extends Controller
                 'jenis' => 'SP',
                 'nama' => $nama,
                 'file' => $path,
+                'user_id' => $user_id,
             ]);
             $output[] = $data;
             }
@@ -325,6 +329,7 @@ class PerjadinController extends Controller
                 'jenis' => 'RAB',
                 'nama' => $nama,
                 'file' => $path,
+                'user_id' => $user_id,
             ]);
             $output[] = $data;
             }
@@ -339,6 +344,7 @@ class PerjadinController extends Controller
                     'jenis' => 'LAINNYA',
                     'nama' => $nama,
                     'file' => $path,
+                    'user_id' => $user_id,
                 ]);
                 $output[] = $data;
             }
@@ -347,6 +353,18 @@ class PerjadinController extends Controller
        
 
         return response()->json($output, 200);
+    }
+
+    public function destroyLampiran(Request $payload){
+        $id = $payload->id;
+
+        $master = PerjadinLampiran::find($id);
+        $master->delete();
+
+        if (Storage::disk('public')->exists($master->file)) {
+            Storage::disk('public')->delete($master->file);
+        }
+        return response()->json($master, 200);
     }
 
     public function downloadLampiran(Request $payload){

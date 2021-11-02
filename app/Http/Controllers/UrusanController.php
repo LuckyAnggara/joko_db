@@ -12,9 +12,6 @@ class UrusanController extends Controller
   
     public function index(){
         $master =  Urusan::all();
-
-      
-        
         return response()->json($master, 200);
     }
 }

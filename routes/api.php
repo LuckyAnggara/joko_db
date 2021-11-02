@@ -20,16 +20,18 @@ Route::group(['prefix' => 'auth'], function () {
 });
 
 
-// KEGIATAN / MAK
-Route::group(['prefix' => 'kegiatan'], function () {
+// MAK
+Route::group(['prefix' => 'mak'], function () {
     //GET
-    Route::get('/', 'KegiatanController@index');
+    Route::get('/', 'MakController@index');
     //POST
-    Route::post('/store', 'KegiatanController@store');
-    Route::post('/cek-kode-mak', 'KegiatanController@cekMak');
+    Route::post('/store', 'MakController@store');
+    Route::post('/cek-kode-mak', 'MakController@cekMak');
     //DELETE
-    Route::delete('/delete-kegiatan', 'KegiatanController@destroy');
+    Route::delete('/delete-mak', 'MakController@destroy');
 });
+
+
 // REALISASI
 Route::group(['prefix' => 'realisasi'], function () {
     //GET
@@ -59,7 +61,11 @@ Route::group(['prefix' => 'bidang'], function () {
     //GET
     Route::get('/', 'BidangController@index');
 });
-
+// BIDANG
+Route::group(['prefix' => 'jenis-kegiatan'], function () {
+    //GET
+    Route::get('/', 'JenisKegiatanController@index');
+});
 // PERAN
 Route::group(['prefix' => 'peran'], function () {
     //GET
@@ -74,6 +80,24 @@ Route::group(['prefix' => 'kanwil'], function () {
 Route::group(['prefix' => 'urusan'], function () {
     //GET
     Route::get('/', 'UrusanController@index');
+});
+
+// KEGIATAN BIASA
+Route::group(['prefix' => 'kegiatan'], function () {
+    //GET
+    Route::get('/', 'KegiatanController@index');
+    Route::get('/show', 'KegiatanController@show');
+    Route::get('/download-lampiran', 'KegiatanController@downloadLampiran');
+    Route::get('/laporan-rincian', 'KegiatanController@laporanRincian');
+    //STORE
+    Route::post('/store-rencana', 'KegiatanController@storeRencana');
+    Route::post('/upload-lampiran-rencana', 'KegiatanController@uploadLampiranRencana');
+    Route::post('/update-realisasi', 'KegiatanController@updateRealisasi');
+    Route::post('/upload-lampiran-tambahan', 'KegiatanController@uploadLampiranRencana');
+    Route::post('/status', 'KegiatanController@status');
+    //DESTROY
+    Route::delete('/delete-kegiatan', 'KegiatanController@destroy');
+    Route::delete('/delete-lampiran', 'PerjadinController@destroyLampiran');
 });
 // PERJADIN
 Route::group(['prefix' => 'perjadin'], function () {

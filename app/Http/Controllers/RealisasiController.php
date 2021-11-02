@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Bidang;
-use App\Models\Kegiatan;
+use App\Models\Mak;
 use App\Models\Pegawai;
-use App\Models\Realisasi;
-use App\Models\RealisasiLampiran;
+use App\Models\KegiatanRealisasi;
+use App\Models\KegiatanRealisasiLampiran;
 use App\Models\Tahun;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
@@ -20,15 +20,15 @@ class RealisasiController extends Controller
         $bidang_id = $payload->input('bidang_id');
         $tahun_id = $payload->input('tahun_id');
 
-        $master =  Realisasi::where('tahun_id', $tahun_id)->where('bidang_id', $bidang_id)->get();
+        $master =  KegiatanRealisasi::where('tahun_id', $tahun_id)->where('bidang_id', $bidang_id)->get();
         if($bidang_id == 0){
-            $master =  Realisasi::where('tahun_id', $tahun_id)->get();
+            $master =  KegiatanRealisasi::where('tahun_id', $tahun_id)->get();
         }
 
         foreach ($master as $key => $value) {
-            $value->kegiatan = Kegiatan::find($value->kegiatan_id);
-            $value->maker = Kegiatan::find($value->maker_id);
-            $value->checker = Kegiatan::find($value->checker_id);
+            $value->mak = Mak::find($value->mak_id);
+            $value->maker = Mak::find($value->maker_id);
+            $value->checker = Mak::find($value->checker_id);
         }
 
         return response()->json($master, 200);
@@ -36,12 +36,12 @@ class RealisasiController extends Controller
 
     public function store(Request $payload){
 
-        $master = Realisasi::create([
+        $master = KegiatanRealisasi::create([
             'nomor_kwitansi' => $payload->tahun['nama'].'-'.$this->makeNomorKwitansi(),
             'uraian' => $payload->uraian,
             'nominal' => $payload->nominal,
             'status' => 'VERIFIKASI',
-            'kegiatan_id' => $payload->kegiatan['id'],
+            'mak_id' => $payload->mak['id'],
             'tanggal_spb' => $payload->tanggal_spb,
             'maker_id' => $payload->maker['id'],
             'checker_id' => $payload->checker['id'],
@@ -50,7 +50,7 @@ class RealisasiController extends Controller
             'user_id' => $payload->userData['id'],
         ]);
 
-        // $lampiran = RealisasiLampiran::create([
+        // $lampiran = KegiatanRealisasiLampiran::create([
 
         // ]);
 
@@ -64,7 +64,7 @@ class RealisasiController extends Controller
         foreach ($payload->file('lampiran') as $file) {
             $path = Storage::disk('public')->put('realisasi',$file);
             $nama = $file->getClientOriginalName();
-            $data = RealisasiLampiran::create([
+            $data = KegiatanRealisasiLampiran::create([
                 'realisasi_id' => $id,
                 'nama' => $nama,
                 'file' => $path,
@@ -79,7 +79,7 @@ class RealisasiController extends Controller
     public function downloadLampiran(Request $payload){
         $id = $payload->id;
         
-        $master = RealisasiLampiran::find($id);
+        $master = KegiatanRealisasiLampiran::find($id);
         if (Storage::disk('public')->exists($master->file)) {
             return Storage::disk('public')->download($master->file);
         }
@@ -90,11 +90,11 @@ class RealisasiController extends Controller
         $output = [];
         $id = $payload->input('id');
 
-        $master = Realisasi::find($id);
+        $master = KegiatanRealisasi::find($id);
         $response = 404;
         if($master){
             $master->delete();
-            $detail = RealisasiLampiran::where('realisasi_id', $master->id)->get();
+            $detail = KegiatanRealisasiLampiran::where('realisasi_id', $master->id)->get();
             foreach ($detail as $key => $value) {
                 $value->delete();
                 $file_path = public_path() .$value->file;
@@ -114,7 +114,7 @@ class RealisasiController extends Controller
     public function show(Request $payload){
         $id = $payload->input('id');
 
-        $master = Realisasi::find($id);
+        $master = KegiatanRealisasi::find($id);
         $response = 404;
         $data = null;
         if($master){
@@ -122,10 +122,10 @@ class RealisasiController extends Controller
             $data = $master;
             $master->tahun = Tahun::find($master->tahun_id);
             $master->bidang = Bidang::find($master->bidang_id);
-            $master->kegiatan = Kegiatan::find($master->kegiatan_id);
+            $master->mak = Mak::find($master->mak_id);
             $master->maker = Pegawai::find($master->maker_id);
             $master->checker = Pegawai::find($master->checker_id);
-            $master->lampiran = RealisasiLampiran::where('realisasi_id', $master->id)->get();
+            $master->lampiran = KegiatanRealisasiLampiran::where('realisasi_id', $master->id)->get();
         }
         
         return response()->json($data, $response);  
@@ -136,7 +136,7 @@ class RealisasiController extends Controller
         $status = $payload->status;
         $response = 404;
 
-        $master = Realisasi::find($id);
+        $master = KegiatanRealisasi::find($id);
         if($master){
             $master->status = $status;
             if($status === 'PEMBAYARAN'){
@@ -153,7 +153,7 @@ class RealisasiController extends Controller
 
     public function makeNomorKwitansi(){
 
-        $master = Realisasi::all()->last();
+        $master = KegiatanRealisasi::all()->last();
         $output = 1;
         if($master){
             $dd = explode('-',$master->nomor_kwitansi);
@@ -170,11 +170,11 @@ class RealisasiController extends Controller
         $tahun_id = $payload->input('tahun_id');
         $bidang_id = $payload->input('bidang_id');
 
-        $kegiatan = Kegiatan::where('tahun_id', $tahun_id)
+        $mak = Mak::where('tahun_id', $tahun_id)
         ->where('bidang_id', $bidang_id)->get();
 
-        foreach ($kegiatan as $key => $value) {
-           $value->realisasi = Realisasi::where('kegiatan_id', $value->id)->get();
+        foreach ($mak as $key => $value) {
+           $value->realisasi = KegiatanRealisasi::where('mak_id', $value->id)->get();
            $value->total_realisasi = 0;
            $value->total_unrealisasi = 0;
 
@@ -186,6 +186,6 @@ class RealisasiController extends Controller
                 }
             }
         }
-        return response()->json($kegiatan, 200);  
+        return response()->json($mak, 200);  
     }
 }

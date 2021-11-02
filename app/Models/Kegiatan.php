@@ -4,16 +4,15 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Kegiatan extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory;
     protected $table = 'kegiatan';
     protected $guarded = [
         'id',
     ];
     public $primaryKey = 'id';
     public $timestamps = true;
-    protected $dates = ['deleted_at'];
+    public $date = ['tanggal_kegiatan','created_at','deleted_at'];
 }

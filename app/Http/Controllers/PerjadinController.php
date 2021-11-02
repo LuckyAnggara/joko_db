@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Bidang;
 use App\Models\Kegiatan;
+use App\Models\Mak;
 use App\Models\Pegawai;
 use App\Models\Peran;
 use App\Models\Perjadin;
@@ -14,7 +15,7 @@ use App\Models\PerjadinRAB;
 use App\Models\PerjadinRealisasi;
 use App\Models\PerjadinRealisasiLampiran;
 use App\Models\PerjadinSusunanTim;
-use App\Models\Realisasi;
+use App\Models\KegiatanRealisasi;
 use App\Models\Satker;
 use App\Models\SuratPerintah;
 use App\Models\Tahun;
@@ -40,7 +41,7 @@ class PerjadinController extends Controller
         foreach ($master as $key => $value) {
             $value->surat_perintah = SuratPerintah::find($value->surat_perintah_id);
             $value->susunan_tim = PerjadinSusunanTim::where('perjadin_id',$value->id)->get();
-            $value->mak = Kegiatan::find($value->mak_id);
+            $value->mak = Mak::find($value->mak_id);
             $value->mak['saldo'] = $this->cekSaldoMak($value->mak_id, $tahun_id, $bidang_id);
             $value->tahun = Tahun::find($value->tahun_id);
             // DETAIL SUSUNAN TIM
@@ -180,7 +181,7 @@ class PerjadinController extends Controller
             $obrik = [];
             $tim = [];
 
-            $this->storeLog($perjadin->id,'PENGAJUAN', 'PERJADIN TELAH DIBUAT, OLEH '.$request->user_data['nama'], $request->user_data,null);
+            $this->storeLog($perjadin->id,'PENGAJUAN', 'PERJADIN TELAH DIBUAT, OLEH '.$request->user_data['pegawai']['nama'], $request->user_data,null);
             
             foreach ($request->obrik['detail'] as $key => $satker) {
                 if($satker['satker'] !== null){
@@ -258,6 +259,7 @@ class PerjadinController extends Controller
                     'uang_hotel'=>$realisasi['uang_hotel'],
                     'udara'=> $realisasi['udara'],
                     'total'=>$realisasi['total'],
+                    'jenis_hotel'=>$realisasi['jenis_hotel'],
                     'tanggal_berangkat'=> $realisasi['tanggal_berangkat'],
                     'tanggal_kembali'=> $realisasi['tanggal_kembali'],
                 ]);
@@ -308,7 +310,7 @@ class PerjadinController extends Controller
         if($payload->file('lampiran_sp')){
             foreach ($payload->file('lampiran_sp') as $file) {
             $path = Storage::disk('public')->put('perjadin',$file);
-            $nama = $id.'_SP_'.$file->getClientOriginalName();
+            $nama = 'SP_'.$file->getClientOriginalName();
             $data = PerjadinLampiran::create([
                 'perjadin_id' => $id,
                 'jenis' => 'SP',
@@ -418,10 +420,17 @@ class PerjadinController extends Controller
 
     public function cekSaldoMak($id, $tahun_id, $bidang_id){
 
-        $mak = Kegiatan::find($id);
-        $output['realisasi'] = Realisasi::where('kegiatan_id',$id)->where('tahun_id', $tahun_id)->where('bidang_id', $bidang_id)->where('status','SELESAI')->sum('nominal');
-        $output['unrealisasi'] = Realisasi::where('kegiatan_id',$id)->where('tahun_id', $tahun_id)->where('bidang_id', $bidang_id)->whereIn ('status', ['VERIFIKASI','PEMBAYARAN'])->sum('nominal');
-        $output['saldo'] =  $mak->dipa -  $output['realisasi'] -  $output['unrealisasi'];
+        $mak = Mak::find($id);
+
+        $realisasi_kegiatan =  Kegiatan::where('mak_id',$id)->where('tahun_id', $tahun_id)->where('bidang_id', $bidang_id)->where('status','SELESAI')->sum('total_realisasi');
+        $realisasi_perjadin = Perjadin::where('mak_id',$id)->where('tahun_id', $tahun_id)->where('bidang_id', $bidang_id)->where('status','SELESAI')->sum('total_realisasi');
+        
+        $unrealisasi_kegiatan =  Kegiatan::where('mak_id',$id)->where('tahun_id', $tahun_id)->where('bidang_id', $bidang_id)->where('status','!=','SELESAI')->sum('total_anggaran');
+        $unrealisasi_perjadin = Perjadin::where('mak_id',$id)->where('tahun_id', $tahun_id)->where('bidang_id', $bidang_id)->where('status','!=','SELESAI')->sum('total_anggaran');
+
+        $output['realisasi'] = $realisasi_kegiatan + $realisasi_perjadin;
+        $output['unrealisasi'] = $unrealisasi_kegiatan + $unrealisasi_perjadin;
+        $output['saldo'] =  $mak->pagu -  $output['realisasi'] -  $output['unrealisasi'];
         return $output;
     }
 

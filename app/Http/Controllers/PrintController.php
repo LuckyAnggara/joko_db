@@ -13,6 +13,7 @@ use App\Models\SuratPerintah;
 use App\Models\Bidang;
 use App\Models\Kegiatan;
 use App\Models\Peran;
+use App\Models\Mak;
 use App\Models\PerjadinLampiran;
 use App\Models\PerjadinLog;
 use App\Models\PerjadinObrik;
@@ -97,6 +98,65 @@ class PrintController extends Controller
         // $xmlWriter->save(storage_path('app\public\spd\spd_'.$nama.'.pdf')); 
         // return response()->download(storage_path('app\public\spd\spd_'.$nama.'.pdf'));
     }
+    function printSpb(Request $request){
+        $id = $request->id;
+        $tanggal_spb =date_format(date_create($request->tanggal), 'd-F-Y');
+
+
+// return
+
+        $master =  Kegiatan::find($id);
+        $master->mak = Mak::find($master->mak_id);
+
+        $master->tahun = Tahun::find($master->tahun_id);
+        $master->user = User::find($master->user_id);
+        $master->user['pegawai'] = Pegawai::find($master->user['pegawai_id']);
+        $master->checker = Pegawai::find($master->checker_id);
+        $master->ppk = Pegawai::find($master->ppk_id);
+        $master->bendahara = Pegawai::find($master->bendahara_id);
+
+        $template_document = new \PhpOffice\PhpWord\TemplateProcessor(storage_path('app\public\template\template_spb.docx'));
+        
+        $no_kwitansi = $master->nomor_kwitansi;
+        $cheker_nama = $master->checker['nama'];
+        $uraian = $master->uraian;
+        $mak_kode = $master->mak['kode'];
+        $mak_nama = $master->mak['nama'];
+        $checker_nama = $master->checker['nama'];
+        $bendahara_nama = $master->bendahara['nama'];
+        $ppk_nama = $master->ppk['nama'];
+        $checker_nip = $master->checker['nip'];
+        $bendahara_nip = $master->bendahara['nip'];
+        $ppk_nip = $master->ppk['nip'];
+        $total_realisasi = "Rp " . number_format($master->total_realisasi,0,',','.');
+        $user_nama = $master->user['nama'];
+        $user_nip = $master->user['nip'];
+
+        // // // // Replace mark by xml code of table
+        $template_document->setValue('tanggal_spb', $tanggal_spb);
+        $template_document->setValue('no_kwitansi', $no_kwitansi);
+        $template_document->setValue('uraian', $uraian);
+        $template_document->setValue('mak_kode', $mak_kode);
+        $template_document->setValue('mak_nama', $mak_nama);
+        $template_document->setValue('checker_nama', $checker_nama);
+        $template_document->setValue('bendahara_nama', $bendahara_nama);
+        $template_document->setValue('ppk_nama', $ppk_nama);
+        $template_document->setValue('checker_nip', $checker_nip);
+        $template_document->setValue('bendahara_nip', $bendahara_nip);
+        $template_document->setValue('ppk_nip', $ppk_nip);
+        $template_document->setValue('total_realisasi', $total_realisasi);
+        $template_document->setValue('user_nama', $user_nama);
+        $template_document->setValue('user_nip', $user_nip);
+        // END SET TABLE
+        // //save template with table
+        $template_document->saveAs(storage_path('app\public\spb\spb.docx'));
+        return Storage::disk('public')->download('spb\spb.docx');
+
+        return $master;
+
+
+    }
+
     function printRab(Request $request){
         $id = $request->id;
 

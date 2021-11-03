@@ -28,7 +28,6 @@ class KegiatanController extends Controller
 
         foreach ($master as $key => $value) {
             $value->mak = Mak::find($value->mak_id);
-            $value->mak = Mak::find($value->mak_id);
             $value->mak['saldo'] = $this->cekSaldoMak($value->mak_id, $tahun_id, $bidang_id);
 
 
@@ -213,8 +212,8 @@ class KegiatanController extends Controller
     public function cekSaldoMak($id, $tahun_id, $bidang_id){
 
         $mak = Mak::find($id);
-        $output['realisasi'] = Kegiatan::where('mak_id',$id)->where('tahun_id', $tahun_id)->where('bidang_id', $bidang_id)->sum('total_realisasi');
-        $output['unrealisasi'] = Kegiatan::where('mak_id',$id)->where('tahun_id', $tahun_id)->where('bidang_id', $bidang_id)->sum('total_anggaran');
+        $output['realisasi'] = Kegiatan::where('mak_id',$id)->where('tahun_id', $tahun_id)->where('bidang_id', $bidang_id)->where('status', '!=', 'DITOLAK')->sum('total_realisasi');
+        $output['unrealisasi'] = Kegiatan::where('mak_id',$id)->where('tahun_id', $tahun_id)->where('bidang_id', $bidang_id)->where('status', '!=', 'DITOLAK')->sum('total_anggaran');
         $output['saldo'] =  $mak->pagu -  $output['realisasi'] -  $output['unrealisasi'];
         return $output;
     }

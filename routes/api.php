@@ -119,6 +119,7 @@ Route::group(['prefix' => 'perjadin'], function () {
 Route::group(['prefix' => 'print'], function () {
     //GET
     Route::get('/download-spd', 'PrintController@printSpd');
+    Route::get('/download-spb', 'PrintController@printSpb');
     Route::get('/download-rab', 'PrintController@printRab');
 });
 

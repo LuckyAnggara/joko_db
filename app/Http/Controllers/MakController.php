@@ -31,7 +31,12 @@ class MakController extends Controller
             $value->realisasi = $realisasi_kegiatan + $realisasi_perjadin;
             $value->unrealisasi = $unrealisasi_kegiatan + $unrealisasi_perjadin;
 
-         
+            $kegiatan = Kegiatan::where('mak_id', $value->id)->where('tahun_id', $tahun_id)->where('bidang_id', $bidang_id)->get();
+
+            $perjadin =  Perjadin::where('mak_id', $value->id)->where('tahun_id', $tahun_id)->where('bidang_id', $bidang_id)->get();
+
+            $value->rincian = [...$kegiatan,...$perjadin];
+
             $value->bidang = Bidang::find($value->bidang_id);
         }
 

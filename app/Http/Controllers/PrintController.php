@@ -29,6 +29,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use Riskihajar\Terbilang\Facades\Terbilang;
+
 
 
 class PrintController extends Controller
@@ -101,10 +103,7 @@ class PrintController extends Controller
     function printSpb(Request $request){
         $id = $request->id;
         $tanggal_spb =date_format(date_create($request->tanggal), 'd-F-Y');
-
-
-// return
-
+        
         $master =  Kegiatan::find($id);
         $master->mak = Mak::find($master->mak_id);
 
@@ -120,6 +119,7 @@ class PrintController extends Controller
         $no_kwitansi = $master->nomor_kwitansi;
         $cheker_nama = $master->checker['nama'];
         $uraian = $master->uraian;
+        $terbilang = Terbilang::make($master->total_realisasi, ' rupiah');
         $mak_kode = $master->mak['kode'];
         $mak_nama = $master->mak['nama'];
         $checker_nama = $master->checker['nama'];
@@ -129,8 +129,8 @@ class PrintController extends Controller
         $bendahara_nip = $master->bendahara['nip'];
         $ppk_nip = $master->ppk['nip'];
         $total_realisasi = "Rp " . number_format($master->total_realisasi,0,',','.');
-        $user_nama = $master->user['nama'];
-        $user_nip = $master->user['nip'];
+        $user_nama = $master->user['pegawai']['nama'];
+        $user_nip = $master->user['pegawai']['nip'];
 
         // // // // Replace mark by xml code of table
         $template_document->setValue('tanggal_spb', $tanggal_spb);
@@ -145,6 +145,7 @@ class PrintController extends Controller
         $template_document->setValue('bendahara_nip', $bendahara_nip);
         $template_document->setValue('ppk_nip', $ppk_nip);
         $template_document->setValue('total_realisasi', $total_realisasi);
+        $template_document->setValue('terbilang', $terbilang);
         $template_document->setValue('user_nama', $user_nama);
         $template_document->setValue('user_nip', $user_nip);
         // END SET TABLE

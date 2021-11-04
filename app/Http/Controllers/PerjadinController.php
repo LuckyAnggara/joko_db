@@ -425,9 +425,9 @@ class PerjadinController extends Controller
         $realisasi_kegiatan =  Kegiatan::where('mak_id',$id)->where('tahun_id', $tahun_id)->where('bidang_id', $bidang_id)->where('status','SELESAI')->sum('total_realisasi');
         $realisasi_perjadin = Perjadin::where('mak_id',$id)->where('tahun_id', $tahun_id)->where('bidang_id', $bidang_id)->where('status','SELESAI')->sum('total_realisasi');
         
-        // $unrealisasi_kegiatan =  Kegiatan::where('mak_id',$id)->where('tahun_id', $tahun_id)->where('bidang_id', $bidang_id)
-        // ->whereIn('status', ['SELESAI','DITOLAK'])->sum('total_anggaran');
-        // $unrealisasi_perjadin = Perjadin::where('mak_id',$id)->where('tahun_id', $tahun_id)->where('bidang_id', $bidang_id)->whereIn('status',  ['SELESAI','DITOLAK'])->sum('total_anggaran');
+        $unrealisasi_kegiatan =  Kegiatan::where('mak_id',$id)->where('tahun_id', $tahun_id)->where('bidang_id', $bidang_id)
+        ->whereNotIn('status', ['SELESAI','DITOLAK'])->sum('total_anggaran');
+        $unrealisasi_perjadin = Perjadin::where('mak_id',$id)->where('tahun_id', $tahun_id)->where('bidang_id', $bidang_id)->whereNotIn('status',  ['SELESAI','DITOLAK'])->sum('total_anggaran');
 
         $output['realisasi'] = $realisasi_kegiatan + $realisasi_perjadin;
         $output['unrealisasi'] = $unrealisasi_kegiatan + $unrealisasi_perjadin;

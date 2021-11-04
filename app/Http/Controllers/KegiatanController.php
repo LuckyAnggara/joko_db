@@ -213,7 +213,7 @@ class KegiatanController extends Controller
 
         $mak = Mak::find($id);
         $output['realisasi'] = Kegiatan::where('mak_id',$id)->where('tahun_id', $tahun_id)->where('bidang_id', $bidang_id)->where('status', '!=', 'DITOLAK')->sum('total_realisasi');
-        $output['unrealisasi'] = Kegiatan::where('mak_id',$id)->where('tahun_id', $tahun_id)->where('bidang_id', $bidang_id)->where('status', '!=', 'DITOLAK')->sum('total_anggaran');
+        $output['unrealisasi'] = Kegiatan::where('mak_id',$id)->where('tahun_id', $tahun_id)->where('bidang_id', $bidang_id)->whereNotIn('status', ['SELESAI','DITOLAK'])->sum('total_anggaran');
         $output['saldo'] =  $mak->pagu -  $output['realisasi'] -  $output['unrealisasi'];
         return $output;
     }

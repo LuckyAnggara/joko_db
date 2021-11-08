@@ -27,4 +27,38 @@ class PegawaiController extends Controller
 
         return response()->json($master, 200);
     }
+
+    public function store(Request $payload){
+        
+        $master = Pegawai::create([
+            'nama' => $payload->nama,
+            'nip' => $payload->nama,
+            'tanggal_lahir' => $payload->tanggal_lahir,
+            'golongan_id' => $payload->golongan,
+            'jabatan_id' => $payload->jabatan,
+            'bidang_id' => $payload->bidang,
+            'user_id' => $payload->user_data['id'],
+            'foto' => 'foto_pegawai/avatar.jpg',
+        ]);
+        return response()->json($master, 200);
+    }
+
+    public function storeLampiran(Request $payload){
+        $id = $payload->id;
+        
+        if($payload->file('lampiran')){
+                foreach ($payload->file('lampiran') as $file) {
+                $path = Storage::disk('public')->put('foto_pegawai/',$file);
+                $nama = $file->getClientOriginalName();
+
+                $data = Pegawai::find($id);
+                $data->foto = $path;
+                $data->save();
+
+                }
+        }
+        return response()->json($data, 200);
+
+
+    }
 }

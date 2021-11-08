@@ -55,6 +55,9 @@ Route::group(['prefix' => 'tahun'], function () {
 Route::group(['prefix' => 'pegawai'], function () {
     //GET
     Route::get('/', 'PegawaiController@index');
+    //POST
+    Route::post('/store', 'PegawaiController@store');
+    Route::post('/store-lampiran', 'PegawaiController@storeLampiran');
 });
 // BIDANG
 Route::group(['prefix' => 'bidang'], function () {
@@ -70,6 +73,16 @@ Route::group(['prefix' => 'jenis-kegiatan'], function () {
 Route::group(['prefix' => 'peran'], function () {
     //GET
     Route::get('/', 'PeranController@index');
+});
+// GOLONGAN
+Route::group(['prefix' => 'golongan'], function () {
+    //GET
+    Route::get('/', 'GolonganController@index');
+});
+// JABATAN
+Route::group(['prefix' => 'jabatan'], function () {
+    //GET
+    Route::get('/', 'JabatanController@index');
 });
 // KANTOR WILAYAH
 Route::group(['prefix' => 'kanwil'], function () {

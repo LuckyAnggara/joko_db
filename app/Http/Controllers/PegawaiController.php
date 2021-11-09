@@ -8,6 +8,8 @@ use App\Models\Jabatan;
 use App\Models\Kegiatan;
 use App\Models\Pegawai;
 use App\Models\Realisasi;
+use App\Models\BidangIlmu;
+use App\Models\PetaKompetensi;
 use Illuminate\Http\Request;
 
 
@@ -23,6 +25,11 @@ class PegawaiController extends Controller
             $value->golongan = Golongan::find($value->golongan_id);
             $value->jabatan = Jabatan::find($value->jabatan_id);
             $value->bidang = Bidang::find($value->bidang_id);
+            $value->peta_kompetensi = PetaKompetensi::where('pegawai_id',$value->id)->get();
+
+            foreach ($value->peta_kompetensi as $key => $x) {
+                $x->bidang_ilmu = BidangIlmu::find($x->bidang_ilmu_id);
+            }
         }
 
         return response()->json($master, 200);

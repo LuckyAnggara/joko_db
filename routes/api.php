@@ -57,12 +57,21 @@ Route::group(['prefix' => 'pegawai'], function () {
     Route::get('/', 'PegawaiController@index');
     //POST
     Route::post('/store', 'PegawaiController@store');
+    Route::post('/store-kompetensi', 'PegawaiController@storeKompetensi');
     Route::post('/store-lampiran', 'PegawaiController@storeLampiran');
+    Route::post('/store-lampiran-kompetensi', 'PegawaiController@storeLampiranKompetensi');
+    //DESTROY
+    Route::delete('/delete-kompetensi', 'PegawaiController@destroyKompetensi');
 });
 // BIDANG
 Route::group(['prefix' => 'bidang'], function () {
     //GET
     Route::get('/', 'BidangController@index');
+});
+// BIDANG ILMU
+Route::group(['prefix' => 'bidang-ilmu'], function () {
+    //GET
+    Route::get('/', 'BidangIlmuController@index');
 });
 // BIDANG
 Route::group(['prefix' => 'jenis-kegiatan'], function () {
@@ -127,6 +136,15 @@ Route::group(['prefix' => 'perjadin'], function () {
     //DELETE
     Route::delete('/delete-perjadin', 'PerjadinController@destroy');
     Route::delete('/delete-lampiran', 'PerjadinController@destroyLampiran');
+});
+
+// BARANG
+Route::group(['prefix' => 'barang'], function () {
+    //GET
+    Route::get('/', 'BarangController@index');
+    //POST
+    Route::post('/store-barang', 'BarangController@storeBarang');
+    Route::post('/edit-barang', 'BarangController@editBarang');
 });
 // PRINT
 Route::group(['prefix' => 'print'], function () {

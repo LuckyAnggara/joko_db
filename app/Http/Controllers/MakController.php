@@ -108,6 +108,20 @@ class MakController extends Controller
         return response()->json($master, $response);
     }
 
+    public function storeRevisi(Request $payload){
+        $output = [];
+        foreach ($payload->data as $key => $value) {
+            $master = Mak::find($value['id']);
+
+            $master->pagu = $value['pagu'];
+            $master->save();
+
+            $output[] = $master;
+        }
+
+        return response()->json($output, 200);
+    }
+
     public function cekMak(Request $payload){
         $message = 0;
         $kode = $payload->kode;

@@ -64,7 +64,10 @@ class PrintController extends Controller
         $jabatan = $tim->pegawai['jabatan']['nama'];
         $tingkatbiayapd = 1;
         $maksud = $tim->perjadin['surat_perintah']['perihal'];
-        $alatangkut = 'PLANE';
+        $alatangkut = $request->alatangkut;
+        $keberangkatan = $tim->perjadin['keberangkatan'];
+        $tempat =  $request->tempat;
+        $tanggalspd =  $request->tanggal;
         $keberangkatan = $tim->perjadin['keberangkatan'];
         $tujuan = $tim->perjadin['tujuan'];
         $jumlah_hari = $tim->anggaran['jumlah_hari'] . ' Hari';
@@ -87,6 +90,8 @@ class PrintController extends Controller
         $template_document->setValue('jumlah_hari', $jumlah_hari);
         $template_document->setValue('pegawai_berangkat', $pegawai_berangkat);
         $template_document->setValue('pegawai_kembali', $pegawai_kembali);
+        $template_document->setValue('tempat', $tempat);
+        $template_document->setValue('tanggalspd', $tanggalspd);
         // END SET TABLE
         // //save template with table
         $template_document->saveAs(storage_path('app\public\spd\spd_'.$nama.'.docx'));
@@ -158,7 +163,7 @@ class PrintController extends Controller
 
     }
 
-    function printRab(Request $request){
+    function printRabPerjadin(Request $request){
         $id = $request->id;
 
         $spreadsheet = new Spreadsheet();
@@ -265,8 +270,8 @@ class PrintController extends Controller
 
         $writer = new Xlsx($spreadsheet);
         // $writer->save('hello_world.xlsx');
-        $writer->save(storage_path('app\public\print\rab\rab.xlsx'));
-        return Storage::disk('public')->download('print\rab\rab.xlsx');
+        $writer->save(storage_path('app\public\print\rab\rab_perjadin.xlsx'));
+        return Storage::disk('public')->download('print\rab\rab_perjadin.xlsx');
     }
     function detailPerjadin($id){
         $master = Perjadin::find($id);

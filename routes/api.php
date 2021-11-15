@@ -26,6 +26,7 @@ Route::group(['prefix' => 'mak'], function () {
     Route::get('/', 'MakController@index');
     //POST
     Route::post('/store', 'MakController@store');
+    Route::post('/store-revisi', 'MakController@storeRevisi');
     Route::post('/cek-kode-mak', 'MakController@cekMak');
     //DELETE
     Route::delete('/delete-mak', 'MakController@destroy');
@@ -151,7 +152,7 @@ Route::group(['prefix' => 'print'], function () {
     //GET
     Route::get('/download-spd', 'PrintController@printSpd');
     Route::get('/download-spb', 'PrintController@printSpb');
-    Route::get('/download-rab', 'PrintController@printRab');
+    Route::get('/download-rab-perjadin', 'PrintController@printRabPerjadin');
 });
 
 

@@ -143,15 +143,21 @@ Route::group(['prefix' => 'perjadin'], function () {
 Route::group(['prefix' => 'barang'], function () {
     //GET
     Route::get('/', 'BarangController@index');
+    Route::get('/daftar-pembelian', 'BarangController@indexPembelian');
+    Route::get('/download-lampiran', 'BarangController@downloadLampiran');
     //POST
     Route::post('/store-barang', 'BarangController@storeBarang');
     Route::post('/edit-barang', 'BarangController@editBarang');
+
+    Route::post('/store-pembelian', 'BarangController@storePembelian');
+    Route::post('/store-pembelian-lampiran', 'BarangController@uploadLampiranPembelian');
 });
 // PRINT
 Route::group(['prefix' => 'print'], function () {
     //GET
     Route::get('/download-spd', 'PrintController@printSpd');
     Route::get('/download-spb', 'PrintController@printSpb');
+    Route::get('/download-dop', 'PrintController@printDOP');
     Route::get('/download-rab-perjadin', 'PrintController@printRabPerjadin');
 });
 

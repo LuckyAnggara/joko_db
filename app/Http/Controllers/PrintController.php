@@ -313,4 +313,11 @@ class PrintController extends Controller
 
         return $master;
     }
+
+    function printDOP(Request $request){
+        
+        $template_document = new \PhpOffice\PhpWord\TemplateProcessor(storage_path('app\public\template\template_dop.docx'));
+        $template_document->saveAs(storage_path('app\public\dop\dop.docx'));
+        return Storage::disk('public')->download('dop\dop.docx');
+    }
 }

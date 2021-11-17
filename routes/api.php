@@ -149,16 +149,19 @@ Route::group(['prefix' => 'barang'], function () {
     //POST
     Route::post('/store-barang', 'BarangController@storeBarang');
     Route::post('/edit-barang', 'BarangController@editBarang');
+    Route::post('/status-permintaan', 'BarangController@statusPermintaan');
 
     Route::post('/store-pembelian', 'BarangController@storePembelian');
     Route::post('/store-pembelian-lampiran', 'BarangController@uploadLampiranPembelian');
 
     
     Route::post('/store-permintaan', 'BarangController@storePermintaan');
+    Route::post('/proses-permintaan', 'BarangController@prosesPermintaan');
     Route::post('/store-permintaan-lampiran', 'BarangController@uploadLampiranPermintaan');
 
     //DELETE
     Route::delete('/delete-pembelian', 'BarangController@destroyPembelian');
+    Route::delete('/delete-permintaan', 'BarangController@destroyPermintaan');
 });
 // PRINT
 Route::group(['prefix' => 'print'], function () {

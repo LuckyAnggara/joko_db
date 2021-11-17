@@ -14,6 +14,7 @@ use App\Models\PermintaanPersediaanDetail;
 use App\Models\PermintaanPersediaanLampiran;
 use App\Models\PermintaanPersediaanLog;
 use App\Models\User;
+use App\Models\Tahun;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
@@ -62,6 +63,7 @@ class BarangController extends Controller
 
             foreach ($value->data_barang as $key => $xx) {
                 $xx->barang = Barang::find($xx->barang_id);
+
             }
 
         }
@@ -91,6 +93,7 @@ class BarangController extends Controller
                     'debit' => $value['jumlah'],
                     'kredit' => 0,
                     'user_id' => $payload->user_data['id'],
+                    'keterangan' => 'Pembelian persediaan #'.$payload->no_invoice
                 ]);
             }
             $master->detail = $detail;
@@ -171,11 +174,19 @@ class BarangController extends Controller
             $value->lampiran = PermintaanPersediaanLampiran::where('permintaan_persediaan_id', $value->id)->get();
             $value->data_barang = PermintaanPersediaanDetail::where('permintaan_persediaan_id', $value->id)->get();
             $value->log = PermintaanPersediaanLog::where('permintaan_persediaan_id', $value->id)->get();
+            foreach ($value->log as $key => $log) {
+                $log->ago = $log->created_at->diffForHumans();
+                $log->pegawai = Pegawai::find(User::find($log->user_id)->pegawai_id);
+            }
             $value->bidang = Bidang::find($value->bidang_id);
+            $value->tahun = Tahun::find($value->tahun_id);
             $value->user = User::find($value->user_id);
             $value->user['pegawai'] = Pegawai::find($value->user['pegawai_id']);
             foreach ($value->data_barang as $key => $xx) {
                 $xx->barang = Barang::find($xx->barang_id);
+                $debit = KartuPersediaan::where('barang_id', $xx->barang_id)->sum('debit');
+                $kredit = KartuPersediaan::where('barang_id', $xx->barang_id)->sum('kredit');
+                $xx->saldo_akhir = $debit - $kredit;
             }
 
 
@@ -198,13 +209,34 @@ class BarangController extends Controller
                 $detail[] = PermintaanPersediaanDetail::create([
                     'permintaan_persediaan_id' => $master->id,
                     'barang_id' => $value['id'],
-                    'jumlah' => $value['jumlah'],
+                    'jumlah_permintaan' => $value['jumlah'],
+                    'jumlah_disetujui' =>0,
                 ]);
             }
             $master->detail = $detail;
             $this->storeLog($master->id,'PENGAJUAN', 'PERJADIN TELAH DIBUAT, OLEH '.$payload->user_data['pegawai']['nama'], $payload->user_data,null);
         }
         return response()->json($master, 200);
+    }
+
+    public function prosesPermintaan(Request $payload){
+        $master=PermintaanPersediaan::find($payload->id);
+        if($master){
+            foreach ($payload->data_barang as $key => $value) {
+                $detail = PermintaanPersediaanDetail::find($value['id']);
+                $detail->jumlah_disetujui = $value['jumlah_disetujui'];
+                $detail->save();
+
+                $kartuPersediaan[] = KartuPersediaan::create([
+                    'barang_id' => $value['barang_id'],
+                    'debit' => 0,
+                    'kredit' => $value['jumlah_disetujui'],
+                    'user_id' => $payload->user_data['id'],
+                    'keterangan' => 'Permintaan persediaan wilayah/bagian '.$payload->bidang['nama'],
+                ]);
+            }
+        }
+
     }
 
     public function uploadLampiranPermintaan(Request $payload){
@@ -226,6 +258,53 @@ class BarangController extends Controller
         }
         return response()->json($output, 200);
 
+    }
+
+    public function statusPermintaan(Request $request){
+        $response = 404;
+        $id = $request->id;
+        $messages = 'ERROR';
+        $master = PermintaanPersediaan::find($id);
+
+        if($master){
+            $response = 200;
+
+            $master->status =  $request->status;
+            $master->save();
+            $this->storeLog($master->id,$request->status_log, $request->message_log.' oleh '. $request->user_data['pegawai']['nama'], $request->user_data, $request->catatan);
+
+            $messages = $master;
+
+
+        }
+
+        return response()->json($messages, $response);
+
+    }
+
+    public function destroyPermintaan(Request $payload){
+        $id = $payload->id;
+
+        $master = PermintaanPersediaan::find($id);
+        $master->delete();
+
+        $detail = PermintaanPersediaanDetail::where('permintaan_persediaan_id',$master->id)->get();
+        $log = PermintaanPersediaanLog::where('permintaan_persediaan_id',$master->id)->get();
+        foreach ($detail as $key => $value) {
+            $value->delete();
+        }
+
+        foreach ($log as $key => $value) {
+            $value->delete();
+        }
+
+        $lampiran = PermintaanPersediaanLampiran::where('permintaan_persediaan_id',$master->id)->get();
+
+        foreach ($lampiran as $key => $value) {
+            if (Storage::disk('public')->exists($value->file)) {
+                Storage::disk('public')->delete($value->file);
+            }
+        }
     }
 
     public function storeLog($id, $status_log, $message_log, $user_data, $catatan = null){

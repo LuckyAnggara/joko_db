@@ -166,6 +166,7 @@ class PerjadinController extends Controller
                 'tujuan'=> $request->umum['tujuan'],
                 'tahun_id' => $request->tahun['id'],
                 'keberangkatan'=> $request->umum['keberangkatan'],
+                'output'=> $request->umum['output'],
                 'status'=> 'PENGAJUAN',
                 'tanggal_berangkat'=> $request->umum['tanggal_berangkat'],
                 'tanggal_kembali'=> $request->umum['tanggal_kembali'],

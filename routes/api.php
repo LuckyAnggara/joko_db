@@ -24,6 +24,7 @@ Route::group(['prefix' => 'auth'], function () {
 Route::group(['prefix' => 'mak'], function () {
     //GET
     Route::get('/', 'MakController@index');
+    Route::get('/penyerapan-semua', 'MakController@penyerapanSemua');
     //POST
     Route::post('/store', 'MakController@store');
     Route::post('/store-revisi', 'MakController@storeRevisi');

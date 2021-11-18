@@ -142,4 +142,24 @@ class MakController extends Controller
         return response()->json($output, 200);
     }
 
+    public function penyerapanSemua(Request $payload){
+        $tahun_id = $payload->input('tahun_id');
+
+        $bidang = Bidang::all();
+
+        foreach ($bidang as $key => $value) {
+            $mak = Mak::where('tahun_id', $tahun_id)->where('bidang_id', $value->id);
+            $value->pagu = $mak->sum('pagu');
+            $value->realisasi = 0;
+            foreach ($mak->get() as $key => $x) {
+                $realisasi_kegiatan =  Kegiatan::where('mak_id',$x->id)->where('tahun_id', $tahun_id)->where('status','SELESAI')->sum('total_realisasi');
+                $realisasi_perjadin = Perjadin::where('mak_id',$x->id)->where('tahun_id', $tahun_id)->where('status','SELESAI')->sum('total_realisasi');
+
+                $value->realisasi += $realisasi_kegiatan + $realisasi_perjadin;
+            }
+        }
+
+        return response()->json($bidang, 200);
+    }
+
 }

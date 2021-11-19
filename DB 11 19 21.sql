@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.2
+-- version 5.0.4
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 18, 2021 at 10:00 PM
--- Server version: 10.4.11-MariaDB
--- PHP Version: 7.4.6
+-- Generation Time: Nov 19, 2021 at 09:48 AM
+-- Server version: 10.4.17-MariaDB
+-- PHP Version: 7.4.15
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -43,8 +43,8 @@ CREATE TABLE `barang` (
 --
 
 INSERT INTO `barang` (`id`, `nama`, `satuan`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, 'KERTAS A4', 'DUS', '2021-11-09 02:36:44', '2021-11-09 02:36:44', NULL),
-(2, 'PULPEN', 'BOX', '2021-11-08 20:57:53', '2021-11-08 21:36:04', NULL);
+(1, 'KERTAS A4', 'DUS', '2021-11-08 19:36:44', '2021-11-08 19:36:44', NULL),
+(2, 'PULPEN', 'BOX', '2021-11-08 13:57:53', '2021-11-08 14:36:04', NULL);
 
 -- --------------------------------------------------------
 
@@ -65,17 +65,17 @@ CREATE TABLE `bidang` (
 --
 
 INSERT INTO `bidang` (`id`, `nama`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, 'INSPEKTORAT WILAYAH I', '2021-10-01 10:31:39', NULL, NULL),
-(2, 'INSPEKTORAT WILAYAH II', '2021-10-01 10:31:39', NULL, NULL),
-(3, 'INSPEKTORAT WILAYAH III', '2021-10-01 10:31:39', NULL, NULL),
-(4, 'INSPEKTORAT WILAYAH IV', '2021-10-01 10:31:39', NULL, NULL),
-(5, 'INSPEKTORAT WILAYAH V', '2021-10-01 10:31:39', NULL, NULL),
-(6, 'INSPEKTORAT WILAYAH VI', '2021-10-01 10:31:39', NULL, NULL),
-(7, 'BAGIAN UMUM', '2021-10-01 10:31:39', NULL, NULL),
-(8, 'BAGIAN KEPEGAWAIAN', '2021-10-01 10:31:39', NULL, NULL),
-(9, 'BAGIAN PHP', '2021-10-01 10:31:39', NULL, NULL),
-(10, 'BAGIAN KEUANGAN', '2021-10-01 10:31:39', NULL, NULL),
-(11, 'BAGIAN SIP', '2021-10-01 10:31:39', NULL, NULL);
+(1, 'INSPEKTORAT WILAYAH I', '2021-10-01 03:31:39', NULL, NULL),
+(2, 'INSPEKTORAT WILAYAH II', '2021-10-01 03:31:39', NULL, NULL),
+(3, 'INSPEKTORAT WILAYAH III', '2021-10-01 03:31:39', NULL, NULL),
+(4, 'INSPEKTORAT WILAYAH IV', '2021-10-01 03:31:39', NULL, NULL),
+(5, 'INSPEKTORAT WILAYAH V', '2021-10-01 03:31:39', NULL, NULL),
+(6, 'INSPEKTORAT WILAYAH VI', '2021-10-01 03:31:39', NULL, NULL),
+(7, 'BAGIAN UMUM', '2021-10-01 03:31:39', NULL, NULL),
+(8, 'BAGIAN KEPEGAWAIAN', '2021-10-01 03:31:39', NULL, NULL),
+(9, 'BAGIAN PHP', '2021-10-01 03:31:39', NULL, NULL),
+(10, 'BAGIAN KEUANGAN', '2021-10-01 03:31:39', NULL, NULL),
+(11, 'BAGIAN SIP', '2021-10-01 03:31:39', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -199,8 +199,8 @@ CREATE TABLE `kartu_persediaan` (
 --
 
 INSERT INTO `kartu_persediaan` (`id`, `barang_id`, `debit`, `kredit`, `user_id`, `bidang_id`, `keterangan`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(34, 1, 5, 0, 7, NULL, '', '2021-11-15 16:56:39', '2021-11-15 16:56:39', NULL),
-(36, 1, 0, 4, 7, NULL, '', '2021-11-16 16:06:27', '2021-11-16 16:06:27', NULL);
+(34, 1, 5, 0, 7, NULL, '', '2021-11-15 09:56:39', '2021-11-15 09:56:39', NULL),
+(36, 1, 0, 4, 7, NULL, '', '2021-11-16 09:06:27', '2021-11-16 09:06:27', NULL);
 
 -- --------------------------------------------------------
 
@@ -238,8 +238,8 @@ CREATE TABLE `kegiatan` (
 --
 
 INSERT INTO `kegiatan` (`id`, `nomor_kwitansi`, `uraian`, `jenis_kegiatan_id`, `lokasi`, `output`, `total_anggaran`, `total_realisasi`, `status_realisasi`, `status`, `mak_id`, `tanggal_rencana_kegiatan`, `tanggal_realisasi_kegiatan`, `tahun_id`, `bidang_id`, `user_id`, `checker_id`, `ppk_id`, `bendahara_id`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, '2021-1', '123123', 1, 'Jakarta', 'asdasd', 2000000, 500000, 'SUDAH', 'SELESAI', 1, '2021-11-02', '2021-11-02', 1, 1, 1, 1, 2, 3, '2021-10-31 08:46:10', '2021-10-31 08:59:54', NULL),
-(3, '2021-3', 'Rapat Pembahasan BMN', 1, 'Jakarta', '1 Laporan Kegiatan', 2000000, 1500000, 'SUDAH', 'SELESAI', 1, '2021-11-10', '2021-11-10', 1, 1, 1, 1, 2, 3, '2021-11-06 14:50:17', '2021-11-06 15:01:37', NULL);
+(1, '2021-1', '123123', 1, 'Jakarta', 'asdasd', 2000000, 500000, 'SUDAH', 'SELESAI', 1, '2021-11-02', '2021-11-02', 1, 1, 1, 1, 2, 3, '2021-10-31 01:46:10', '2021-10-31 01:59:54', NULL),
+(3, '2021-3', 'Rapat Pembahasan BMN', 1, 'Jakarta', '1 Laporan Kegiatan', 2000000, 1500000, 'SUDAH', 'SELESAI', 1, '2021-11-10', '2021-11-10', 1, 1, 1, 1, 2, 3, '2021-11-06 07:50:17', '2021-11-06 08:01:37', NULL);
 
 -- --------------------------------------------------------
 
@@ -262,12 +262,12 @@ CREATE TABLE `kegiatan_lampiran` (
 --
 
 INSERT INTO `kegiatan_lampiran` (`id`, `kegiatan_id`, `nama`, `file`, `user_id`, `created_at`, `updated_at`) VALUES
-(1, 1, '7M202071.jpg', 'kegiatan/01vsIM3Au0RLEms5ueFZV1oNnuQXPbaaCMRmzq8u.jpg', 1, '2021-10-31 08:46:11', '2021-10-31 08:46:11'),
-(3, 1, 'IMG_4978.JPG', 'kegiatan/BmpsRIJIklrG7ejpNERUoAwIwEz94Hg7gYCQu9XG.jpg', 1, '2021-10-31 08:55:03', '2021-10-31 08:55:03'),
-(4, 3, 'tata kelola KKP.pdf', 'kegiatan/8R1dCpPnDwhT1VaRzS0Gh0Elpa6jboV26RRqEGaD.pdf', 1, '2021-11-06 14:50:18', '2021-11-06 14:50:18'),
-(5, 3, 'tim efektif.pdf', 'kegiatan/W675H5kpz41ttIynvnjW7Nd0COXUm1UV1E2Od53i.pdf', 1, '2021-11-06 14:50:18', '2021-11-06 14:50:18'),
-(6, 3, 'tata kelola KKP.pdf', 'kegiatan/GDjBjiURbvNPSjCKs8xCTo3MsJWkYWAeisMy3uhZ.pdf', 1, '2021-11-06 14:54:22', '2021-11-06 14:54:22'),
-(7, 3, 'tim efektif.pdf', 'kegiatan/pymf4nODwWIxDoSRHmV2QGVYRnJWCWrzql0FYXyp.pdf', 1, '2021-11-06 14:54:22', '2021-11-06 14:54:22');
+(1, 1, '7M202071.jpg', 'kegiatan/01vsIM3Au0RLEms5ueFZV1oNnuQXPbaaCMRmzq8u.jpg', 1, '2021-10-31 01:46:11', '2021-10-31 01:46:11'),
+(3, 1, 'IMG_4978.JPG', 'kegiatan/BmpsRIJIklrG7ejpNERUoAwIwEz94Hg7gYCQu9XG.jpg', 1, '2021-10-31 01:55:03', '2021-10-31 01:55:03'),
+(4, 3, 'tata kelola KKP.pdf', 'kegiatan/8R1dCpPnDwhT1VaRzS0Gh0Elpa6jboV26RRqEGaD.pdf', 1, '2021-11-06 07:50:18', '2021-11-06 07:50:18'),
+(5, 3, 'tim efektif.pdf', 'kegiatan/W675H5kpz41ttIynvnjW7Nd0COXUm1UV1E2Od53i.pdf', 1, '2021-11-06 07:50:18', '2021-11-06 07:50:18'),
+(6, 3, 'tata kelola KKP.pdf', 'kegiatan/GDjBjiURbvNPSjCKs8xCTo3MsJWkYWAeisMy3uhZ.pdf', 1, '2021-11-06 07:54:22', '2021-11-06 07:54:22'),
+(7, 3, 'tim efektif.pdf', 'kegiatan/pymf4nODwWIxDoSRHmV2QGVYRnJWCWrzql0FYXyp.pdf', 1, '2021-11-06 07:54:22', '2021-11-06 07:54:22');
 
 -- --------------------------------------------------------
 
@@ -293,20 +293,20 @@ CREATE TABLE `kegiatan_log` (
 --
 
 INSERT INTO `kegiatan_log` (`id`, `kegiatan_id`, `status`, `user_id`, `bidang_id`, `keterangan`, `catatan`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, 1, 'RENCANA', 1, 1, 'RENCANA KEGIATAN TELAH DIBUAT, OLEH ABBAS,SH.MH', NULL, '2021-10-31 08:46:10', '2021-10-31 08:46:10', NULL),
-(2, 1, 'KIRIM KEUANGAN - VERIFIKASI KEUANGAN', 1, 1, 'kegiatan telah di kirim ke keuangan oleh ABBAS,SH.MH', 'assssss', '2021-10-31 08:52:52', '2021-10-31 08:52:52', NULL),
-(4, 1, 'VERIFIED KEUANGAN', 5, 1, 'kegiatan telah di verifikasi oleh ADE CICI ROHAYATI, SH.MH', 'aaaaaaaa', '2021-10-31 08:54:44', '2021-10-31 08:54:44', NULL),
-(5, 1, 'KIRIM KEUANGAN - VERIFIKASI REALISASI', 1, 1, 'kegiatan telah di kirim ke keuangan oleh ABBAS,SH.MH', 'ssssssss', '2021-10-31 08:55:11', '2021-10-31 08:55:11', NULL),
-(6, 1, 'VERIFIED KEUANGAN', 5, 1, 'kegiatan telah di verifikasi oleh ADE CICI ROHAYATI, SH.MH', 'aaaaaaaaaa', '2021-10-31 08:55:21', '2021-10-31 08:55:21', NULL),
-(7, 1, 'VERIFIED PPK', 2, 3, 'kegiatan telah di verifikasi oleh oleh ABDUL HAMID, SE.', 'aaaaaa', '2021-10-31 08:56:16', '2021-10-31 08:56:16', NULL),
-(8, 1, 'SELESAI', 4, 1, 'Uang kegiatan telah dibayarkan oleh oleh ADE CICI ROHAYATI, SH.MH', 'sadasdasd', '2021-10-31 08:59:54', '2021-10-31 08:59:54', NULL),
-(9, 3, 'RENCANA', 1, 1, 'RENCANA KEGIATAN TELAH DIBUAT, OLEH ABBAS,SH.MH', NULL, '2021-11-06 14:50:17', '2021-11-06 14:50:17', NULL),
-(10, 3, 'KIRIM KEUANGAN - VERIFIKASI KEUANGAN', 1, 1, 'kegiatan telah di kirim ke keuangan oleh ABBAS,SH.MH', 'Tolong di periksa', '2021-11-06 14:51:50', '2021-11-06 14:51:50', NULL),
-(11, 3, 'VERIFIED KEUANGAN', 5, 1, 'kegiatan telah di verifikasi oleh ADE CICI ROHAYATI, SH.MH', 'Lanjut', '2021-11-06 14:53:21', '2021-11-06 14:53:21', NULL),
-(12, 3, 'KIRIM KEUANGAN - VERIFIKASI REALISASI', 1, 1, 'kegiatan telah di kirim ke keuangan oleh ABBAS,SH.MH', 'cek realisasi', '2021-11-06 15:00:23', '2021-11-06 15:00:23', NULL),
-(13, 3, 'VERIFIED KEUANGAN', 5, 1, 'kegiatan telah di verifikasi oleh ADE CICI ROHAYATI, SH.MH', 'aasdasdasd', '2021-11-06 15:00:44', '2021-11-06 15:00:44', NULL),
-(14, 3, 'VERIFIED PPK', 2, 3, 'kegiatan telah di verifikasi oleh oleh ABDUL HAMID, SE.', 'ddddd', '2021-11-06 15:01:05', '2021-11-06 15:01:05', NULL),
-(15, 3, 'SELESAI', 4, 1, 'Uang kegiatan telah dibayarkan oleh oleh ADE CICI ROHAYATI, SH.MH', 'aaaaaaaaa', '2021-11-06 15:01:37', '2021-11-06 15:01:37', NULL);
+(1, 1, 'RENCANA', 1, 1, 'RENCANA KEGIATAN TELAH DIBUAT, OLEH ABBAS,SH.MH', NULL, '2021-10-31 01:46:10', '2021-10-31 01:46:10', NULL),
+(2, 1, 'KIRIM KEUANGAN - VERIFIKASI KEUANGAN', 1, 1, 'kegiatan telah di kirim ke keuangan oleh ABBAS,SH.MH', 'assssss', '2021-10-31 01:52:52', '2021-10-31 01:52:52', NULL),
+(4, 1, 'VERIFIED KEUANGAN', 5, 1, 'kegiatan telah di verifikasi oleh ADE CICI ROHAYATI, SH.MH', 'aaaaaaaa', '2021-10-31 01:54:44', '2021-10-31 01:54:44', NULL),
+(5, 1, 'KIRIM KEUANGAN - VERIFIKASI REALISASI', 1, 1, 'kegiatan telah di kirim ke keuangan oleh ABBAS,SH.MH', 'ssssssss', '2021-10-31 01:55:11', '2021-10-31 01:55:11', NULL),
+(6, 1, 'VERIFIED KEUANGAN', 5, 1, 'kegiatan telah di verifikasi oleh ADE CICI ROHAYATI, SH.MH', 'aaaaaaaaaa', '2021-10-31 01:55:21', '2021-10-31 01:55:21', NULL),
+(7, 1, 'VERIFIED PPK', 2, 3, 'kegiatan telah di verifikasi oleh oleh ABDUL HAMID, SE.', 'aaaaaa', '2021-10-31 01:56:16', '2021-10-31 01:56:16', NULL),
+(8, 1, 'SELESAI', 4, 1, 'Uang kegiatan telah dibayarkan oleh oleh ADE CICI ROHAYATI, SH.MH', 'sadasdasd', '2021-10-31 01:59:54', '2021-10-31 01:59:54', NULL),
+(9, 3, 'RENCANA', 1, 1, 'RENCANA KEGIATAN TELAH DIBUAT, OLEH ABBAS,SH.MH', NULL, '2021-11-06 07:50:17', '2021-11-06 07:50:17', NULL),
+(10, 3, 'KIRIM KEUANGAN - VERIFIKASI KEUANGAN', 1, 1, 'kegiatan telah di kirim ke keuangan oleh ABBAS,SH.MH', 'Tolong di periksa', '2021-11-06 07:51:50', '2021-11-06 07:51:50', NULL),
+(11, 3, 'VERIFIED KEUANGAN', 5, 1, 'kegiatan telah di verifikasi oleh ADE CICI ROHAYATI, SH.MH', 'Lanjut', '2021-11-06 07:53:21', '2021-11-06 07:53:21', NULL),
+(12, 3, 'KIRIM KEUANGAN - VERIFIKASI REALISASI', 1, 1, 'kegiatan telah di kirim ke keuangan oleh ABBAS,SH.MH', 'cek realisasi', '2021-11-06 08:00:23', '2021-11-06 08:00:23', NULL),
+(13, 3, 'VERIFIED KEUANGAN', 5, 1, 'kegiatan telah di verifikasi oleh ADE CICI ROHAYATI, SH.MH', 'aasdasdasd', '2021-11-06 08:00:44', '2021-11-06 08:00:44', NULL),
+(14, 3, 'VERIFIED PPK', 2, 3, 'kegiatan telah di verifikasi oleh oleh ABDUL HAMID, SE.', 'ddddd', '2021-11-06 08:01:05', '2021-11-06 08:01:05', NULL),
+(15, 3, 'SELESAI', 4, 1, 'Uang kegiatan telah dibayarkan oleh oleh ADE CICI ROHAYATI, SH.MH', 'aaaaaaaaa', '2021-11-06 08:01:37', '2021-11-06 08:01:37', NULL);
 
 -- --------------------------------------------------------
 
@@ -558,11 +558,11 @@ CREATE TABLE `mak2` (
 --
 
 INSERT INTO `mak2` (`id`, `kode`, `nama`, `pagu`, `bidang_id`, `tahun_id`, `user_id`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, '1563.321.051.A.524111', 'Evaluasi Usulan Satker WBK/WBBM-Belanja Perjalanan Dinas Biasa', 387720000, 1, 1, 1, '2021-10-01 11:04:18', '2021-11-15 00:15:37', NULL),
-(2, '1563.321.051.A.524112', 'Evaluasi Usulan Satker WBK/WBBM-Belanja Perjalanan Dinas Biasa', 503000000, 2, 1, 1, '2021-10-05 04:48:34', '2021-11-15 00:15:37', NULL),
-(3, '1563.321.051.A.524113', 'Evaluasi Usulan Satker WBK/WBBM-Belanja Perjalanan Dinas Biasa', 63370000, 3, 1, 1, '2021-10-05 05:05:25', '2021-11-11 23:47:43', NULL),
-(4, '14141.14141', 'Perjalanan Dinas', 1348910000, 1, 1, 1, '2021-10-09 02:21:25', '2021-11-14 04:42:46', NULL),
-(5, '1239189381028', 'alksdjlkasjdklasjdlkaj', 100000000, 7, 1, 5, '2021-11-17 20:55:31', '2021-11-17 20:55:31', NULL);
+(1, '1563.321.051.A.524111', 'Evaluasi Usulan Satker WBK/WBBM-Belanja Perjalanan Dinas Biasa', 387720000, 1, 1, 1, '2021-10-01 04:04:18', '2021-11-14 17:15:37', NULL),
+(2, '1563.321.051.A.524112', 'Evaluasi Usulan Satker WBK/WBBM-Belanja Perjalanan Dinas Biasa', 503000000, 2, 1, 1, '2021-10-04 21:48:34', '2021-11-14 17:15:37', NULL),
+(3, '1563.321.051.A.524113', 'Evaluasi Usulan Satker WBK/WBBM-Belanja Perjalanan Dinas Biasa', 63370000, 3, 1, 1, '2021-10-04 22:05:25', '2021-11-11 16:47:43', NULL),
+(4, '14141.14141', 'Perjalanan Dinas', 1348910000, 1, 1, 1, '2021-10-08 19:21:25', '2021-11-13 21:42:46', NULL),
+(5, '1239189381028', 'alksdjlkasjdklasjdlkaj', 100000000, 7, 1, 5, '2021-11-17 13:55:31', '2021-11-17 13:55:31', NULL);
 
 -- --------------------------------------------------------
 
@@ -594,7 +594,7 @@ INSERT INTO `pegawai` (`id`, `nama`, `nip`, `golongan_id`, `jabatan_id`, `bidang
 (2, 'ABDUL HAMID, SE.', '19760901 200912 1 002', 1, 1, 1, NULL, NULL, '', NULL, NULL, NULL),
 (3, 'ABDUL ROKHMAN, A.Md.', '19801211 200912 1 002', 1, 1, 1, NULL, NULL, '', NULL, NULL, NULL),
 (4, 'ADE CICI ROHAYATI, SH.MH', '19740508 199803 2 001', 1, 1, 1, NULL, NULL, '', NULL, NULL, NULL),
-(5, 'asdasd', 'asdasd', 1, 1, 4, '2021-11-09', NULL, 'foto_pegawai/avatar.jpg', '2021-11-07 08:37:46', '2021-11-07 08:37:46', NULL);
+(5, 'asdasd', 'asdasd', 1, 1, 4, '2021-11-09', NULL, 'foto_pegawai/avatar.jpg', '2021-11-07 01:37:46', '2021-11-07 01:37:46', NULL);
 
 -- --------------------------------------------------------
 
@@ -619,7 +619,7 @@ CREATE TABLE `pembelian` (
 --
 
 INSERT INTO `pembelian` (`id`, `no_invoice`, `tanggal_invoice`, `keterangan`, `nama_supplier`, `user_id`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(14, '2', '2021-11-16 00:00:00', 'asa', 'sasaa', 7, '2021-11-15 16:52:52', '2021-11-15 16:52:52', NULL);
+(14, '2', '2021-11-16 00:00:00', 'asa', 'sasaa', 7, '2021-11-15 09:52:52', '2021-11-15 09:52:52', NULL);
 
 -- --------------------------------------------------------
 
@@ -642,7 +642,7 @@ CREATE TABLE `pembelian_detail` (
 --
 
 INSERT INTO `pembelian_detail` (`id`, `pembelian_id`, `barang_id`, `jumlah`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(17, 14, 1, 5, '2021-11-15 16:52:52', '2021-11-15 16:52:52', NULL);
+(17, 14, 1, 5, '2021-11-15 09:52:52', '2021-11-15 09:52:52', NULL);
 
 -- --------------------------------------------------------
 
@@ -666,10 +666,10 @@ CREATE TABLE `pembelian_lampiran` (
 --
 
 INSERT INTO `pembelian_lampiran` (`id`, `pembelian_id`, `nama`, `file`, `user_id`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(2, 13, 'Laporan MR 2019.pdf', 'pembelian/lampiran/IuBTupZOXi5slPlBXrjZMjglLx5zZsFeeR19Gxea.pdf', 7, '2021-11-15 16:49:56', '2021-11-15 16:49:56', NULL),
-(3, 13, 'Pengisian Survei Layanan Internal di Lingkungan Inspektorat Jenderal Kementerian Hukum dan HAM (2).pdf', 'pembelian/lampiran/toShPas91xX7zEywWbvRcViumEfmAAIjk4c6krXF.pdf', 7, '2021-11-15 16:49:56', '2021-11-15 16:49:56', NULL),
-(4, 14, 'Permintaan Dokumen SPIP Itjen.pdf', 'pembelian/lampiran/T3Rr89aRy0a5Dck3LlWSM9SOXoFJoQMVZFdGdeeP.pdf', 7, '2021-11-15 16:52:52', '2021-11-15 16:52:52', NULL),
-(5, 15, 'SE Pedoman Pelaksanaan Evaluasi Penerapan MR.pdf', 'pembelian/lampiran/zkFrneEsnSV0QVmgqah0rcKbEXmcyYexOV9MWUm1.pdf', 7, '2021-11-15 16:56:39', '2021-11-15 16:56:39', NULL);
+(2, 13, 'Laporan MR 2019.pdf', 'pembelian/lampiran/IuBTupZOXi5slPlBXrjZMjglLx5zZsFeeR19Gxea.pdf', 7, '2021-11-15 09:49:56', '2021-11-15 09:49:56', NULL),
+(3, 13, 'Pengisian Survei Layanan Internal di Lingkungan Inspektorat Jenderal Kementerian Hukum dan HAM (2).pdf', 'pembelian/lampiran/toShPas91xX7zEywWbvRcViumEfmAAIjk4c6krXF.pdf', 7, '2021-11-15 09:49:56', '2021-11-15 09:49:56', NULL),
+(4, 14, 'Permintaan Dokumen SPIP Itjen.pdf', 'pembelian/lampiran/T3Rr89aRy0a5Dck3LlWSM9SOXoFJoQMVZFdGdeeP.pdf', 7, '2021-11-15 09:52:52', '2021-11-15 09:52:52', NULL),
+(5, 15, 'SE Pedoman Pelaksanaan Evaluasi Penerapan MR.pdf', 'pembelian/lampiran/zkFrneEsnSV0QVmgqah0rcKbEXmcyYexOV9MWUm1.pdf', 7, '2021-11-15 09:56:39', '2021-11-15 09:56:39', NULL);
 
 -- --------------------------------------------------------
 
@@ -729,10 +729,10 @@ CREATE TABLE `perjadin` (
 --
 
 INSERT INTO `perjadin` (`id`, `no_perjadin`, `surat_perintah_id`, `mak_id`, `jumlah_hari`, `tujuan`, `keberangkatan`, `tanggal_berangkat`, `tanggal_kembali`, `total_anggaran`, `status_realisasi`, `total_realisasi`, `status`, `maksud`, `output`, `ppk_id`, `bendahara_id`, `tahun_id`, `user_id`, `bidang_id`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, '1-021121-1', 1, 1, 4, 'asdasd', 'Jakarta', '2021-11-02 00:00:00', '2021-11-14 00:00:00', 800000, 'SUDAH', 1000000, 'SELESAI', 'asdasd', NULL, 1, 2, 1, 1, 1, '2021-10-31 07:49:20', '2021-10-31 08:50:43', NULL),
-(2, '1-081121-1', 2, 1, 4, 'Bandung', 'Jakarta', '2021-11-08 00:00:00', '2021-11-12 00:00:00', 5520000, 'SUDAH', 3200000, 'SELESAI', 'Evaluasi Keuangan', NULL, 3, 4, 1, 1, 1, '2021-11-06 15:06:01', '2021-11-06 15:13:36', NULL),
-(3, '1-151121-1', 3, 4, 4, 'asdasdas', 'Jakarta', '2021-11-15 00:00:00', '2021-11-18 00:00:00', 9740000, 'SUDAH', 3640000, 'VERIFIKASI PPK', 'dasdasdasd', NULL, 1, 5, 1, 1, 1, '2021-11-14 04:44:09', '2021-11-18 01:03:03', NULL),
-(4, '1-181121-1', 4, 12, 2, 'Bandung', 'Jakarta', '2021-11-18 00:00:00', '2021-11-23 00:00:00', 9464000, 'BELUM', 0, 'PELAKSANAAN', 'TPN WBK WBBM', NULL, 1, 5, 1, 1, 1, '2021-11-18 06:00:07', '2021-11-18 06:19:04', NULL);
+(1, '1-021121-1', 1, 1, 4, 'asdasd', 'Jakarta', '2021-11-02 00:00:00', '2021-11-14 00:00:00', 800000, 'SUDAH', 1000000, 'SELESAI', 'asdasd', NULL, 1, 2, 1, 1, 1, '2021-10-31 00:49:20', '2021-10-31 01:50:43', NULL),
+(2, '1-081121-1', 2, 1, 4, 'Bandung', 'Jakarta', '2021-11-08 00:00:00', '2021-11-12 00:00:00', 5520000, 'SUDAH', 3200000, 'SELESAI', 'Evaluasi Keuangan', NULL, 3, 4, 1, 1, 1, '2021-11-06 08:06:01', '2021-11-06 08:13:36', NULL),
+(3, '1-151121-1', 3, 4, 4, 'asdasdas', 'Jakarta', '2021-11-15 00:00:00', '2021-11-18 00:00:00', 9740000, 'SUDAH', 3640000, 'VERIFIKASI PPK', 'dasdasdasd', NULL, 1, 5, 1, 1, 1, '2021-11-13 21:44:09', '2021-11-17 18:03:03', NULL),
+(4, '1-181121-1', 4, 12, 2, 'Bandung', 'Jakarta', '2021-11-18 00:00:00', '2021-11-23 00:00:00', 9464000, 'SUDAH', 12962000, 'PELAKSANAAN', 'TPN WBK WBBM', NULL, 1, 5, 1, 1, 1, '2021-11-17 23:00:07', '2021-11-19 00:34:32', NULL);
 
 -- --------------------------------------------------------
 
@@ -772,10 +772,10 @@ CREATE TABLE `perjadin_lampiran` (
 --
 
 INSERT INTO `perjadin_lampiran` (`id`, `perjadin_id`, `jenis`, `nama`, `file`, `user_id`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, 2, 'SP', 'SP_tata kelola KKP.pdf', 'perjadin/kEyPxaLA5Zwhfs8Y7zDnVVxZyJYF1iWujYBnn8CY.pdf', 1, '2021-11-06 15:06:03', '2021-11-06 15:06:03', NULL),
-(2, 2, 'SP', 'SP_tim efektif.pdf', 'perjadin/xJMpMEddcXAb0RbXUvYCfWugTsyiT706S6WPdYC8.pdf', 1, '2021-11-06 15:06:03', '2021-11-06 15:06:03', NULL),
-(3, 3, 'SP', 'SP_laporan penambahan sop layanan unggulan.pdf', 'perjadin/0fJSOiLW7awZ7SyVZotx7F7qzPNaZQAjImGxVk88.pdf', 1, '2021-11-14 04:44:10', '2021-11-14 04:44:10', NULL),
-(4, 4, 'SP', 'SP_Laporan Audit BBM TASIK.pdf', 'perjadin/wApfW4AR5kAsFcpW4frGw2HAFim2z6up662nCwju.pdf', 1, '2021-11-18 06:00:08', '2021-11-18 06:00:08', NULL);
+(1, 2, 'SP', 'SP_tata kelola KKP.pdf', 'perjadin/kEyPxaLA5Zwhfs8Y7zDnVVxZyJYF1iWujYBnn8CY.pdf', 1, '2021-11-06 08:06:03', '2021-11-06 08:06:03', NULL),
+(2, 2, 'SP', 'SP_tim efektif.pdf', 'perjadin/xJMpMEddcXAb0RbXUvYCfWugTsyiT706S6WPdYC8.pdf', 1, '2021-11-06 08:06:03', '2021-11-06 08:06:03', NULL),
+(3, 3, 'SP', 'SP_laporan penambahan sop layanan unggulan.pdf', 'perjadin/0fJSOiLW7awZ7SyVZotx7F7qzPNaZQAjImGxVk88.pdf', 1, '2021-11-13 21:44:10', '2021-11-13 21:44:10', NULL),
+(4, 4, 'SP', 'SP_Laporan Audit BBM TASIK.pdf', 'perjadin/wApfW4AR5kAsFcpW4frGw2HAFim2z6up662nCwju.pdf', 1, '2021-11-17 23:00:08', '2021-11-17 23:00:08', NULL);
 
 -- --------------------------------------------------------
 
@@ -801,28 +801,28 @@ CREATE TABLE `perjadin_log` (
 --
 
 INSERT INTO `perjadin_log` (`id`, `perjadin_id`, `status`, `user_id`, `bidang_id`, `keterangan`, `catatan`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, 1, 'PENGAJUAN', 1, 1, 'PERJADIN TELAH DIBUAT, OLEH ABBAS,SH.MH', NULL, '2021-10-31 07:49:20', '2021-10-31 07:49:20', NULL),
-(2, 1, 'KIRIM KEUANGAN - VERIFIKASI KEUANGAN', 1, 1, 'perjadin telah di kirim ke keuangan oleh ABBAS,SH.MH', 'yaaaaaaaa', '2021-10-31 08:47:09', '2021-10-31 08:47:09', NULL),
-(3, 1, 'VERIFIED KEUANGAN', 5, 1, 'perjadin telah di verifikasi oleh ADE CICI ROHAYATI, SH.MH', 'sadasd', '2021-10-31 08:47:39', '2021-10-31 08:47:39', NULL),
-(4, 1, 'KIRIM KEUANGAN - VERIFIKASI REALISASI', 1, 1, 'perjadin telah di kirim ke keuangan oleh ABBAS,SH.MH', 'dsadasd', '2021-10-31 08:49:13', '2021-10-31 08:49:13', NULL),
-(5, 1, 'VERIFIED KEUANGAN', 5, 1, 'perjadin telah di verifikasi oleh ADE CICI ROHAYATI, SH.MH', 'asdasd', '2021-10-31 08:49:32', '2021-10-31 08:49:32', NULL),
-(6, 1, 'VERIFIED PPK', 2, 3, 'perjadin telah di verifikasi oleh oleh ABDUL HAMID, SE.', 'sssss', '2021-10-31 08:50:21', '2021-10-31 08:50:21', NULL),
-(7, 1, 'SELESAI', 4, 1, 'Uang perjadin telah dibayarkan oleh oleh ADE CICI ROHAYATI, SH.MH', 'sdsssss', '2021-10-31 08:50:43', '2021-10-31 08:50:43', NULL),
-(8, 2, 'PENGAJUAN', 1, 1, 'PERJADIN TELAH DIBUAT, OLEH ABBAS,SH.MH', NULL, '2021-11-06 15:06:01', '2021-11-06 15:06:01', NULL),
-(9, 2, 'KIRIM KEUANGAN - VERIFIKASI KEUANGAN', 1, 1, 'perjadin telah di kirim ke keuangan oleh ABBAS,SH.MH', 'aaaaaaa', '2021-11-06 15:06:10', '2021-11-06 15:06:10', NULL),
-(10, 2, 'VERIFIED KEUANGAN', 5, 1, 'perjadin telah di verifikasi oleh ADE CICI ROHAYATI, SH.MH', 'sajdkasd', '2021-11-06 15:08:19', '2021-11-06 15:08:19', NULL),
-(11, 2, 'KIRIM KEUANGAN - VERIFIKASI REALISASI', 1, 1, 'perjadin telah di kirim ke keuangan oleh ABBAS,SH.MH', 'safasfa', '2021-11-06 15:10:04', '2021-11-06 15:10:04', NULL),
-(12, 2, 'VERIFIED KEUANGAN', 5, 1, 'perjadin telah di verifikasi oleh ADE CICI ROHAYATI, SH.MH', 'hhhhhhh', '2021-11-06 15:12:05', '2021-11-06 15:12:05', NULL),
-(13, 2, 'VERIFIED PPK', 2, 3, 'perjadin telah di verifikasi oleh oleh ABDUL HAMID, SE.', 'qqqqqqq', '2021-11-06 15:13:11', '2021-11-06 15:13:11', NULL),
-(14, 2, 'SELESAI', 4, 1, 'Uang perjadin telah dibayarkan oleh oleh ADE CICI ROHAYATI, SH.MH', 'dddddddd', '2021-11-06 15:13:36', '2021-11-06 15:13:36', NULL),
-(15, 3, 'PENGAJUAN', 1, 1, 'PERJADIN TELAH DIBUAT, OLEH ABBAS,SH.MH', NULL, '2021-11-14 04:44:09', '2021-11-14 04:44:09', NULL),
-(16, 3, 'KIRIM KEUANGAN - VERIFIKASI KEUANGAN', 1, 1, 'perjadin telah di kirim ke keuangan oleh ABBAS,SH.MH', 'aaaaaaaaaaaa', '2021-11-14 04:45:20', '2021-11-14 04:45:20', NULL),
-(17, 3, 'VERIFIED KEUANGAN', 5, 1, 'perjadin telah di verifikasi oleh ADE CICI ROHAYATI, SH.MH', 'ok laksanakan', '2021-11-17 22:35:59', '2021-11-17 22:35:59', NULL),
-(18, 3, 'KIRIM KEUANGAN - VERIFIKASI REALISASI', 1, 1, 'perjadin telah di kirim ke keuangan oleh ABBAS,SH.MH', 'eeee', '2021-11-17 23:23:26', '2021-11-17 23:23:26', NULL),
-(19, 3, 'VERIFIED KEUANGAN', 5, 1, 'perjadin telah di verifikasi oleh ADE CICI ROHAYATI, SH.MH', 'sssssssssss', '2021-11-18 01:03:03', '2021-11-18 01:03:03', NULL),
-(20, 4, 'PENGAJUAN', 1, 1, 'PERJADIN TELAH DIBUAT, OLEH ABBAS,SH.MH', NULL, '2021-11-18 06:00:07', '2021-11-18 06:00:07', NULL),
-(21, 4, 'KIRIM KEUANGAN', 1, 1, 'perjadin telah di kirim ke keuangan oleh ABBAS,SH.MH', 'ok', '2021-11-18 06:01:49', '2021-11-18 06:01:49', NULL),
-(22, 4, 'VERIFIED KEUANGAN', 5, 1, 'perjadin telah di verifikasi oleh ADE CICI ROHAYATI, SH.MH', 'ok', '2021-11-18 06:19:04', '2021-11-18 06:19:04', NULL);
+(1, 1, 'PENGAJUAN', 1, 1, 'PERJADIN TELAH DIBUAT, OLEH ABBAS,SH.MH', NULL, '2021-10-31 00:49:20', '2021-10-31 00:49:20', NULL),
+(2, 1, 'KIRIM KEUANGAN - VERIFIKASI KEUANGAN', 1, 1, 'perjadin telah di kirim ke keuangan oleh ABBAS,SH.MH', 'yaaaaaaaa', '2021-10-31 01:47:09', '2021-10-31 01:47:09', NULL),
+(3, 1, 'VERIFIED KEUANGAN', 5, 1, 'perjadin telah di verifikasi oleh ADE CICI ROHAYATI, SH.MH', 'sadasd', '2021-10-31 01:47:39', '2021-10-31 01:47:39', NULL),
+(4, 1, 'KIRIM KEUANGAN - VERIFIKASI REALISASI', 1, 1, 'perjadin telah di kirim ke keuangan oleh ABBAS,SH.MH', 'dsadasd', '2021-10-31 01:49:13', '2021-10-31 01:49:13', NULL),
+(5, 1, 'VERIFIED KEUANGAN', 5, 1, 'perjadin telah di verifikasi oleh ADE CICI ROHAYATI, SH.MH', 'asdasd', '2021-10-31 01:49:32', '2021-10-31 01:49:32', NULL),
+(6, 1, 'VERIFIED PPK', 2, 3, 'perjadin telah di verifikasi oleh oleh ABDUL HAMID, SE.', 'sssss', '2021-10-31 01:50:21', '2021-10-31 01:50:21', NULL),
+(7, 1, 'SELESAI', 4, 1, 'Uang perjadin telah dibayarkan oleh oleh ADE CICI ROHAYATI, SH.MH', 'sdsssss', '2021-10-31 01:50:43', '2021-10-31 01:50:43', NULL),
+(8, 2, 'PENGAJUAN', 1, 1, 'PERJADIN TELAH DIBUAT, OLEH ABBAS,SH.MH', NULL, '2021-11-06 08:06:01', '2021-11-06 08:06:01', NULL),
+(9, 2, 'KIRIM KEUANGAN - VERIFIKASI KEUANGAN', 1, 1, 'perjadin telah di kirim ke keuangan oleh ABBAS,SH.MH', 'aaaaaaa', '2021-11-06 08:06:10', '2021-11-06 08:06:10', NULL),
+(10, 2, 'VERIFIED KEUANGAN', 5, 1, 'perjadin telah di verifikasi oleh ADE CICI ROHAYATI, SH.MH', 'sajdkasd', '2021-11-06 08:08:19', '2021-11-06 08:08:19', NULL),
+(11, 2, 'KIRIM KEUANGAN - VERIFIKASI REALISASI', 1, 1, 'perjadin telah di kirim ke keuangan oleh ABBAS,SH.MH', 'safasfa', '2021-11-06 08:10:04', '2021-11-06 08:10:04', NULL),
+(12, 2, 'VERIFIED KEUANGAN', 5, 1, 'perjadin telah di verifikasi oleh ADE CICI ROHAYATI, SH.MH', 'hhhhhhh', '2021-11-06 08:12:05', '2021-11-06 08:12:05', NULL),
+(13, 2, 'VERIFIED PPK', 2, 3, 'perjadin telah di verifikasi oleh oleh ABDUL HAMID, SE.', 'qqqqqqq', '2021-11-06 08:13:11', '2021-11-06 08:13:11', NULL),
+(14, 2, 'SELESAI', 4, 1, 'Uang perjadin telah dibayarkan oleh oleh ADE CICI ROHAYATI, SH.MH', 'dddddddd', '2021-11-06 08:13:36', '2021-11-06 08:13:36', NULL),
+(15, 3, 'PENGAJUAN', 1, 1, 'PERJADIN TELAH DIBUAT, OLEH ABBAS,SH.MH', NULL, '2021-11-13 21:44:09', '2021-11-13 21:44:09', NULL),
+(16, 3, 'KIRIM KEUANGAN - VERIFIKASI KEUANGAN', 1, 1, 'perjadin telah di kirim ke keuangan oleh ABBAS,SH.MH', 'aaaaaaaaaaaa', '2021-11-13 21:45:20', '2021-11-13 21:45:20', NULL),
+(17, 3, 'VERIFIED KEUANGAN', 5, 1, 'perjadin telah di verifikasi oleh ADE CICI ROHAYATI, SH.MH', 'ok laksanakan', '2021-11-17 15:35:59', '2021-11-17 15:35:59', NULL),
+(18, 3, 'KIRIM KEUANGAN - VERIFIKASI REALISASI', 1, 1, 'perjadin telah di kirim ke keuangan oleh ABBAS,SH.MH', 'eeee', '2021-11-17 16:23:26', '2021-11-17 16:23:26', NULL),
+(19, 3, 'VERIFIED KEUANGAN', 5, 1, 'perjadin telah di verifikasi oleh ADE CICI ROHAYATI, SH.MH', 'sssssssssss', '2021-11-17 18:03:03', '2021-11-17 18:03:03', NULL),
+(20, 4, 'PENGAJUAN', 1, 1, 'PERJADIN TELAH DIBUAT, OLEH ABBAS,SH.MH', NULL, '2021-11-17 23:00:07', '2021-11-17 23:00:07', NULL),
+(21, 4, 'KIRIM KEUANGAN', 1, 1, 'perjadin telah di kirim ke keuangan oleh ABBAS,SH.MH', 'ok', '2021-11-17 23:01:49', '2021-11-17 23:01:49', NULL),
+(22, 4, 'VERIFIED KEUANGAN', 5, 1, 'perjadin telah di verifikasi oleh ADE CICI ROHAYATI, SH.MH', 'ok', '2021-11-17 23:19:04', '2021-11-17 23:19:04', NULL);
 
 -- --------------------------------------------------------
 
@@ -845,11 +845,11 @@ CREATE TABLE `perjadin_obrik` (
 --
 
 INSERT INTO `perjadin_obrik` (`id`, `perjadin_id`, `satker_id`, `urusan_id`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, 1, 1, 1, '2021-10-31 07:49:20', '2021-10-31 07:49:20', NULL),
-(2, 2, 1, 4, '2021-11-06 15:06:01', '2021-11-06 15:06:01', NULL),
-(3, 2, 1, 3, '2021-11-06 15:06:01', '2021-11-06 15:06:01', NULL),
-(4, 3, 1, 3, '2021-11-14 04:44:09', '2021-11-14 04:44:09', NULL),
-(5, 4, 1, 6, '2021-11-18 06:00:07', '2021-11-18 06:00:07', NULL);
+(1, 1, 1, 1, '2021-10-31 00:49:20', '2021-10-31 00:49:20', NULL),
+(2, 2, 1, 4, '2021-11-06 08:06:01', '2021-11-06 08:06:01', NULL),
+(3, 2, 1, 3, '2021-11-06 08:06:01', '2021-11-06 08:06:01', NULL),
+(4, 3, 1, 3, '2021-11-13 21:44:09', '2021-11-13 21:44:09', NULL),
+(5, 4, 1, 6, '2021-11-17 23:00:07', '2021-11-17 23:00:07', NULL);
 
 -- --------------------------------------------------------
 
@@ -884,13 +884,13 @@ CREATE TABLE `perjadin_rab` (
 --
 
 INSERT INTO `perjadin_rab` (`id`, `perjadin_id`, `susunan_tim_perjadin_id`, `jumlah_hari`, `tanggal_berangkat`, `tanggal_kembali`, `uang_harian`, `jumlah_malam`, `uang_hotel`, `udara`, `laut`, `darat`, `taksi_jakarta`, `taksi_provinsi`, `representatif`, `total`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, 1, 1, 4, '2021-11-02 00:00:00', '2021-11-14 00:00:00', 200000, 0, 0, 0, 0, 0, 0, 0, 0, 800000, '2021-10-31 07:49:20', '2021-10-31 07:49:20', NULL),
-(2, 2, 2, 2, '2021-11-08 00:00:00', '2021-11-10 00:00:00', 500000, 2, 560000, 0, 0, 250000, 250000, 0, 0, 2620000, '2021-11-06 15:06:01', '2021-11-06 15:06:01', NULL),
-(3, 2, 3, 4, '2021-11-08 00:00:00', '2021-11-12 00:00:00', 500000, 3, 300000, 0, 0, 0, 0, 0, 0, 2900000, '2021-11-06 15:06:01', '2021-11-06 15:06:01', NULL),
-(4, 3, 4, 4, '2021-11-15 00:00:00', '2021-11-18 00:00:00', 380000, 3, 550000, 1700000, 0, 0, 0, 0, 0, 4870000, '2021-11-14 04:44:09', '2021-11-14 04:44:09', NULL),
-(5, 3, 5, 4, '2021-11-15 00:00:00', '2021-11-18 00:00:00', 380000, 3, 550000, 1700000, 0, 0, 0, 0, 0, 4870000, '2021-11-14 04:44:09', '2021-11-14 04:44:09', NULL),
-(6, 4, 6, 5, '2021-11-18 00:00:00', '2021-11-23 00:00:00', 380000, 4, 580000, 0, 0, 512000, 0, 0, 0, 4732000, '2021-11-18 06:00:07', '2021-11-18 06:00:07', NULL),
-(7, 4, 7, 5, '2021-11-18 00:00:00', '2021-11-23 00:00:00', 380000, 4, 580000, 0, 0, 512000, 0, 0, 0, 4732000, '2021-11-18 06:00:07', '2021-11-18 06:00:07', NULL);
+(1, 1, 1, 4, '2021-11-02 00:00:00', '2021-11-14 00:00:00', 200000, 0, 0, 0, 0, 0, 0, 0, 0, 800000, '2021-10-31 00:49:20', '2021-10-31 00:49:20', NULL),
+(2, 2, 2, 2, '2021-11-08 00:00:00', '2021-11-10 00:00:00', 500000, 2, 560000, 0, 0, 250000, 250000, 0, 0, 2620000, '2021-11-06 08:06:01', '2021-11-06 08:06:01', NULL),
+(3, 2, 3, 4, '2021-11-08 00:00:00', '2021-11-12 00:00:00', 500000, 3, 300000, 0, 0, 0, 0, 0, 0, 2900000, '2021-11-06 08:06:01', '2021-11-06 08:06:01', NULL),
+(4, 3, 4, 4, '2021-11-15 00:00:00', '2021-11-18 00:00:00', 380000, 3, 550000, 1700000, 0, 0, 0, 0, 0, 4870000, '2021-11-13 21:44:09', '2021-11-13 21:44:09', NULL),
+(5, 3, 5, 4, '2021-11-15 00:00:00', '2021-11-18 00:00:00', 380000, 3, 550000, 1700000, 0, 0, 0, 0, 0, 4870000, '2021-11-13 21:44:09', '2021-11-13 21:44:09', NULL),
+(6, 4, 6, 5, '2021-11-18 00:00:00', '2021-11-23 00:00:00', 380000, 4, 580000, 0, 0, 512000, 0, 0, 0, 4732000, '2021-11-17 23:00:07', '2021-11-17 23:00:07', NULL),
+(7, 4, 7, 5, '2021-11-18 00:00:00', '2021-11-23 00:00:00', 380000, 4, 580000, 0, 0, 512000, 0, 0, 0, 4732000, '2021-11-17 23:00:07', '2021-11-17 23:00:07', NULL);
 
 -- --------------------------------------------------------
 
@@ -902,17 +902,15 @@ CREATE TABLE `perjadin_realisasi` (
   `id` int(11) NOT NULL,
   `perjadin_id` int(11) NOT NULL,
   `susunan_tim_perjadin_id` int(11) NOT NULL,
-  `jumlah_hari` double NOT NULL,
-  `uang_harian` double NOT NULL,
+  `total_harian` double NOT NULL DEFAULT 0,
+  `total_hotel` double NOT NULL DEFAULT 0,
+  `total_transport` double NOT NULL DEFAULT 0,
   `tanggal_berangkat` date NOT NULL DEFAULT current_timestamp(),
   `tanggal_kembali` date NOT NULL DEFAULT current_timestamp(),
-  `jumlah_malam` double NOT NULL,
-  `uang_hotel` double NOT NULL,
-  `udara` double NOT NULL,
-  `laut` double NOT NULL,
-  `darat` double NOT NULL,
   `taksi_jakarta` double NOT NULL,
   `taksi_provinsi` double NOT NULL,
+  `jakarta_riil` tinyint(1) NOT NULL DEFAULT 0,
+  `provinsi_riil` tinyint(1) NOT NULL DEFAULT 0,
   `representatif` double NOT NULL,
   `total` double NOT NULL,
   `jenis_hotel` int(1) NOT NULL DEFAULT 0,
@@ -925,12 +923,9 @@ CREATE TABLE `perjadin_realisasi` (
 -- Dumping data for table `perjadin_realisasi`
 --
 
-INSERT INTO `perjadin_realisasi` (`id`, `perjadin_id`, `susunan_tim_perjadin_id`, `jumlah_hari`, `uang_harian`, `tanggal_berangkat`, `tanggal_kembali`, `jumlah_malam`, `uang_hotel`, `udara`, `laut`, `darat`, `taksi_jakarta`, `taksi_provinsi`, `representatif`, `total`, `jenis_hotel`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, 1, 1, 2, 500000, '2021-11-02', '2021-11-14', 0, 0, 0, 0, 0, 0, 0, 0, 1000000, 0, '2021-10-31 08:47:58', '2021-10-31 08:47:58', NULL),
-(2, 2, 2, 3, 500000, '2021-11-08', '2021-11-12', 3, 500000, 0, 0, 0, 0, 0, 0, 3000000, 0, '2021-11-06 15:09:55', '2021-11-06 15:09:55', NULL),
-(3, 2, 3, 4, 50000, '2021-11-08', '2021-11-12', 0, 0, 0, 0, 0, 0, 0, 0, 200000, 0, '2021-11-06 15:09:55', '2021-11-06 15:09:55', NULL),
-(4, 3, 4, 3, 200000, '2021-11-15', '2021-11-18', 2, 560000, 0, 0, 240000, 240000, 0, 0, 2200000, 0, '2021-11-17 23:23:17', '2021-11-17 23:23:17', NULL),
-(5, 3, 5, 3, 200000, '2021-11-15', '2021-11-18', 2, 180000, 0, 0, 240000, 240000, 0, 0, 1440000, 1, '2021-11-17 23:23:17', '2021-11-17 23:23:17', NULL);
+INSERT INTO `perjadin_realisasi` (`id`, `perjadin_id`, `susunan_tim_perjadin_id`, `total_harian`, `total_hotel`, `total_transport`, `tanggal_berangkat`, `tanggal_kembali`, `taksi_jakarta`, `taksi_provinsi`, `jakarta_riil`, `provinsi_riil`, `representatif`, `total`, `jenis_hotel`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(1, 4, 6, 4200000, 0, 0, '2021-11-18', '2021-11-23', 0, 0, 0, 0, 0, 4200000, 0, '2021-11-19 00:34:32', '2021-11-19 00:34:32', NULL),
+(2, 4, 7, 0, 8000000, 512000, '2021-11-18', '2021-11-23', 250000, 0, 1, 0, 0, 8762000, 0, '2021-11-19 00:34:32', '2021-11-19 00:34:32', NULL);
 
 -- --------------------------------------------------------
 
@@ -953,10 +948,87 @@ CREATE TABLE `perjadin_realisasi_lampiran` (
 --
 
 INSERT INTO `perjadin_realisasi_lampiran` (`id`, `perjadin_realisasi_id`, `nama`, `file`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, 2, 'tim efektif.pdf', 'perjadin/lampiran/RTFc2FfdqGOD5nkDx5lt2u3YKMgvqAIpRmOcjTkH.pdf', '2021-11-06 15:09:56', '2021-11-06 15:09:56', NULL),
-(2, 3, 'tim efektif.pdf', 'perjadin/lampiran/NhnoxtCz4aj0stGeLUJc55wwtZpg2tyIWHv8aoWg.pdf', '2021-11-06 15:09:57', '2021-11-06 15:09:57', NULL),
-(3, 5, 'Pengisian Survei Layanan Internal di Lingkungan Inspektorat Jenderal Kementerian Hukum dan HAM (2).pdf', 'perjadin/lampiran/aC1LGwkpkoxwYOHqfHfwloeqsWYyjAlHUbFcQFwE.pdf', '2021-11-17 23:23:17', '2021-11-17 23:23:17', NULL),
-(4, 4, 'Pengisian Survei Layanan Internal di Lingkungan Inspektorat Jenderal Kementerian Hukum dan HAM (2).pdf', 'perjadin/lampiran/V7UnxtRUKhZQfb8P87DSveXbfA7mylWWKXX2xQ1h.pdf', '2021-11-17 23:23:17', '2021-11-17 23:23:17', NULL);
+(1, 2, 'astrid.pdf', 'perjadin/lampiran/Njb8XTrHbvLoRjV4E0YrCvUU9WzCZUoDHTWiTzNu.pdf', '2021-11-19 00:34:33', '2021-11-19 00:34:33', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `perjadin_realisasi_transport`
+--
+
+CREATE TABLE `perjadin_realisasi_transport` (
+  `id` int(11) NOT NULL,
+  `perjadin_realisasi_id` int(11) NOT NULL,
+  `jenis_transport` enum('UDARA','DARAT','LAUT') NOT NULL DEFAULT 'UDARA',
+  `total` double NOT NULL,
+  `riil` tinyint(1) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `perjadin_realisasi_transport`
+--
+
+INSERT INTO `perjadin_realisasi_transport` (`id`, `perjadin_realisasi_id`, `jenis_transport`, `total`, `riil`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(1, 1, 'UDARA', 0, 0, '2021-11-19 00:34:32', '2021-11-19 00:34:32', NULL),
+(2, 2, 'DARAT', 512000, 1, '2021-11-19 00:34:32', '2021-11-19 00:34:32', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `perjadin_realisasi_uang_harian`
+--
+
+CREATE TABLE `perjadin_realisasi_uang_harian` (
+  `id` int(11) NOT NULL,
+  `perjadin_realisasi_id` int(11) NOT NULL,
+  `jumlah_hari` double NOT NULL,
+  `uang_harian` double NOT NULL,
+  `total` double NOT NULL,
+  `riil` tinyint(1) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `perjadin_realisasi_uang_harian`
+--
+
+INSERT INTO `perjadin_realisasi_uang_harian` (`id`, `perjadin_realisasi_id`, `jumlah_hari`, `uang_harian`, `total`, `riil`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(1, 1, 4, 300000, 1200000, 1, '2021-11-19 00:34:32', '2021-11-19 00:34:32', NULL),
+(2, 1, 3, 1000000, 3000000, 0, '2021-11-19 00:34:32', '2021-11-19 00:34:32', NULL),
+(3, 2, 0, 0, 0, 0, '2021-11-19 00:34:32', '2021-11-19 00:34:32', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `perjadin_realisasi_uang_hotel`
+--
+
+CREATE TABLE `perjadin_realisasi_uang_hotel` (
+  `id` int(11) NOT NULL,
+  `perjadin_realisasi_id` int(11) NOT NULL,
+  `jenis_hotel` int(1) NOT NULL DEFAULT 0,
+  `nama_hotel` varchar(255) DEFAULT NULL,
+  `jumlah_malam` double NOT NULL,
+  `uang_hotel` double NOT NULL,
+  `total` double NOT NULL,
+  `riil` tinyint(1) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `perjadin_realisasi_uang_hotel`
+--
+
+INSERT INTO `perjadin_realisasi_uang_hotel` (`id`, `perjadin_realisasi_id`, `jenis_hotel`, `nama_hotel`, `jumlah_malam`, `uang_hotel`, `total`, `riil`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(1, 1, 0, NULL, 0, 0, 0, 0, '2021-11-19 00:34:32', '2021-11-19 00:34:32', NULL),
+(2, 2, 1, NULL, 4, 2000000, 8000000, 1, '2021-11-19 00:34:32', '2021-11-19 00:34:32', NULL);
 
 -- --------------------------------------------------------
 
@@ -981,13 +1053,13 @@ CREATE TABLE `perjadin_susunan_tim` (
 --
 
 INSERT INTO `perjadin_susunan_tim` (`id`, `perjadin_id`, `perjadin_rab_id`, `perjadin_realisasi_id`, `pegawai_id`, `peran_id`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, 1, 1, 1, 2, 2, '2021-10-31 07:49:20', '2021-10-31 08:47:58', NULL),
-(2, 2, 2, 2, 2, 2, '2021-11-06 15:06:01', '2021-11-06 15:09:55', NULL),
-(3, 2, 3, 3, 3, 4, '2021-11-06 15:06:01', '2021-11-06 15:09:55', NULL),
-(4, 3, 4, 4, 1, 3, '2021-11-14 04:44:09', '2021-11-17 23:23:17', NULL),
-(5, 3, 5, 5, 2, 4, '2021-11-14 04:44:09', '2021-11-17 23:23:17', NULL),
-(6, 4, 6, NULL, 2, 3, '2021-11-18 06:00:07', '2021-11-18 06:00:07', NULL),
-(7, 4, 7, NULL, 1, 4, '2021-11-18 06:00:07', '2021-11-18 06:00:07', NULL);
+(1, 1, 1, 1, 2, 2, '2021-10-31 00:49:20', '2021-10-31 01:47:58', NULL),
+(2, 2, 2, 2, 2, 2, '2021-11-06 08:06:01', '2021-11-06 08:09:55', NULL),
+(3, 2, 3, 3, 3, 4, '2021-11-06 08:06:01', '2021-11-06 08:09:55', NULL),
+(4, 3, 4, 4, 1, 3, '2021-11-13 21:44:09', '2021-11-17 16:23:17', NULL),
+(5, 3, 5, 5, 2, 4, '2021-11-13 21:44:09', '2021-11-17 16:23:17', NULL),
+(6, 4, 6, 1, 2, 3, '2021-11-17 23:00:07', '2021-11-19 00:28:24', NULL),
+(7, 4, 7, 2, 1, 4, '2021-11-17 23:00:07', '2021-11-19 00:34:32', NULL);
 
 -- --------------------------------------------------------
 
@@ -1014,7 +1086,7 @@ CREATE TABLE `permintaan_persediaan` (
 --
 
 INSERT INTO `permintaan_persediaan` (`id`, `keterangan`, `status`, `file`, `nama`, `tahun_id`, `user_id`, `bidang_id`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(5, 'asaaa', 'SELESAI', NULL, NULL, 1, 1, 1, '2021-11-16 14:51:40', '2021-11-16 16:06:28', NULL);
+(5, 'asaaa', 'SELESAI', NULL, NULL, 1, 1, 1, '2021-11-16 07:51:40', '2021-11-16 09:06:28', NULL);
 
 -- --------------------------------------------------------
 
@@ -1038,7 +1110,7 @@ CREATE TABLE `permintaan_persediaan_detail` (
 --
 
 INSERT INTO `permintaan_persediaan_detail` (`id`, `permintaan_persediaan_id`, `barang_id`, `jumlah_permintaan`, `jumlah_disetujui`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(7, 5, 1, 4, 4, '2021-11-16 14:51:40', '2021-11-16 16:06:09', NULL);
+(7, 5, 1, 4, 4, '2021-11-16 07:51:40', '2021-11-16 09:06:09', NULL);
 
 -- --------------------------------------------------------
 
@@ -1062,8 +1134,8 @@ CREATE TABLE `permintaan_persediaan_lampiran` (
 --
 
 INSERT INTO `permintaan_persediaan_lampiran` (`id`, `permintaan_persediaan_id`, `nama`, `file`, `user_id`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(2, 4, '4.astrid.pdf', 'permintaan/lampiran/L5l8B6jooD1BwCTOfvFrghGo8n4QLoefGfrDtJhk.pdf', 1, '2021-11-16 14:50:28', '2021-11-16 14:50:28', NULL),
-(3, 5, '4.astrid.pdf', 'permintaan/lampiran/dDaCRVgWZn7shkCamwOpXucf4ElGskznKQt5Boeh.pdf', 1, '2021-11-16 14:51:40', '2021-11-16 14:51:40', NULL);
+(2, 4, '4.astrid.pdf', 'permintaan/lampiran/L5l8B6jooD1BwCTOfvFrghGo8n4QLoefGfrDtJhk.pdf', 1, '2021-11-16 07:50:28', '2021-11-16 07:50:28', NULL),
+(3, 5, '4.astrid.pdf', 'permintaan/lampiran/dDaCRVgWZn7shkCamwOpXucf4ElGskznKQt5Boeh.pdf', 1, '2021-11-16 07:51:40', '2021-11-16 07:51:40', NULL);
 
 -- --------------------------------------------------------
 
@@ -1089,12 +1161,12 @@ CREATE TABLE `permintaan_persediaan_log` (
 --
 
 INSERT INTO `permintaan_persediaan_log` (`id`, `permintaan_persediaan_id`, `status`, `user_id`, `bidang_id`, `keterangan`, `catatan`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, 2, 'PENGAJUAN', 7, 1, 'PERJADIN TELAH DIBUAT, OLEH ADE CICI ROHAYATI, SH.MH', NULL, '2021-11-15 17:50:56', '2021-11-15 17:50:56', NULL),
-(2, 2, 'KIRIM UMUM - VERIFIKASI UMUM', 1, 1, 'permintaan persediaan telah dikirim ke umum oleh ABBAS,SH.MH', 'aaaa', '2021-11-16 12:49:03', '2021-11-16 12:49:03', NULL),
-(3, 2, 'RETUR DARI UMUM', 7, 1, 'permintaan persediaan telah dikembalikan oleh ADE CICI ROHAYATI, SH.MH', 'dddd', '2021-11-16 13:37:20', '2021-11-16 13:37:20', NULL),
-(5, 5, 'PENGAJUAN', 1, 1, 'PERJADIN TELAH DIBUAT, OLEH ABBAS,SH.MH', NULL, '2021-11-16 14:51:40', '2021-11-16 14:51:40', NULL),
-(6, 5, 'KIRIM UMUM - VERIFIKASI UMUM', 1, 1, 'permintaan persediaan telah dikirim ke umum oleh ABBAS,SH.MH', 'aa', '2021-11-16 14:52:24', '2021-11-16 14:52:24', NULL),
-(7, 5, 'SELESAI', 7, 1, 'Permintaan persediaan telah di proses oleh oleh ADE CICI ROHAYATI, SH.MH', NULL, '2021-11-16 16:06:28', '2021-11-16 16:06:28', NULL);
+(1, 2, 'PENGAJUAN', 7, 1, 'PERJADIN TELAH DIBUAT, OLEH ADE CICI ROHAYATI, SH.MH', NULL, '2021-11-15 10:50:56', '2021-11-15 10:50:56', NULL),
+(2, 2, 'KIRIM UMUM - VERIFIKASI UMUM', 1, 1, 'permintaan persediaan telah dikirim ke umum oleh ABBAS,SH.MH', 'aaaa', '2021-11-16 05:49:03', '2021-11-16 05:49:03', NULL),
+(3, 2, 'RETUR DARI UMUM', 7, 1, 'permintaan persediaan telah dikembalikan oleh ADE CICI ROHAYATI, SH.MH', 'dddd', '2021-11-16 06:37:20', '2021-11-16 06:37:20', NULL),
+(5, 5, 'PENGAJUAN', 1, 1, 'PERJADIN TELAH DIBUAT, OLEH ABBAS,SH.MH', NULL, '2021-11-16 07:51:40', '2021-11-16 07:51:40', NULL),
+(6, 5, 'KIRIM UMUM - VERIFIKASI UMUM', 1, 1, 'permintaan persediaan telah dikirim ke umum oleh ABBAS,SH.MH', 'aa', '2021-11-16 07:52:24', '2021-11-16 07:52:24', NULL),
+(7, 5, 'SELESAI', 7, 1, 'Permintaan persediaan telah di proses oleh oleh ADE CICI ROHAYATI, SH.MH', NULL, '2021-11-16 09:06:28', '2021-11-16 09:06:28', NULL);
 
 -- --------------------------------------------------------
 
@@ -1126,8 +1198,8 @@ CREATE TABLE `peta_kompetensi` (
 --
 
 INSERT INTO `peta_kompetensi` (`id`, `pegawai_id`, `bidang_ilmu_id`, `nama_pelatihan`, `tahun_pelaksanaan`, `level`, `skala`, `penyelenggara`, `tanggal_mulai`, `tanggal_akhir`, `nama_file`, `file`, `user_id`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(11, 1, 1, 'asdasd', 2021, 'INTERMEDIETE', 'NASIONAL', 'asdasdasdasd', '2021-11-10 00:00:00', '2021-11-14 00:00:00', NULL, NULL, 1, '2021-11-08 16:40:27', '2021-11-08 16:40:27', NULL),
-(13, 1, 1, 'aaaaaaaaaa', 2018, 'EXPERT', 'LOKAL', 'axxxxxxxx', '2021-11-10 00:00:00', '2021-11-15 00:00:00', 'Undangan Maulid (04112021).pdf', 'sertifikat//WK9VqYC7cuDyTqxb63WAi6Slyv73hKilOwEtDIDs.pdf', 1, '2021-11-08 16:42:08', '2021-11-08 16:42:08', NULL);
+(11, 1, 1, 'asdasd', 2021, 'INTERMEDIETE', 'NASIONAL', 'asdasdasdasd', '2021-11-10 00:00:00', '2021-11-14 00:00:00', NULL, NULL, 1, '2021-11-08 09:40:27', '2021-11-08 09:40:27', NULL),
+(13, 1, 1, 'aaaaaaaaaa', 2018, 'EXPERT', 'LOKAL', 'axxxxxxxx', '2021-11-10 00:00:00', '2021-11-15 00:00:00', 'Undangan Maulid (04112021).pdf', 'sertifikat//WK9VqYC7cuDyTqxb63WAi6Slyv73hKilOwEtDIDs.pdf', 1, '2021-11-08 09:42:08', '2021-11-08 09:42:08', NULL);
 
 -- --------------------------------------------------------
 
@@ -1175,10 +1247,10 @@ CREATE TABLE `surat_perintah` (
 --
 
 INSERT INTO `surat_perintah` (`id`, `nomor_surat`, `tanggal_surat`, `perihal`, `perjadin`, `tahun_id`, `user_id`, `bidang_id`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, 'ssdad', '2021-11-02 00:00:00', 'asdasd', 'YA', 1, 1, 1, '2021-10-31 07:49:20', '2021-10-31 07:49:20', NULL),
-(2, 'ITJ.123123.123123.123.123.', '2021-11-08 00:00:00', 'Evaluasi Keuangan', 'YA', 1, 1, 1, '2021-11-06 15:06:01', '2021-11-06 15:06:01', NULL),
-(3, 'asdasd', '2021-11-15 00:00:00', 'asdasd', 'YA', 1, 1, 1, '2021-11-14 04:44:09', '2021-11-14 04:44:09', NULL),
-(4, 'itjamm', '2021-11-18 00:00:00', 'asdasd', 'YA', 1, 1, 1, '2021-11-18 06:00:07', '2021-11-18 06:00:07', NULL);
+(1, 'ssdad', '2021-11-02 00:00:00', 'asdasd', 'YA', 1, 1, 1, '2021-10-31 00:49:20', '2021-10-31 00:49:20', NULL),
+(2, 'ITJ.123123.123123.123.123.', '2021-11-08 00:00:00', 'Evaluasi Keuangan', 'YA', 1, 1, 1, '2021-11-06 08:06:01', '2021-11-06 08:06:01', NULL),
+(3, 'asdasd', '2021-11-15 00:00:00', 'asdasd', 'YA', 1, 1, 1, '2021-11-13 21:44:09', '2021-11-13 21:44:09', NULL),
+(4, 'itjamm', '2021-11-18 00:00:00', 'asdasd', 'YA', 1, 1, 1, '2021-11-17 23:00:07', '2021-11-17 23:00:07', NULL);
 
 -- --------------------------------------------------------
 
@@ -1432,6 +1504,24 @@ ALTER TABLE `perjadin_realisasi_lampiran`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `perjadin_realisasi_transport`
+--
+ALTER TABLE `perjadin_realisasi_transport`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `perjadin_realisasi_uang_harian`
+--
+ALTER TABLE `perjadin_realisasi_uang_harian`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `perjadin_realisasi_uang_hotel`
+--
+ALTER TABLE `perjadin_realisasi_uang_hotel`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `perjadin_susunan_tim`
 --
 ALTER TABLE `perjadin_susunan_tim`
@@ -1661,13 +1751,31 @@ ALTER TABLE `perjadin_rab`
 -- AUTO_INCREMENT for table `perjadin_realisasi`
 --
 ALTER TABLE `perjadin_realisasi`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `perjadin_realisasi_lampiran`
 --
 ALTER TABLE `perjadin_realisasi_lampiran`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `perjadin_realisasi_transport`
+--
+ALTER TABLE `perjadin_realisasi_transport`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `perjadin_realisasi_uang_harian`
+--
+ALTER TABLE `perjadin_realisasi_uang_harian`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `perjadin_realisasi_uang_hotel`
+--
+ALTER TABLE `perjadin_realisasi_uang_hotel`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `perjadin_susunan_tim`

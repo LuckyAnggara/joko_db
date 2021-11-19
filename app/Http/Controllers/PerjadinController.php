@@ -14,6 +14,9 @@ use App\Models\PerjadinObrik;
 use App\Models\PerjadinRAB;
 use App\Models\PerjadinRealisasi;
 use App\Models\PerjadinRealisasiLampiran;
+use App\Models\PerjadinRealisasiUangHarian;
+use App\Models\PerjadinRealisasiUangHotel;
+use App\Models\PerjadinRealisasiTransport;
 use App\Models\PerjadinSusunanTim;
 use App\Models\KegiatanRealisasi;
 use App\Models\Satker;
@@ -51,6 +54,9 @@ class PerjadinController extends Controller
                 $tim->realisasi = PerjadinRealisasi::find($tim->perjadin_realisasi_id);
                 if($tim->realisasi){
                     $tim->realisasi['lampiran'] = PerjadinRealisasiLampiran::where('perjadin_realisasi_id', $tim->realisasi['id'])->get();
+                    $tim->realisasi['uang_harian'] = PerjadinRealisasiUangHarian::where('perjadin_realisasi_id', $tim->realisasi['id'])->get();
+                    $tim->realisasi['uang_hotel'] = PerjadinRealisasiUangHotel::where('perjadin_realisasi_id', $tim->realisasi['id'])->get();
+                    $tim->realisasi['transport'] = PerjadinRealisasiTransport::where('perjadin_realisasi_id', $tim->realisasi['id'])->get();
                 }
                 $tim->peran = Peran::find($tim->peran_id);
             }
@@ -246,36 +252,69 @@ class PerjadinController extends Controller
         foreach ($request->realisasi as $key => $realisasi) {
             $tim = PerjadinSusunanTim::find($realisasi['pegawai']['susunan_tim_id']);
             if($tim){
-                $realisasi = PerjadinRealisasi::create([
+                $a = PerjadinRealisasi::create([
                     'perjadin_id' => $request->perjadin['id'],
                     'susunan_tim_perjadin_id' => $realisasi['pegawai']['susunan_tim_id'],
-                    'jumlah_hari'=> $realisasi['jumlah_hari'],
-                    'jumlah_malam'=> $realisasi['jumlah_malam'],
-                    'darat'=> $realisasi['darat'],
-                    'laut'=> $realisasi['laut'],
+                    'total_harian'=> $realisasi['total_harian'],
+                    'total_hotel'=> $realisasi['total_hotel'],
+                    'total_transport'=> $realisasi['total_transport'],
                     'representatif'=> $realisasi['representatif'],
                     'taksi_jakarta'=> $realisasi['taksi_jakarta'],
                     'taksi_provinsi'=> $realisasi['taksi_provinsi'],
-                    'uang_harian'=> $realisasi['uang_harian'],
-                    'uang_hotel'=>$realisasi['uang_hotel'],
-                    'udara'=> $realisasi['udara'],
+                    'jakarta_riil'=> $realisasi['jakarta_riil'],
+                    'provinsi_riil'=> $realisasi['provinsi_riil'],
                     'total'=>$realisasi['total'],
-                    'jenis_hotel'=>$realisasi['jenis_hotel'],
                     'tanggal_berangkat'=> $realisasi['tanggal_berangkat'],
                     'tanggal_kembali'=> $realisasi['tanggal_kembali'],
                 ]);
 
-                if($realisasi){
-                    $total_realisasi += $realisasi['total'];
+                if($a){
+                    foreach ($realisasi['uang_harian'] as $key => $uang_harian) {
+
+                        $b = PerjadinRealisasiUangHarian::create([
+                            'perjadin_realisasi_id' => $a->id,
+                            'jumlah_hari' => $uang_harian['jumlah_hari'],
+                            'uang_harian' => $uang_harian['uang_harian'],
+                            'total' => $uang_harian['jumlah_hari'] * $uang_harian['uang_harian'],
+                            'riil' => $uang_harian['hari_riil'],
+                        ]);
+
+
+                  
+                    }
+                    foreach ($realisasi['uang_hotel'] as $key => $uang_hotel) {
+
+                        $c = PerjadinRealisasiUangHotel::create([
+                            'perjadin_realisasi_id' => $a->id,
+                            'jenis_hotel' => $uang_hotel['jenis_hotel'],
+                            'nama_hotel' => $uang_hotel['nama_hotel'],
+                            'jumlah_malam' => $uang_hotel['jumlah_malam'],
+                            'uang_hotel' => $uang_hotel['uang_hotel'],
+                            'total' => $uang_hotel['jumlah_malam'] * $uang_hotel['uang_hotel'],
+                            'riil' => $uang_hotel['hotel_riil'],
+                        ]);
+                    }
+                    foreach ($realisasi['transport'] as $key => $transport) {
+
+                        $d = PerjadinRealisasiTransport::create([
+                            'perjadin_realisasi_id' => $a->id,
+                            'jenis_transport' => $transport['jenis_transport'],
+                            'total' => $transport['total'],
+                            'riil' => $transport['transport_riil'],
+                        ]);
+                    }
+
+
+                    $total_realisasi += $a['total'];
 
                     $master->total_realisasi = $total_realisasi;
                     $master->status_realisasi = 'SUDAH';
                     $master->save();
                     
-                    $tim->perjadin_realisasi_id = $realisasi->id;
+                    $tim->perjadin_realisasi_id = $a->id;
                     $tim->save();
 
-                    $output[]= $realisasi;
+                    $output[]= $a;
                 }
             }
         }

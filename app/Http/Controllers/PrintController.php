@@ -19,6 +19,9 @@ use App\Models\PerjadinLog;
 use App\Models\PerjadinObrik;
 use App\Models\PerjadinRealisasi;
 use App\Models\PerjadinRealisasiLampiran;
+use App\Models\PerjadinRealisasiTransport;
+use App\Models\PerjadinRealisasiUangHarian;
+use App\Models\PerjadinRealisasiUangHotel;
 use App\Models\Realisasi;
 use App\Models\Satker;
 use App\Models\Tahun;
@@ -30,8 +33,7 @@ use Illuminate\Support\Facades\Storage;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Riskihajar\Terbilang\Facades\Terbilang;
-
-
+use Symfony\Component\HttpKernel\Event\RequestEvent;
 
 class PrintController extends Controller
 {
@@ -319,5 +321,177 @@ class PrintController extends Controller
         $template_document = new \PhpOffice\PhpWord\TemplateProcessor(storage_path('app\public\template\template_dop.docx'));
         $template_document->saveAs(storage_path('app\public\dop\dop.docx'));
         return Storage::disk('public')->download('dop\dop.docx');
+    }
+
+    function printDpr(Request $request){
+        $id = $request->id;
+        $tempat = $request->tempat;
+        $tanggal = $request->tanggal;  
+        
+
+        $realisasi = PerjadinRealisasi::find($id);
+        $realisasi->pegawai = Pegawai::find(PerjadinSusunanTim::find($realisasi->susunan_tim_perjadin_id)->pegawai_id);
+        $realisasi->pegawai['jabatan'] = Jabatan::find($realisasi->pegawai['jabatan_id']);
+        $realisasi->perjadin = Perjadin::find($realisasi->perjadin_id);
+        $realisasi->ppk = Pegawai::find($realisasi->perjadin['ppk_id']);
+        $realisasi->surat_perintah = SuratPerintah::find($realisasi->perjadin['surat_perintah_id']);
+        $realisasi->uang_harian = PerjadinRealisasiUangHarian::where('perjadin_realisasi_id',$realisasi->id)->get();
+        $realisasi->uang_hotel = PerjadinRealisasiUangHotel::where('perjadin_realisasi_id',$realisasi->id)->get();
+        $realisasi->transport = PerjadinRealisasiTransport::where('perjadin_realisasi_id',$realisasi->id)->get();
+
+        $riil = [];
+        $total_riil = 0;
+        $no = 0;
+        foreach ($realisasi->uang_harian as $key => $uang_harian) 
+        {
+            $desc = '';
+            if($uang_harian['riil'] === 1){
+                $no++;
+                $desc = 'Uang Harian sebesar '."Rp " . number_format($uang_harian['uang_harian'],0,',','.'). ' x ' .$uang_harian['jumlah_hari']. ' hari';
+                $riil[] = array('no'=>$no, 'desc' =>$desc, 'total' =>  number_format($uang_harian['total'],0,',','.'));
+                $total_riil += $uang_harian->total;
+            }
+
+        }
+        foreach ($realisasi->uang_hotel as $key => $uang_hotel) 
+        {
+            $desc = '';
+            if($uang_hotel['riil'] === 1){
+                $no++;
+                $desc = 'Uang Hotel sebesar '."Rp " . number_format($uang_hotel['uang_hotel'],0,',','.'). ' x ' .$uang_hotel['jumlah_malam']. ' malam';
+                $riil[] = array('no'=>$no,'desc' =>$desc, 'total' =>  number_format($uang_hotel['total'],0,',','.'));
+                $total_riil += $uang_hotel->total;
+            }
+
+        }
+        foreach ($realisasi->transport as $key => $transport) 
+        {
+            $desc = '';
+            if($transport['riil'] === 1){
+                $no++;
+                $desc = 'Uang Transport '. $transport['jenis_transport'];
+                $riil[] = array('no'=>$no,'desc' =>$desc, 'total' =>  number_format($transport['total'],0,',','.'));
+
+                $total_riil += $transport->total;
+            }
+
+        }
+        $realisasi->riil = $riil;
+
+
+        // return $realisasi;
+     
+        // return $tim;
+       
+        // $bulan = $request->input('bulan');
+        // $bulanString = date('F', mktime(0, 0, 0, $bulan, 10));
+        // $document_with_table = new \PhpOffice\PhpWord\PhpWord();        
+        // // // //Open template with ${table}
+        $template_document = new \PhpOffice\PhpWord\TemplateProcessor(storage_path('app\public\template\template_pengeluaran_riil.docx'));
+        
+        $nomor_surat_perintah = $realisasi->surat_perintah['nomor_surat'];
+        $tanggal_surat_perintah = $realisasi->surat_perintah['tanggal_surat']->format('d F Y');
+       
+        $nama = $realisasi->pegawai['nama'];
+        $nip = $realisasi->pegawai['nip'];
+        $jabatan = $realisasi->pegawai['jabatan']['nama'];
+
+        $nama_ppk= $realisasi->ppk['nama'];
+        $nip_ppk = $realisasi->ppk['nip'];
+
+        $values = [
+            ['desc' => 1, 'total' => 100000],
+            ['desc' => 2, 'total' => 300000],
+        ];
+        
+        // // // // Replace mark by xml code of table
+        $template_document->setValue('nomor_surat_perintah', $nomor_surat_perintah);
+        $template_document->setValue('tanggal_surat_perintah', $tanggal_surat_perintah);
+        $template_document->setValue('total_riil', number_format($total_riil,0,',','.'));
+        $template_document->setValue('nama', $nama);
+        $template_document->setValue('nip', $nip);
+        $template_document->setValue('jabatan', $jabatan);
+        $template_document->setValue('nama_ppk', $nama_ppk);
+        $template_document->setValue('nip_ppk', $nip_ppk);
+        $template_document->setValue('tempat', $tempat);
+        $template_document->setValue('tanggal', $tanggal);
+
+
+
+        $template_document->cloneRowAndSetValues('no', $realisasi->riil);
+  
+        // END SET TABLE
+        // //save template with table
+        $template_document->saveAs(storage_path('app\public\realisasi\dpr\dpr_'.$id.'.docx'));
+        return Storage::disk('public')->download('realisasi\dpr\dpr_'.$id.'.docx');
+    }
+
+    function printKuitansi(Request $request){
+        $id = $request->id;
+        // $tanggal = $request->tanggal;
+        
+
+        $realisasi = PerjadinRealisasi::find($id);
+        $realisasi->pegawai = Pegawai::find(PerjadinSusunanTim::find($realisasi->susunan_tim_perjadin_id)->pegawai_id);
+        $realisasi->pegawai['jabatan'] = Jabatan::find($realisasi->pegawai['jabatan_id']);
+        $realisasi->perjadin = Perjadin::find($realisasi->perjadin_id);
+        $realisasi->perjadin['mak'] = Mak::find($realisasi->perjadin['mak_id']);
+        $realisasi->perjadin['tahun'] = Tahun::find($realisasi->perjadin['tahun_id']);
+        $realisasi->ppk = Pegawai::find($realisasi->perjadin['ppk_id']);
+        $realisasi->bendahara = Pegawai::find($realisasi->perjadin['bendahara_id']);
+        $realisasi->surat_perintah = SuratPerintah::find($realisasi->perjadin['surat_perintah_id']);
+        $realisasi->uang_harian_data = PerjadinRealisasiUangHarian::where('perjadin_realisasi_id',$realisasi->id)->get();
+        $realisasi->uang_hotel_data = PerjadinRealisasiUangHotel::where('perjadin_realisasi_id',$realisasi->id)->get();
+        $realisasi->transport_data = PerjadinRealisasiTransport::where('perjadin_realisasi_id',$realisasi->id)->get();
+
+
+        foreach ($realisasi->transport_data as $key => $transport) {
+            $desc = $transport['jenis_transport'];
+            $a[] = array('desc_transport' =>$desc, 'total_transport' =>  'Rp.' . number_format($transport['total'],0,',','.')); 
+        }
+        $realisasi->transport = $a;
+
+        foreach ($realisasi->uang_harian_data as $key => $uang_harian) 
+        {
+            $desc = $uang_harian['jumlah_hari']. ' hari x Rp ' . number_format($uang_harian['uang_harian'],0,',','.');
+            $b[] = array('desc_harian' =>$desc, 'total_harian' => 'Rp.' . number_format($uang_harian['total'],0,',','.'));
+        }
+        $realisasi->uang_harian = $b;
+        foreach ($realisasi->uang_hotel_data as $key => $uang_hotel) 
+        {
+            $desc = $uang_hotel['jumlah_malam']. ' hari x Rp ' . number_format($uang_hotel['uang_hotel'],0,',','.');
+            $c[] = array('desc_hotel' =>$desc, 'total_hotel' => 'Rp.' . number_format($uang_hotel['total'],0,',','.'));
+        }
+        $realisasi->uang_hotel = $c;
+
+        // return $realisasi;
+
+        $template_document = new \PhpOffice\PhpWord\TemplateProcessor(storage_path('app\public\template\template_kuitansi.docx'));
+        
+        $template_document->setValue('no_perjadin', $realisasi->perjadin['no_perjadin']);
+        $template_document->setValue('kode_mak', $realisasi->perjadin['mak']['kode']);
+        $template_document->setValue('tahun', $realisasi->perjadin['tahun']['nama']);
+        $template_document->cloneRowAndSetValues('desc_transport', $realisasi->transport);
+        $template_document->cloneRowAndSetValues('desc_harian', $realisasi->uang_harian);
+        $template_document->cloneRowAndSetValues('desc_hotel', $realisasi->uang_hotel);
+        $template_document->setValue('total_realisasi', 'Rp.' . number_format($realisasi->total,0,',','.'));
+        $template_document->setValue('terbilang',Terbilang::make($realisasi->total, ' rupiah'));
+        $template_document->setValue('no_sppd',$realisasi->surat_perintah['nomor_surat']);
+        $template_document->setValue('tanggal_sppd',$realisasi->surat_perintah['tanggal_surat']->format('d F Y'));
+        $template_document->setValue('tujuan',$realisasi->perjadin['tujuan']);
+        $template_document->setValue('maksud',$realisasi->perjadin['maksud']);
+        $template_document->setValue('taksi_jakarta', 'Rp.' . number_format($realisasi->taksi_jakarta,0,',','.'));
+        $template_document->setValue('taksi_provinsi', 'Rp.' . number_format($realisasi->taksi_provinsi,0,',','.'));
+        $template_document->setValue('total_representatif', 'Rp.' . number_format($realisasi->representatif,0,',','.'));
+        $template_document->setValue('nama', $realisasi->pegawai['nama']);
+        $template_document->setValue('nip', $realisasi->pegawai['nip']);
+        $template_document->setValue('nama_ppk', $realisasi->ppk['nama']);
+        $template_document->setValue('nip_ppk', $realisasi->ppk['nip']);
+        $template_document->setValue('nama_bendahara', $realisasi->bendahara['nama']);
+        $template_document->setValue('nip_bendahara', $realisasi->bendahara['nip']);
+        // $template_document->setValue('tanggal', $tanggal);
+
+        $template_document->saveAs(storage_path('app\public\realisasi\kuitansi\kuitansi_'.$id.'.docx'));
+        return Storage::disk('public')->download('realisasi\kuitansi\kuitansi_'.$id.'.docx');
     }
 }

@@ -14,4 +14,7 @@ class SuratPerintah extends Model
     ];
     public $primaryKey = 'id';
     public $timestamps = true;
+    protected $dates = [
+        'tanggal_surat',
+    ];
 }

@@ -378,15 +378,6 @@ class PrintController extends Controller
         }
         $realisasi->riil = $riil;
 
-
-        // return $realisasi;
-     
-        // return $tim;
-       
-        // $bulan = $request->input('bulan');
-        // $bulanString = date('F', mktime(0, 0, 0, $bulan, 10));
-        // $document_with_table = new \PhpOffice\PhpWord\PhpWord();        
-        // // // //Open template with ${table}
         $template_document = new \PhpOffice\PhpWord\TemplateProcessor(storage_path('app\public\template\template_pengeluaran_riil.docx'));
         
         $nomor_surat_perintah = $realisasi->surat_perintah['nomor_surat'];
@@ -493,5 +484,39 @@ class PrintController extends Controller
 
         $template_document->saveAs(storage_path('app\public\realisasi\kuitansi\kuitansi_'.$id.'.docx'));
         return Storage::disk('public')->download('realisasi\kuitansi\kuitansi_'.$id.'.docx');
+    }
+
+    function printSptjm(Request $request){
+        $id = $request->id;
+        $tanggal = $request->tanggal;
+        $tempat = $request->tempat;
+        
+
+        $realisasi = PerjadinRealisasi::find($id);
+        $realisasi->pegawai = Pegawai::find(PerjadinSusunanTim::find($realisasi->susunan_tim_perjadin_id)->pegawai_id);
+        $realisasi->pegawai['jabatan'] = Jabatan::find($realisasi->pegawai['jabatan_id']);
+        $realisasi->perjadin = Perjadin::find($realisasi->perjadin_id);
+        $realisasi->perjadin['mak'] = Mak::find($realisasi->perjadin['mak_id']);
+        $realisasi->perjadin['tahun'] = Tahun::find($realisasi->perjadin['tahun_id']);
+        $realisasi->ppk = Pegawai::find($realisasi->perjadin['ppk_id']);
+        $realisasi->bendahara = Pegawai::find($realisasi->perjadin['bendahara_id']);
+        $realisasi->surat_perintah = SuratPerintah::find($realisasi->perjadin['surat_perintah_id']);
+
+        // return $realisasi;
+
+        $template_document = new \PhpOffice\PhpWord\TemplateProcessor(storage_path('app\public\template\template_sptjm.docx'));
+        
+        $template_document->setValue('no_sppd',$realisasi->surat_perintah['nomor_surat']);
+        $template_document->setValue('tanggal_sppd',$realisasi->surat_perintah['tanggal_surat']->format('d F Y'));
+        $template_document->setValue('nama', $realisasi->pegawai['nama']);
+        $template_document->setValue('nip', $realisasi->pegawai['nip']);
+        $template_document->setValue('jabatan', $realisasi->pegawai['jabatan']['nama']);
+        $template_document->setValue('nama_ppk', $realisasi->ppk['nama']);
+        $template_document->setValue('nip_ppk', $realisasi->ppk['nip']);
+        $template_document->setValue('tempat', $tempat);
+        $template_document->setValue('tanggal', $tanggal);
+
+        $template_document->saveAs(storage_path('app\public\realisasi\sptjm\sptjm_'.$id.'.docx'));
+        return Storage::disk('public')->download('realisasi\sptjm\sptjm_'.$id.'.docx');
     }
 }

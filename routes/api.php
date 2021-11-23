@@ -170,6 +170,7 @@ Route::group(['prefix' => 'print'], function () {
     Route::get('/download-spd', 'PrintController@printSpd');
     Route::get('/download-dpr', 'PrintController@printDpr');
     Route::get('/download-kuitansi', 'PrintController@printKuitansi');
+    Route::get('/download-sptjm', 'PrintController@printSptjm');
     Route::get('/download-spb', 'PrintController@printSpb');
     Route::get('/download-dop', 'PrintController@printDOP');
     Route::get('/download-rab-perjadin', 'PrintController@printRabPerjadin');

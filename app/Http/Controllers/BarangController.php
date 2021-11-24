@@ -31,6 +31,15 @@ class BarangController extends Controller
             $debit = KartuPersediaan::where('barang_id', $value->id)->sum('debit');
             $kredit = KartuPersediaan::where('barang_id', $value->id)->sum('kredit');
             $value->saldo_akhir = $debit - $kredit;
+            $persediaan = KartuPersediaan::where('barang_id', $value->id)->orderBy('id', 'asc')->get();
+            $saldo = 0;
+            foreach ($persediaan as $key => $x) {
+               $saldo += $x->debit - $x->kredit;
+               $persediaan[$key]->saldo = $saldo;
+            }
+
+            $value->kartu_persediaan = $persediaan;
+
         }
         return response()->json($master, 200);
     }

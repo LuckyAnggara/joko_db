@@ -86,6 +86,19 @@ class PerjadinController extends Controller
         return response()->json($master, 200);
     }
 
+    public function indexPegawaiBelumRealisasi(Request $payload){
+        $tahun_id = $payload->tahun;
+
+        $master = PerjadinSusunanTim::where('status_realisasi','SUDAH')->get();
+        foreach ($master as $key => $value) {
+            $perjadin = Perjadin::find($value->perjadin_id);
+            $diff=strtotime($perjadin->tanggal_kembali,'Y-m-d');
+
+            $value->diff=$diff;
+        }
+        return response()->json($master, 200);
+    }
+
     public function destroy(Request $request){
         $id = $request->perjadin_id;
 
@@ -208,6 +221,7 @@ class PerjadinController extends Controller
                     'perjadin_id'=> $perjadin->id,
                     'pegawai_id'=> $tim['pegawai']['id'],
                     'peran_id'=> $tim['peran']['id'],
+                    'status_realisasi'=> 'BELUM',
                 ]);
 
                 if($anggota){
@@ -316,6 +330,8 @@ class PerjadinController extends Controller
 
                     $output[]= $a;
                 }
+                $tim->status_realisasi = 'SUDAH';
+                $tim->save();
             }
         }
         return response()->json($output, 200);

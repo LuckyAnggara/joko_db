@@ -129,6 +129,7 @@ Route::group(['prefix' => 'perjadin'], function () {
     Route::get('/', 'PerjadinController@index');
     Route::get('/generate', 'PerjadinController@generateKodePerjadin');
     Route::get('/download-lampiran', 'PerjadinController@downloadLampiran');
+    Route::get('/pegawai-belum-realisasi', 'PerjadinController@indexPegawaiBelumRealisasi');
     //POST
     Route::post('/store', 'PerjadinController@store');
     Route::post('/store-realisasi', 'PerjadinController@storeRealisasi');

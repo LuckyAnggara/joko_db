@@ -134,13 +134,13 @@ class MakController extends Controller
         return response()->json($message, 200);
     }
 
-    public function saldo($id, $tahun_id, $bidang_id){
+    // public function saldo($id, $tahun_id, $bidang_id){
 
-        $output['realisasi'] = KegiatanRealisasi::where('mak_id',$id)->where('tahun_id', $tahun_id)->where('bidang_id', $bidang_id)->where('status','SELESAI')->sum('nominal');
-        $output['unrealisasi'] = KegiatanRealisasi::where('mak_id',$id)->where('tahun_id', $tahun_id)->where('bidang_id', $bidang_id)->whereIn ('status', ['VERIFIKASI','PEMBAYARAN'])->sum('nominal');
+    //     $output['realisasi'] = KegiatanRealisasi::where('mak_id',$id)->where('tahun_id', $tahun_id)->where('bidang_id', $bidang_id)->where('status','SELESAI')->sum('nominal');
+    //     $output['unrealisasi'] = KegiatanRealisasi::where('mak_id',$id)->where('tahun_id', $tahun_id)->where('bidang_id', $bidang_id)->whereIn ('status', ['VERIFIKASI','PEMBAYARAN'])->sum('nominal');
         
-        return response()->json($output, 200);
-    }
+    //     return response()->json($output, 200);
+    // }
 
     public function penyerapanSemua(Request $payload){
         $tahun_id = $payload->input('tahun_id');

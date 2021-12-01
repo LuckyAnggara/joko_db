@@ -36,6 +36,7 @@ class MakController extends Controller
                 $value->rincian = [...$kegiatan,...$perjadin];
     
                 $value->bidang = Bidang::find($value->bidang_id);
+                $value->saldo = $this->cekSaldoMak($value->id, $tahun_id, $bidang_id);
             }
         }else if($bidang_id == 0){
             $master =  Mak::where('tahun_id', $tahun_id)->get();
@@ -56,6 +57,7 @@ class MakController extends Controller
                 $value->rincian = [...$kegiatan,...$perjadin];
     
                 $value->bidang = Bidang::find($value->bidang_id);
+                $value->saldo = $this->cekSaldoMak($value->id, $tahun_id, $bidang_id);
             }
         }
        
@@ -160,6 +162,32 @@ class MakController extends Controller
         }
 
         return response()->json($bidang, 200);
+    }
+
+    public function cekSaldoMak($id, $tahun_id, $bidang_id){
+
+        $mak = Mak::find($id);
+        if($bidang_id != 0){
+            $realisasi_kegiatan =  Kegiatan::where('mak_id',$id)->where('tahun_id', $tahun_id)->where('bidang_id', $bidang_id)->where('status','SELESAI')->sum('total_realisasi');
+            $realisasi_perjadin = Perjadin::where('mak_id',$id)->where('tahun_id', $tahun_id)->where('bidang_id', $bidang_id)->where('status','SELESAI')->sum('total_realisasi');
+            
+            $unrealisasi_kegiatan =  Kegiatan::where('mak_id',$id)->where('tahun_id', $tahun_id)->where('bidang_id', $bidang_id)->where('status','!=','SELESAI')->sum('total_anggaran');
+            $unrealisasi_perjadin = Perjadin::where('mak_id',$id)->where('tahun_id', $tahun_id)->where('bidang_id', $bidang_id)->where('status','!=','SELESAI')->sum('total_anggaran');
+        }else{
+            $realisasi_kegiatan =  Kegiatan::where('mak_id',$id)->where('tahun_id', $tahun_id)->where('status','SELESAI')->sum('total_realisasi');
+            $realisasi_perjadin = Perjadin::where('mak_id',$id)->where('tahun_id', $tahun_id)->where('status','SELESAI')->sum('total_realisasi');
+            
+            $unrealisasi_kegiatan =  Kegiatan::where('mak_id',$id)->where('tahun_id', $tahun_id)->where('status','!=','SELESAI')->sum('total_anggaran');
+            $unrealisasi_perjadin = Perjadin::where('mak_id',$id)->where('tahun_id', $tahun_id)->where('status','!=','SELESAI')->sum('total_anggaran');
+        }
+
+
+
+        $output['realisasi']  = $realisasi_kegiatan + $realisasi_perjadin;
+        $output['unrealisasi']= $unrealisasi_kegiatan + $unrealisasi_perjadin;
+      
+        $output['saldo'] =  $mak->pagu -  $output['realisasi'] -  $output['unrealisasi'];
+        return $output;
     }
 
 }

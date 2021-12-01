@@ -117,6 +117,9 @@ Route::group(['prefix' => 'kegiatan'], function () {
     Route::post('/store-rencana', 'KegiatanController@storeRencana');
     Route::post('/upload-lampiran-rencana', 'KegiatanController@uploadLampiranRencana');
     Route::post('/update-realisasi', 'KegiatanController@updateRealisasi');
+    Route::post('/edit-realisasi', 'KegiatanController@editRealisasi');
+    Route::post('/edit-mak', 'KegiatanController@editMak');
+    Route::post('/edit-umum', 'KegiatanController@editUmum');
     Route::post('/upload-lampiran-tambahan', 'KegiatanController@uploadLampiranRencana');
     Route::post('/status', 'KegiatanController@status');
     //DESTROY

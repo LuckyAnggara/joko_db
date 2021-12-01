@@ -198,6 +198,49 @@ class KegiatanController extends Controller
         $master->save();
     }
 
+    public function editRealisasi(Request $payload){
+        $id = $payload->id;
+
+        $master = Kegiatan::find($id);
+
+        $master->tanggal_realisasi_kegiatan = $payload->tanggal_realisasi_kegiatan;
+        $master->total_realisasi = $payload->total_realisasi;
+        $master->checker_id = $payload->checker['id'];
+        $master->ppk_id = $payload->ppk['id'];
+        $master->bendahara_id = $payload->bendahara['id'];
+        $master->status_realisasi = 'SUDAH';
+
+        $master->save();
+        return response()->json($master, 200);
+
+
+    }
+
+
+    public function editMak(Request $payload){
+        $id = $payload->id;
+        $master = Kegiatan::find($id);
+        $master->mak_id = $payload->mak['id'];
+
+        $master->save();
+        return response()->json($master, 200);
+    }
+
+    public function editUmum(Request $payload){
+        $id = $payload->id;
+        $master = Kegiatan::find($id);
+        $master->tahun_id = $payload->tahun['id'];
+        $master->tanggal_rencana_kegiatan = $payload->tanggal_rencana_kegiatan;
+        $master->total_anggaran = $payload->total_anggaran;
+        $master->jenis_kegiatan_id = $payload->jenis_kegiatan['id'];
+        $master->lokasi = $payload->lokasi;
+        $master->output = $payload->output;
+        $master->uraian = $payload->uraian;
+
+        $master->save();
+        return response()->json($master, 200);
+    }
+
     public function makeNomorKwitansi(){
 
         $master = Kegiatan::all()->last();

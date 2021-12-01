@@ -509,4 +509,11 @@ class PerjadinController extends Controller
         }
         return $bidang_id.'-'.$date.'-'.'1';      
     }
+
+    // EDIT
+
+    public function editPerjadinUmum(Request $payload){
+        $perjadin_id = $payload->id;
+        $surat_perintah_id = $payload->surat_perintah_id;
+    }
 }

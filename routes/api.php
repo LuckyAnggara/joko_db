@@ -136,6 +136,7 @@ Route::group(['prefix' => 'perjadin'], function () {
     //POST
     Route::post('/store', 'PerjadinController@store');
     Route::post('/store-realisasi', 'PerjadinController@storeRealisasi');
+    Route::post('/edit-umum', 'PerjadinController@editPerjadinUmum');
     Route::post('/upload-lampiran', 'PerjadinController@uploadLampiran');
     Route::post('/upload-perjadin-realisasi-lampiran', 'PerjadinController@uploadPerjadinRealisasiLampiran');
     Route::post('/status', 'PerjadinController@status');

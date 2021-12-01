@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Bidang;
+use App\Models\Jabatan;
 use App\Models\Kegiatan;
 use App\Models\Mak;
 use App\Models\Pegawai;
@@ -50,6 +51,7 @@ class PerjadinController extends Controller
             // DETAIL SUSUNAN TIM
             foreach ($value->susunan_tim as $key => $tim) {
                 $tim->pegawai = Pegawai::find($tim->pegawai_id);
+                $tim->pegawai['jabatan'] = Jabatan::find($tim->pegawai['jabatan_id']);
                 $tim->anggaran = PerjadinRAB::find($tim->perjadin_rab_id);
                 $tim->realisasi = PerjadinRealisasi::find($tim->perjadin_realisasi_id);
                 if($tim->realisasi){
@@ -515,5 +517,98 @@ class PerjadinController extends Controller
     public function editPerjadinUmum(Request $payload){
         $perjadin_id = $payload->id;
         $surat_perintah_id = $payload->surat_perintah_id;
+
+        $perjadin = Perjadin::find($perjadin_id);
+
+        $perjadin->jumlah_hari = $payload->jumlah_hari;
+        $perjadin->tujuan = $payload->tujuan;
+        $perjadin->keberangkatan = $payload->keberangkatan;
+        $perjadin->tanggal_berangkat = $payload->tanggal_berangkat;
+        $perjadin->tanggal_kembali = $payload->tanggal_kembali;
+        $perjadin->total_anggaran = $payload->total_anggaran;
+        $perjadin->maksud = $payload->maksud;
+        $perjadin->output = $payload->output;
+        $perjadin->tahun_id = $payload->tahun['id'];
+        $perjadin->save();
+
+        $surat_perintah = SuratPerintah::find($surat_perintah_id);
+        $surat_perintah->nomor_surat = $payload->surat_perintah['nomor_surat'];
+        $surat_perintah->perihal = $payload->surat_perintah['perihal'];
+        $surat_perintah->tanggal_surat = $payload->surat_perintah['tanggal_surat'];
+        $surat_perintah->save();
+
+        $obrik = PerjadinObrik::where('perjadin_id', $perjadin_id)->get();
+        foreach ($obrik as $key => $value) {
+            $value->delete();
+        }
+
+        foreach ($payload->obrik as $key => $x) {
+            PerjadinObrik::create([
+                'perjadin_id' => $perjadin_id,
+                'satker_id' => $x['satker']['id'],
+                'urusan_id' => $x['urusan']['id'],
+            ]);
+        }
+        return response()->json($perjadin, 200);
+    }
+    public function editPerjadinMak(Request $payload){
+
+        $perjadin = Perjadin::find($payload->id);
+        $perjadin->mak_id = $payload->mak['id'];
+        $perjadin->save();
+        return response()->json($perjadin, 200);
+    }
+
+    public function editPerjadinTim(Request $payload){
+        $perjadin_id = $payload->id;
+
+        $perjadin = Perjadin::find($payload->id);
+        $perjadin->total_anggaran = $payload->total_anggaran;
+        $perjadin->save();
+
+        $susunan_tim = PerjadinSusunanTim::where('perjadin_id', $perjadin_id)->get();
+        foreach ($susunan_tim as $key => $value) {
+            $value->delete();
+        }
+
+        foreach ($payload->susunan_tim as $key => $tim) {
+            $anggota = PerjadinSusunanTim::create([
+                'perjadin_id'=> $perjadin->id,
+                'pegawai_id'=> $tim['pegawai']['id'],
+                'peran_id'=> $tim['peran']['id'],
+                'status_realisasi'=> $tim['status_realisasi'],
+            ]);
+
+            if($anggota){
+                $anggaran = PerjadinRAB::create([
+                    'perjadin_id' => $perjadin->id,
+                    'susunan_tim_perjadin_id' => $anggota->id,
+                    'jumlah_hari'=> $tim['anggaran']['jumlah_hari'],
+                    'jumlah_malam'=> $tim['anggaran']['jumlah_malam'],
+                    'darat'=> $tim['anggaran']['darat'],
+                    'laut'=> $tim['anggaran']['laut'],
+                    'representatif'=> $tim['anggaran']['representatif'],
+                    'taksi_jakarta'=> $tim['anggaran']['taksi_jakarta'],
+                    'taksi_provinsi'=> $tim['anggaran']['taksi_provinsi'],
+                    'uang_harian'=> $tim['anggaran']['uang_harian'],
+                    'uang_hotel'=> $tim['anggaran']['uang_hotel'],
+                    'udara'=> $tim['anggaran']['udara'],
+                    'total'=> $tim['anggaran']['total'],
+                    'tanggal_berangkat'=> $tim['anggaran']['tanggal_berangkat'],
+                    'tanggal_kembali'=> $tim['anggaran']['tanggal_kembali'],
+                ]);
+                $anggota->perjadin_rab_id = $anggaran->id;
+                $anggota->save();
+
+                // $anggota->anggaran = $anggaran;
+            }
+            
+            $tim[] = $anggota;
+
+            $perjadin->susunan_tim= $tim;
+        }
+
+        return response()->json($perjadin, 200);
+     
     }
 }

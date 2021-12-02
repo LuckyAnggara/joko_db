@@ -343,15 +343,88 @@ class PerjadinController extends Controller
     public function uploadPerjadinRealisasiLampiran(Request $payload){
         $output = [];
         $id = $payload->id;
-        
-        if($payload->file('lampiran')){
-            foreach ($payload->file('lampiran') as $file) {
-            $path = Storage::disk('public')->put('perjadin/lampiran',$file);
+        $user_id = $payload->user_id;
+
+        if($payload->file('lampiran_harian')){
+            foreach ($payload->file('lampiran_harian') as $file) {
+            $path = Storage::disk('public')->put('perjadin/lampiran/harian',$file);
             $nama = $file->getClientOriginalName();
             $data = PerjadinRealisasiLampiran::create([
                 'perjadin_realisasi_id' => $id,
-                'nama' => $nama,
+                'jenis'=>'HARIAN',
+                'nama' => 'HARIAN_'.$nama,
                 'file' => $path,
+                'user_id' => $user_id,
+            ]);
+            $output[] = $data;
+            }
+        }
+        if($payload->file('lampiran_hotel')){
+            foreach ($payload->file('lampiran_hotel') as $file) {
+            $path = Storage::disk('public')->put('perjadin/lampiran/hotel',$file);
+            $nama = $file->getClientOriginalName();
+            $data = PerjadinRealisasiLampiran::create([
+                'perjadin_realisasi_id' => $id,
+                'jenis'=>'HOTEL',
+                'nama' => 'HOTEL_'.$nama,
+                'file' => $path,
+                'user_id' => $user_id,
+            ]);
+            $output[] = $data;
+            }
+        }
+        if($payload->file('lampiran_transport')){
+            foreach ($payload->file('lampiran_transport') as $file) {
+            $path = Storage::disk('public')->put('perjadin/lampiran/transport',$file);
+            $nama = $file->getClientOriginalName();
+            $data = PerjadinRealisasiLampiran::create([
+                'perjadin_realisasi_id' => $id,
+                'jenis'=>'TRANSPORT',
+                'nama' =>'TRANSPORT_'. $nama,
+                'file' => $path,
+                'user_id' => $user_id,
+            ]);
+            $output[] = $data;
+            }
+        }
+        if($payload->file('lampiran_taksi')){
+            foreach ($payload->file('lampiran_taksi') as $file) {
+            $path = Storage::disk('public')->put('perjadin/lampiran/taksi',$file);
+            $nama = $file->getClientOriginalName();
+            $data = PerjadinRealisasiLampiran::create([
+                'perjadin_realisasi_id' => $id,
+                'jenis'=>'TAKSI',
+                'nama' =>'TAKSI_'. $nama,
+                'file' => $path,
+                'user_id' => $user_id,
+            ]);
+            $output[] = $data;
+            }
+        }
+        if($payload->file('lampiran_representatif')){
+            foreach ($payload->file('lampiran_representatif') as $file) {
+            $path = Storage::disk('public')->put('perjadin/lampiran/representatif',$file);
+            $nama = $file->getClientOriginalName();
+            $data = PerjadinRealisasiLampiran::create([
+                'perjadin_realisasi_id' => $id,
+                'jenis'=>'REPRESENTATIF',
+                'nama' =>'REPRESENTATIF_'. $nama,
+                'file' => $path,
+                'user_id' => $user_id,
+            ]);
+            $output[] = $data;
+            }
+        }
+        if($payload->file('lampiran_lainnya')){
+            foreach ($payload->file('lampiran_lainnya') as $file) {
+            $path = Storage::disk('public')->put('perjadin/lampiran/lainnya',$file);
+            $nama = $file->getClientOriginalName();
+            $data = PerjadinRealisasiLampiran::create([
+                'perjadin_realisasi_id' => $id,
+                'jenis'=>'LAINNYA',
+                'nama' => 'LAINNYA_'.$nama,
+                'file' => $path,
+                'user_id' => $user_id,
             ]);
             $output[] = $data;
             }
@@ -607,6 +680,8 @@ class PerjadinController extends Controller
 
             $perjadin->susunan_tim= $tim;
         }
+
+        
 
         return response()->json($perjadin, 200);
      

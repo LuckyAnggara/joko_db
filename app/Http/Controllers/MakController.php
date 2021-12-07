@@ -7,6 +7,7 @@ use App\Models\Kegiatan;
 use App\Models\Mak;
 use App\Models\KegiatanRealisasi;
 use App\Models\KegiatanRealisasiLampiran;
+use App\Models\Pegawai;
 use App\Models\Perjadin;
 use Illuminate\Http\Request;
 
@@ -136,14 +137,6 @@ class MakController extends Controller
         return response()->json($message, 200);
     }
 
-    // public function saldo($id, $tahun_id, $bidang_id){
-
-    //     $output['realisasi'] = KegiatanRealisasi::where('mak_id',$id)->where('tahun_id', $tahun_id)->where('bidang_id', $bidang_id)->where('status','SELESAI')->sum('nominal');
-    //     $output['unrealisasi'] = KegiatanRealisasi::where('mak_id',$id)->where('tahun_id', $tahun_id)->where('bidang_id', $bidang_id)->whereIn ('status', ['VERIFIKASI','PEMBAYARAN'])->sum('nominal');
-        
-    //     return response()->json($output, 200);
-    // }
-
     public function penyerapanSemua(Request $payload){
         $tahun_id = $payload->input('tahun_id');
 
@@ -188,6 +181,36 @@ class MakController extends Controller
       
         $output['saldo'] =  $mak->pagu -  $output['realisasi'] -  $output['unrealisasi'];
         return $output;
+    }
+
+    public function cek(Request $payload){
+        $bidang_id = $payload->input('bidang_id');
+        $tahun_id = $payload->input('tahun_id');
+
+        $bulan = [1,2,3,4,5,6,7,8,9,10,11,12];
+
+        foreach ($bulan as $key => $value) {
+            $rencana_kegiatan = Kegiatan::where('tahun_id', $tahun_id)->where('bidang_id', $bidang_id)->whereMonth('created_at',$value)->sum('total_anggaran');
+            $realisasi_kegiatan = Kegiatan::where('tahun_id', $tahun_id)->where('bidang_id', $bidang_id)->whereMonth('created_at',$value)->sum('total_realisasi');
+
+            $rencana_perjadin = Perjadin::where('tahun_id', $tahun_id)->where('bidang_id', $bidang_id)->whereMonth('created_at',$value)->sum('total_anggaran');
+            $realisasi_perjadin = Perjadin::where('tahun_id', $tahun_id)->where('bidang_id', $bidang_id)->whereMonth('created_at',$value)->sum('total_realisasi');
+
+            $detail_rencana[] = $rencana_kegiatan + $rencana_perjadin;
+            $detail_realisasi[] = $realisasi_kegiatan + $realisasi_perjadin;
+        }
+        $rencana['name'] = 'RENCANA';
+        $rencana['data'] = $detail_rencana;
+        $realisasi['name'] = 'REALISASI';
+        $realisasi['data'] = $detail_realisasi;
+
+        $master[] = $rencana;
+        $master[] = $realisasi;
+
+        return response()->json($master, 200);
+
+
+
     }
 
 }

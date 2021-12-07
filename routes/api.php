@@ -29,10 +29,30 @@ Route::group(['prefix' => 'mak'], function () {
     Route::post('/store', 'MakController@store');
     Route::post('/store-revisi', 'MakController@storeRevisi');
     Route::post('/cek-kode-mak', 'MakController@cekMak');
+    Route::get('/cek', 'MakController@cek');
     //DELETE
     Route::delete('/delete-mak', 'MakController@destroy');
+
+
 });
 
+Route::group(['prefix' => 'revisi-anggaran'], function () {
+    //GET
+    Route::get('/', 'RevisiAnggaranController@index');
+    Route::get('/download-lampiran', 'RevisiAnggaranController@downloadLampiran');
+
+    //POST
+    Route::post('/store', 'RevisiAnggaranController@store');
+    Route::post('/store-revisi', 'RevisiAnggaranController@storeRevisi');
+    Route::post('/proses-revisi', 'RevisiAnggaranController@prosesRevisiAnggaran');
+    Route::post('/status-revisi-detail', 'RevisiAnggaranController@statusRevisiDetail');
+    Route::post('/status-revisi', 'RevisiAnggaranController@statusRevisi');
+    Route::post('/edit-revisi-anggaran', 'RevisiAnggaranController@editRevisi');
+    Route::post('/edit-lampiran-revisi-anggaran', 'RevisiAnggaranController@editLampiranRevisiAnggaran');
+    Route::post('/upload-lampiran-master', 'RevisiAnggaranController@uploadLampiranMaster');
+    //DESTROY
+    Route::delete('/delete-revisi-anggaran', 'RevisiAnggaranController@destroyRevisiAnggaran');
+});
 
 // REALISASI
 Route::group(['prefix' => 'realisasi'], function () {

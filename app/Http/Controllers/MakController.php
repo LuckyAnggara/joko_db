@@ -191,10 +191,10 @@ class MakController extends Controller
 
         foreach ($bulan as $key => $value) {
             $rencana_kegiatan = Kegiatan::where('tahun_id', $tahun_id)->where('bidang_id', $bidang_id)->whereMonth('created_at',$value)->sum('total_anggaran');
-            $realisasi_kegiatan = Kegiatan::where('tahun_id', $tahun_id)->where('bidang_id', $bidang_id)->whereMonth('created_at',$value)->sum('total_realisasi');
+            $realisasi_kegiatan = Kegiatan::where('tahun_id', $tahun_id)->where('bidang_id', $bidang_id)->where('status', 'SELESAI')->whereMonth('created_at',$value)->sum('total_realisasi');
 
             $rencana_perjadin = Perjadin::where('tahun_id', $tahun_id)->where('bidang_id', $bidang_id)->whereMonth('created_at',$value)->sum('total_anggaran');
-            $realisasi_perjadin = Perjadin::where('tahun_id', $tahun_id)->where('bidang_id', $bidang_id)->whereMonth('created_at',$value)->sum('total_realisasi');
+            $realisasi_perjadin = Perjadin::where('tahun_id', $tahun_id)->where('bidang_id', $bidang_id)->where('status', 'SELESAI')->whereMonth('created_at',$value)->sum('total_realisasi');
 
             $detail_rencana[] = $rencana_kegiatan + $rencana_perjadin;
             $detail_realisasi[] = $realisasi_kegiatan + $realisasi_perjadin;

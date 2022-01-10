@@ -12,7 +12,7 @@ class BMNKendaraanDinasController extends Controller
         $master =  BMNKendaraanDinas::all();
 
         foreach ($master as $key => $value) {
-            $value->pemilik = Pegawai::find($value->user_id)->get();
+            $value->pemilik = Pegawai::find($value->user_id)->first()->nama;
         }
         return response()->json($master, 200);
     }

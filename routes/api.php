@@ -18,8 +18,6 @@ Route::group(['prefix' => 'auth'], function () {
     //POST
     Route::post('/login', 'AuthController@login');
 });
-
-
 // MAK
 Route::group(['prefix' => 'mak'], function () {
     //GET
@@ -32,8 +30,12 @@ Route::group(['prefix' => 'mak'], function () {
     Route::get('/cek', 'MakController@cek');
     //DELETE
     Route::delete('/delete-mak', 'MakController@destroy');
+});
 
-
+// BMN Kendaraan Dinas
+Route::group(['prefix' => 'bmn-kendaraan-dinas'], function () {
+    //GET
+    Route::get('/', 'BMNKendaraanDinasController@index');
 });
 
 Route::group(['prefix' => 'revisi-anggaran'], function () {
@@ -125,7 +127,6 @@ Route::group(['prefix' => 'urusan'], function () {
     //GET
     Route::get('/', 'UrusanController@index');
 });
-
 // KEGIATAN BIASA
 Route::group(['prefix' => 'kegiatan'], function () {
     //GET
@@ -202,11 +203,6 @@ Route::group(['prefix' => 'print'], function () {
     Route::get('/download-dop', 'PrintController@printDOP');
     Route::get('/download-rab-perjadin', 'PrintController@printRabPerjadin');
 });
-
-
-
-
-
 
 // MASTER
 Route::group(['prefix' => 'master'], function () {

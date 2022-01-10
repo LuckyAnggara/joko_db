@@ -3,13 +3,12 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 10, 2022 at 04:31 AM
+-- Generation Time: Jan 10, 2022 at 04:36 AM
 -- Server version: 10.4.17-MariaDB
 -- PHP Version: 7.4.15
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
-SET time_zone = "+00:00";
 
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -1116,8 +1115,8 @@ CREATE TABLE `perjadin_realisasi` (
   `total_harian` double NOT NULL DEFAULT 0,
   `total_hotel` double NOT NULL DEFAULT 0,
   `total_transport` double NOT NULL DEFAULT 0,
-  `tanggal_berangkat` date NOT NULL DEFAULT current_timestamp(),
-  `tanggal_kembali` date NOT NULL DEFAULT current_timestamp(),
+  `tanggal_berangkat` date DEFAULT NULL,
+  `tanggal_kembali` date DEFAULT NULL,
   `taksi_jakarta` double NOT NULL,
   `taksi_provinsi` double NOT NULL,
   `jakarta_riil` tinyint(1) NOT NULL DEFAULT 0,

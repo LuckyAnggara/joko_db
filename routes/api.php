@@ -36,6 +36,7 @@ Route::group(['prefix' => 'mak'], function () {
 Route::group(['prefix' => 'bmn-kendaraan-dinas'], function () {
     //GET
     Route::get('/', 'BMNKendaraanDinasController@index');
+    Route::get('/get-detail', 'BMNKendaraanDinasController@getDetail');
 });
 
 Route::group(['prefix' => 'revisi-anggaran'], function () {

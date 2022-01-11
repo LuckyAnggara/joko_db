@@ -16,4 +16,14 @@ class BMNKendaraanDinasController extends Controller
         }
         return response()->json($master, 200);
     }
+
+    public function getDetail(Request $payload){
+        $nopol =  $payload->nopol;
+
+        $master = BMNKendaraanDinas::where('nopol',$nopol)->get()->first();
+        if($master){
+            return response()->json($master, 200);
+        }
+        return response()->json('no', 200);
+    }
 }

@@ -22,6 +22,7 @@ use App\Models\PerjadinRealisasiLampiran;
 use App\Models\PerjadinRealisasiTransport;
 use App\Models\PerjadinRealisasiUangHarian;
 use App\Models\PerjadinRealisasiUangHotel;
+use App\Models\Provinsi;
 use App\Models\Realisasi;
 use App\Models\Satker;
 use App\Models\Tahun;
@@ -47,6 +48,7 @@ class PrintController extends Controller
         $tim->pegawai['golongan'] = Golongan::find($tim->pegawai['golongan_id']);
         $tim->pegawai['jabatan'] = Jabatan::find($tim->pegawai['jabatan_id']);
         $tim->anggaran = PerjadinRAB::find($tim->perjadin_rab_id);
+        $tim->tujuan = Provinsi::find($tim->provinsi_id)->nama;
 
         // return $tim;
        
@@ -124,7 +126,6 @@ class PrintController extends Controller
         $template_document = new \PhpOffice\PhpWord\TemplateProcessor(storage_path('app\public\template\template_spb.docx'));
         
         $no_kwitansi = $master->nomor_kwitansi;
-        $cheker_nama = $master->checker['nama'];
         $uraian = $master->uraian;
         $terbilang = Terbilang::make($master->total_realisasi, ' rupiah');
         $mak_kode = $master->mak['kode'];

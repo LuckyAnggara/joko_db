@@ -14,12 +14,13 @@ use App\Models\PerjadinLog;
 use App\Models\PerjadinObrik;
 use App\Models\PerjadinRAB;
 use App\Models\PerjadinRealisasi;
+use App\Models\PerjadinRealisasiLainnya;
 use App\Models\PerjadinRealisasiLampiran;
 use App\Models\PerjadinRealisasiUangHarian;
 use App\Models\PerjadinRealisasiUangHotel;
 use App\Models\PerjadinRealisasiTransport;
 use App\Models\PerjadinSusunanTim;
-use App\Models\KegiatanRealisasi;
+use App\Models\Provinsi;
 use App\Models\Satker;
 use App\Models\SuratPerintah;
 use App\Models\Tahun;
@@ -48,6 +49,7 @@ class PerjadinController extends Controller
             $value->mak = Mak::find($value->mak_id);
             $value->mak['saldo'] = $this->cekSaldoMak($value->mak_id, $tahun_id, $bidang_id);
             $value->tahun = Tahun::find($value->tahun_id);
+            $value->provinsi = Provinsi::find($value->provinsi_id);
             // DETAIL SUSUNAN TIM
             foreach ($value->susunan_tim as $key => $tim) {
                 $tim->pegawai = Pegawai::find($tim->pegawai_id);
@@ -184,7 +186,7 @@ class PerjadinController extends Controller
                 'maksud'=> $request->umum['maksud'],
                 'ppk_id'=> $request->umum['ppk']['id'],
                 'bendahara_id'=> $request->umum['bendahara']['id'],
-                'tujuan'=> $request->umum['tujuan'],
+                'provinsi_id'=> $request->umum['provinsi']['id'],
                 'tahun_id' => $request->tahun['id'],
                 'keberangkatan'=> $request->umum['keberangkatan'],
                 'output'=> $request->umum['output'],
@@ -261,6 +263,8 @@ class PerjadinController extends Controller
     }
 
     public function storeRealisasi(Request $request){
+
+        $this->hapusRealisasi($request->perjadin['id']);
         
         $output = [];
         $total_realisasi = 0;
@@ -317,6 +321,14 @@ class PerjadinController extends Controller
                             'jenis_transport' => $transport['jenis_transport'],
                             'total' => $transport['total'],
                             'riil' => $transport['transport_riil'],
+                            'nomor_tiket' => $transport['nomor_tiket'],
+                            'nomor_flight' => $transport['nomor_flight'],
+                            'jam' => $transport['jam'],
+                            'no_tempat_duduk' => $transport['no_tempat_duduk'],
+                            'tanggal' => $transport['tanggal'],
+                            'keterangan' => $transport['keterangan'],
+                            'asal' => $transport['asal'],
+                            'tujuan' => $transport['tujuan'],
                         ]);
                     }
 
@@ -594,7 +606,7 @@ class PerjadinController extends Controller
         $perjadin = Perjadin::find($perjadin_id);
 
         $perjadin->jumlah_hari = $payload->jumlah_hari;
-        $perjadin->tujuan = $payload->tujuan;
+        $perjadin->provinsi_id = $payload->provinsi['id'];
         $perjadin->keberangkatan = $payload->keberangkatan;
         $perjadin->tanggal_berangkat = $payload->tanggal_berangkat;
         $perjadin->tanggal_kembali = $payload->tanggal_kembali;
@@ -637,6 +649,8 @@ class PerjadinController extends Controller
 
         $perjadin = Perjadin::find($payload->id);
         $perjadin->total_anggaran = $payload->total_anggaran;
+        $perjadin->total_realisasi = 0;
+        $perjadin->status_realisasi = 'BELUM';
         $perjadin->save();
 
         $susunan_tim = PerjadinSusunanTim::where('perjadin_id', $perjadin_id)->get();
@@ -672,8 +686,6 @@ class PerjadinController extends Controller
                 ]);
                 $anggota->perjadin_rab_id = $anggaran->id;
                 $anggota->save();
-
-                // $anggota->anggaran = $anggaran;
             }
             
             $tim[] = $anggota;
@@ -681,9 +693,46 @@ class PerjadinController extends Controller
             $perjadin->susunan_tim= $tim;
         }
 
-        
+        $this->hapusRealisasi($perjadin_id);
+
+
+
 
         return response()->json($perjadin, 200);
      
+    }
+
+    public function hapusRealisasi($id){
+    
+        $master = PerjadinRealisasi::where('perjadin_id', $id)->get();
+
+        foreach ($master as $key => $value) {
+            $value->delete();
+
+            $realisasi_harian = PerjadinRealisasiUangHarian::where('perjadin_realisasi_id' ,$value->id)->get();
+            $realisasi_hotel = PerjadinRealisasiUangHotel::where('perjadin_realisasi_id' ,$value->id)->get();
+            $realsisasi_transport = PerjadinRealisasiTransport::where('perjadin_realisasi_id' ,$value->id)->get();
+            $realisasi_lampiran = PerjadinRealisasiLampiran::where('perjadin_realisasi_id' ,$value->id)->get();
+            $realisasi_lainnya = PerjadinRealisasiLainnya::where('perjadin_realisasi_id' ,$value->id)->get();
+
+            foreach ($realisasi_harian as $key => $harian) {
+                $harian->delete();
+            }
+            foreach ($realisasi_hotel as $key => $hotel) {
+                $hotel->delete();
+            }
+            foreach ($realsisasi_transport as $key => $transport) {
+                $transport->delete();
+            }
+            foreach ($realisasi_lampiran as $key => $lampiran) {
+                $lampiran->delete();
+                if (Storage::disk('public')->exists($lampiran->file)) {
+                    Storage::disk('public')->delete($lampiran->file);
+               }
+            }
+            foreach ($realisasi_lainnya as $key => $lainnya) {
+                $lainnya->delete();
+            }
+        }
     }
 }

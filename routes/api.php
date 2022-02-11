@@ -18,11 +18,20 @@ Route::group(['prefix' => 'auth'], function () {
     //POST
     Route::post('/login', 'AuthController@login');
 });
+// AUTH
+Route::group(['prefix' => 'superuser'], function () {
+    //GET
+    Route::get('/user-data', 'SuperUserController@index'); 
+    //POST
+    Route::post('/store', 'SuperUserController@store');
+});
 // MAK
 Route::group(['prefix' => 'mak'], function () {
     //GET
     Route::get('/', 'MakController@index');
     Route::get('/penyerapan-semua', 'MakController@penyerapanSemua');
+    // Route::get('/laporan-kegiatan/rencana', 'MakController@rencanaKegiatan');
+    // Route::get('/laporan-kegiatan/realisasi', 'MakController@penyerapanSemua');
     //POST
     Route::post('/store', 'MakController@store');
     Route::post('/store-revisi', 'MakController@storeRevisi');
@@ -30,6 +39,14 @@ Route::group(['prefix' => 'mak'], function () {
     Route::get('/cek', 'MakController@cek');
     //DELETE
     Route::delete('/delete-mak', 'MakController@destroy');
+});
+// LAPORAN
+Route::group(['prefix' => 'laporan'], function () {
+    //GET
+    Route::get('/kegiatan/rencana', 'LaporanController@rencanaKegiatan');
+    Route::get('/kegiatan/realisasi', 'LaporanController@realisasiKegiatan');
+    //POST
+    //DELETE
 });
 
 // BMN Kendaraan Dinas
@@ -75,6 +92,11 @@ Route::group(['prefix' => 'realisasi'], function () {
 Route::group(['prefix' => 'tahun'], function () {
     //GET
     Route::get('/', 'TahunController@index');
+});
+// PROVINSI
+Route::group(['prefix' => 'provinsi'], function () {
+    //GET
+    Route::get('/', 'ProvinsiController@index');
 });
 // PEGAWAI
 Route::group(['prefix' => 'pegawai'], function () {

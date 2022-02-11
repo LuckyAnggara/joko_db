@@ -183,6 +183,19 @@ class MakController extends Controller
         return $output;
     }
 
+    public function rencanaKegiatan(Request $payload){
+
+        $tahun_id = $payload->input('tahun_id');
+        $bidang_id = $payload->input('bidang_id');
+
+        $unrealisasi_kegiatan =  Kegiatan::where('bidang_id',$bidang_id)->where('tahun_id', $tahun_id)->where('status','!=','SELESAI')->get();
+        $unrealisasi_perjadin = Perjadin::where('bidang_id',$bidang_id)->where('tahun_id', $tahun_id)->where('status','!=','SELESAI')->get();
+
+        $master = [...$unrealisasi_kegiatan,...$unrealisasi_perjadin];
+    
+        return response()->json($master, 200);
+    }
+
     public function cek(Request $payload){
         $bidang_id = $payload->input('bidang_id');
         $tahun_id = $payload->input('tahun_id');

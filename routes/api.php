@@ -21,7 +21,7 @@ Route::group(['prefix' => 'auth'], function () {
 // AUTH
 Route::group(['prefix' => 'superuser'], function () {
     //GET
-    Route::get('/user-data', 'SuperUserController@index'); 
+    Route::get('/user-data', 'SuperUserController@index');
     //POST
     Route::post('/store', 'SuperUserController@store');
 });
@@ -206,7 +206,7 @@ Route::group(['prefix' => 'barang'], function () {
     Route::post('/store-pembelian', 'BarangController@storePembelian');
     Route::post('/store-pembelian-lampiran', 'BarangController@uploadLampiranPembelian');
 
-    
+
     Route::post('/store-permintaan', 'BarangController@storePermintaan');
     Route::post('/proses-permintaan', 'BarangController@prosesPermintaan');
     Route::post('/store-permintaan-lampiran', 'BarangController@uploadLampiranPermintaan');
@@ -237,5 +237,17 @@ Route::group(['prefix' => 'master'], function () {
     Route::post('/rkt/store', 'RktController@storeRKT');
     // //DELETE
     //DELETE
-     Route::delete('/rkt/delete/{id}', 'RktController@destroyRKT');
+    Route::delete('/rkt/delete/{id}', 'RktController@destroyRKT');
+});
+
+Route::group(['prefix' => 'scrap'], function () {
+    //GET
+    Route::get('/get-upt', 'ScraperController@getUpt');
+    Route::get('/rkt/{tahun}', 'RktController@adminRKT');
+    // //STORE
+    Route::post('/area/store', 'RktController@storeArea');
+    Route::post('/rkt/store', 'RktController@storeRKT');
+    // //DELETE
+    //DELETE
+    Route::delete('/rkt/delete/{id}', 'RktController@destroyRKT');
 });

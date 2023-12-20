@@ -1,0 +1,12 @@
+[
+    { "action": "manage", "subject": "user" },
+    { "action": "manage", "subject": "auth" },
+    { "action": "manage", "subject": "dashboard_user" },
+    { "action": "manage", "subject": "kegiatan" },
+    { "action": "manage", "subject": "perjadin" },
+    { "action": "manage", "subject": "laporan" },
+    { "action": "manage", "subject": "mak" }
+]
+
+// { "action": "manage", "subject": "data_pegawai" },
+// { "action": "manage", "subject": "permintaan_persediaan" },

@@ -47,21 +47,22 @@ class AuthController extends BaseController
      */
     public function login(Request $request)
     {
-        $user = User::where('username', $request->username)->first();
-        if (!$user || !Hash::check($request->password, $user->password)) {
-            return 'salah';
+        if (!Auth::attempt($request->only('username', 'password'))) {
+            return response()->json([
+                'message' => 'Unauthorized'
+            ], 401);
         }
 
-        return $user;
+        $user = User::where('username', $request->username)->firstOrFail();
 
-        // if (Auth::attempt(['username' => $request->username, 'password' => $request->password])) {
-        //     $user = Auth::user();
-        //     $success['token'] =  $user->createToken('katalis')->plainTextToken;
-        //     $success['user'] =  User::where('id', $user->id)->first();
-        //     return $this->sendResponse($success, 'User login successfully.');
-        // } else {
-        //     return $this->sendError('Unauthorised.', ['error' => 'Unauthorised']);
-        // }
+        $token = $user->createToken('auth_token')->plainTextToken;
+
+        return response()->json([
+            'data' => Auth::user(),
+            'message' => 'Login success',
+            'token' => $token,
+            'token_type' => 'Bearer'
+        ]);
     }
 
     public function logout(Request $request)

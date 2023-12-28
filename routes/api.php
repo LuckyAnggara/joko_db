@@ -25,21 +25,7 @@ Route::group(['prefix' => 'superuser'], function () {
     //POST
     Route::post('/store', 'SuperUserController@store');
 });
-// MAK
-Route::group(['prefix' => 'mak'], function () {
-    //GET
-    Route::get('/', 'MakController@index');
-    Route::get('/penyerapan-semua', 'MakController@penyerapanSemua');
-    // Route::get('/laporan-kegiatan/rencana', 'MakController@rencanaKegiatan');
-    // Route::get('/laporan-kegiatan/realisasi', 'MakController@penyerapanSemua');
-    //POST
-    Route::post('/store', 'MakController@store');
-    Route::post('/store-revisi', 'MakController@storeRevisi');
-    Route::post('/cek-kode-mak', 'MakController@cekMak');
-    Route::get('/cek', 'MakController@cek');
-    //DELETE
-    Route::delete('/delete-mak', 'MakController@destroy');
-});
+
 // LAPORAN
 Route::group(['prefix' => 'laporan'], function () {
     //GET
@@ -150,26 +136,7 @@ Route::group(['prefix' => 'urusan'], function () {
     //GET
     Route::get('/', 'UrusanController@index');
 });
-// KEGIATAN BIASA
-Route::group(['prefix' => 'kegiatan'], function () {
-    //GET
-    Route::get('/', 'KegiatanController@index');
-    Route::get('/show', 'KegiatanController@show');
-    Route::get('/download-lampiran', 'KegiatanController@downloadLampiran');
-    Route::get('/laporan-rincian', 'KegiatanController@laporanRincian');
-    //STORE
-    Route::post('/store-rencana', 'KegiatanController@storeRencana');
-    Route::post('/upload-lampiran-rencana', 'KegiatanController@uploadLampiranRencana');
-    Route::post('/update-realisasi', 'KegiatanController@updateRealisasi');
-    Route::post('/edit-realisasi', 'KegiatanController@editRealisasi');
-    Route::post('/edit-mak', 'KegiatanController@editMak');
-    Route::post('/edit-umum', 'KegiatanController@editUmum');
-    Route::post('/upload-lampiran-tambahan', 'KegiatanController@uploadLampiranRencana');
-    Route::post('/status', 'KegiatanController@status');
-    //DESTROY
-    Route::delete('/delete-kegiatan', 'KegiatanController@destroy');
-    Route::delete('/delete-lampiran', 'PerjadinController@destroyLampiran');
-});
+
 // PERJADIN
 Route::group(['prefix' => 'perjadin'], function () {
     //GET
@@ -250,4 +217,43 @@ Route::group(['prefix' => 'scrap'], function () {
     // //DELETE
     //DELETE
     Route::delete('/rkt/delete/{id}', 'RktController@destroyRKT');
+});
+
+Route::middleware('auth:sanctum')->group(function () {
+    // MAK
+    Route::group(['prefix' => 'mak'], function () {
+        //GET
+        Route::get('/', 'MakController@index');
+        Route::get('/penyerapan-semua', 'MakController@penyerapanSemua');
+        // Route::get('/laporan-kegiatan/rencana', 'MakController@rencanaKegiatan');
+        // Route::get('/laporan-kegiatan/realisasi', 'MakController@penyerapanSemua');
+        //POST
+        Route::post('/store', 'MakController@store');
+        Route::post('/store-revisi', 'MakController@storeRevisi');
+        Route::post('/cek-kode-mak', 'MakController@cekMak');
+        Route::get('/cek', 'MakController@cek');
+        //DELETE
+        Route::delete('/delete-mak', 'MakController@destroy');
+    });
+
+    // KEGIATAN BIASA
+    Route::group(['prefix' => 'kegiatan'], function () {
+        //GET
+        Route::get('/', 'KegiatanController@index');
+        Route::get('/show', 'KegiatanController@show');
+        Route::get('/download-lampiran', 'KegiatanController@downloadLampiran');
+        Route::get('/laporan-rincian', 'KegiatanController@laporanRincian');
+        //STORE
+        Route::post('/store-rencana', 'KegiatanController@storeRencana');
+        Route::post('/upload-lampiran-rencana', 'KegiatanController@uploadLampiranRencana');
+        Route::post('/update-realisasi', 'KegiatanController@updateRealisasi');
+        Route::post('/edit-realisasi', 'KegiatanController@editRealisasi');
+        Route::post('/edit-mak', 'KegiatanController@editMak');
+        Route::post('/edit-umum', 'KegiatanController@editUmum');
+        Route::post('/upload-lampiran-tambahan', 'KegiatanController@uploadLampiranRencana');
+        Route::post('/status', 'KegiatanController@status');
+        //DESTROY
+        Route::delete('/delete-kegiatan', 'KegiatanController@destroy');
+        Route::delete('/delete-lampiran', 'PerjadinController@destroyLampiran');
+    });
 });

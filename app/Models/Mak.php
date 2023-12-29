@@ -16,7 +16,7 @@ class Mak extends Model
     public $primaryKey = 'id';
     public $timestamps = true;
     protected $dates = ['deleted_at'];
-    protected $appends = ['realisasi'];
+    protected $appends = ['realisasi', 'unrealisasi'];
 
 
     public function kegiatan()
@@ -29,20 +29,15 @@ class Mak extends Model
         return $this->hasMany(Perjadin::class, 'mak_id', 'id')->orderBy('created_at');
     }
 
-    public function getRealisasiAttribute($value)
+    public function getRealisasiAttribute()
     {
-        return $value;
-        return $this->kegiatan->where('status', '!=', 'SELESAI')->sum('total_anggaran');
-        return $this->kegiatan->where('status', 'SELESAI')->sum('total_realisasi');
+        return $this->kegiatan->where('status', 'SELESAI')->sum('total_realisasi') +  $this->perjadin->where('status', 'SELESAI')->sum('total_realisasi');
     }
 
     public function getUnrealisasiAttribute()
     {
-        return [
-            'realisasi' => $this->beginning_balance ?  $this->beginning_balance->stock : 0,
-            'unrealisasi' => $this->beginning_balance ? $this->beginning_balance->price : 0,
-            'balance' => ($this->beginning_balance ?  $this->beginning_balance->stock : 0) * ($this->beginning_balance ? $this->beginning_balance->price : 0),
-        ];
+        return $this->kegiatan->where('status', '!=', 'SELESAI')->sum('total_anggaran')
+            + $this->perjadin->where('status', '!=', 'SELESAI')->sum('total_anggaran');
     }
 
     // public function price()

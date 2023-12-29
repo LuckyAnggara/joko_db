@@ -14,77 +14,82 @@ use App\Models\Tahun;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
-class KegiatanController extends Controller
+class KegiatanController extends BaseController
 {
 
     public function index(Request $payload)
     {
-        $bidang_id = $payload->input('bidang_id');
-        $tahun_id = $payload->input('tahun_id');
 
-        $master =  Kegiatan::where('tahun_id', $tahun_id)->where('bidang_id', $bidang_id)->get();
-        if ($bidang_id == 0) {
-            $master =  Kegiatan::where('tahun_id', $tahun_id)->get();
+        $user = $payload->input('user');
+        $status = $payload->input('status');
+        $tahun = $payload->input('tahun');
+        $perPage = $payload->input('limit', 10);
+        $name = $payload->input('query');
+
+        $perPage = $perPage == 'SEMUA' ? '1000000' : $perPage;
+
+        $data = Kegiatan::with('mak', 'kegiatan', 'bidang')->when($tahun, function ($query, $tahun) {
+            return $query->where('tahun', $tahun);
+        })->when($user, function ($query) {
+            return $query->where('bidang_id', Auth::user()->bidang_id);
+        })->when($status, function ($query, $status) {
+            return $query->where('status', $status);
+        })->when($name, function ($query, $name) {
+            return $query->where('uraian', 'like', '%' . $name . '%')
+                ->orWhere('output', 'like', '%' . $name . '%')
+                ->orWhere('total_anggaran', 'like', '%' . $name . '%');
+        })
+            ->orderBy('created_at', 'desc')
+            ->latest()
+            ->paginate($perPage);
+
+        return $this->sendResponse($data, 'Data fetched');
+    }
+
+    public function show($id)
+    {
+        $result = Kegiatan::where('id', $id)
+            ->with('mak', 'kegiatan', 'bidang', 'lampiran')
+            ->first();
+        if ($result) {
+            return $this->sendResponse($result, 'Data fetched');
         }
-
-        foreach ($master as $key => $value) {
-            $value->mak = Mak::find($value->mak_id);
-            $value->mak['saldo'] = $this->cekSaldoMak($value->mak_id, $tahun_id, $bidang_id);
-
-            $value->tahun = Tahun::find($value->tahun_id);
-            $value->jenis_kegiatan = JenisKegiatan::find($value->jenis_kegiatan_id);
-            $value->user = User::find($value->user_id);
-            $value->user['pegawai'] = Pegawai::find($value->user['pegawai_id']);
-            $value->checker = Pegawai::find($value->checker_id);
-            $value->ppk = Pegawai::find($value->ppk_id);
-            $value->bendahara = Pegawai::find($value->bendahara_id);
-            $value->bidang = Bidang::find($value->bidang_id);
-            $value->lampiran = KegiatanLampiran::where('kegiatan_id', $value->id)->get();
-
-            foreach ($value->lampiran as $key => $lampiran) {
-                $lampiran->pegawai = Pegawai::find(User::find($lampiran->user_id)->pegawai_id);
-            }
-            $value->log = KegiatanLog::where('kegiatan_id', $value->id)->orderBy('id', 'DESC')->get();
-            foreach ($value->log as $key => $log) {
-                $log->ago = $log->created_at->diffForHumans();
-                $log->pegawai = Pegawai::find(User::find($log->user_id)->pegawai_id);
-            }
-        }
-
-        return response()->json($master, 200);
+        return $this->sendError('Data not found');
     }
 
     public function storeRencana(Request $payload)
     {
 
-        $master = Kegiatan::create([
-            'nomor_kwitansi' => $payload->tahun['nama'] . '-' . $this->makeNomorKwitansi(),
-            'uraian' => $payload->uraian,
-            'output' => $payload->output,
-            'total_anggaran' => $payload->total_anggaran,
-            'lokasi' => $payload->lokasi,
-            'jenis_kegiatan_id' => $payload->jenis_kegiatan['id'],
-            'status' => 'RENCANA',
-            'status_realisasi' => 'BELUM',
-            'mak_id' => $payload->mak['id'],
-            'tanggal_rencana_kegiatan' => $payload->tanggal_rencana_kegiatan,
-            'tahun_id' => $payload->tahun['id'],
-            'bidang_id' => $payload->user_data['bidang_id'],
-            'user_id' => Auth::user()->id,
-        ]);
-
-        $message = 'ERROR';
-        $response = '404';
-
-        if ($master) {
-            $message = $master;
-            $this->storeLog($master->id, 'RENCANA', 'RENCANA KEGIATAN TELAH DIBUAT, OLEH ' .  Auth::user()->nama, Auth::user(), null);
-            $response = 200;
+        $data = json_decode($payload->getContent());
+        try {
+            DB::beginTransaction();
+            $result = Kegiatan::create([
+                'nomor_kwitansi' => $data->tahun . '-' . $this->makeNomorKwitansi(),
+                'uraian' => $data->uraian,
+                'output' => $data->output,
+                'total_anggaran' => $data->total_anggaran,
+                'lokasi' => $data->lokasi,
+                'jenis_kegiatan_id' => $data->jenis_kegiatan->id,
+                'status' => 'RENCANA',
+                'status_realisasi' => 'BELUM',
+                'mak_id' => $data->mak->id,
+                'tanggal_rencana_kegiatan' => $data->tanggal_rencana_kegiatan,
+                'tahun' => $data->tahun,
+                'bidang_id' => Auth::user()->bidang_id,
+                'user_id' => Auth::user()->id,
+            ]);
+            if ($result) {
+                $this->storeLog($result->id, 'RENCANA', 'RENCANA KEGIATAN TELAH DIBUAT, OLEH ' .  Auth::user()->nama, Auth::user(), null);
+            }
+            DB::commit();
+            return $this->sendResponse($result, 'Data berhasil dibuat');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return $this->sendError($e->getMessage(), 'Failed to saved data');
         }
-
-        return response()->json($message, $response);
     }
 
     public function destroy(Request $request)
@@ -116,14 +121,13 @@ class KegiatanController extends Controller
     {
         $output = [];
         $id = $payload->id;
-        $user_id = $payload->user_id;
 
         foreach ($payload->file('lampiran') as $file) {
             $path = Storage::disk('public')->put('kegiatan', $file);
             $nama = $file->getClientOriginalName();
             $data = KegiatanLampiran::create([
                 'kegiatan_id' => $id,
-                'user_id' => $user_id,
+                'user_id' => Auth::user()->id,
                 'nama' => $nama,
                 'file' => $path,
             ]);
@@ -235,7 +239,7 @@ class KegiatanController extends Controller
     {
         $id = $payload->id;
         $master = Kegiatan::find($id);
-        $master->tahun_id = $payload->tahun['id'];
+        $master->tahun = $payload->tahun;
         $master->tanggal_rencana_kegiatan = $payload->tanggal_rencana_kegiatan;
         $master->total_anggaran = $payload->total_anggaran;
         $master->jenis_kegiatan_id = $payload->jenis_kegiatan['id'];
@@ -249,33 +253,31 @@ class KegiatanController extends Controller
 
     public function makeNomorKwitansi()
     {
-
         $master = Kegiatan::all()->last();
         $output = 1;
         if ($master) {
             $dd = explode('-', $master->nomor_kwitansi);
             $output = $dd[1] + 1;
         }
-
         return $output;
     }
 
-    public function cekSaldoMak($id, $tahun_id, $bidang_id)
+    public function cekSaldoMak($id, $tahun, $bidang_id)
     {
 
         $mak = Mak::find($id);
         if ($bidang_id != 0) {
-            $realisasi_kegiatan =  Kegiatan::where('mak_id', $id)->where('tahun_id', $tahun_id)->where('bidang_id', $bidang_id)->where('status', 'SELESAI')->sum('total_realisasi');
-            $realisasi_perjadin = Perjadin::where('mak_id', $id)->where('tahun_id', $tahun_id)->where('bidang_id', $bidang_id)->where('status', 'SELESAI')->sum('total_realisasi');
+            $realisasi_kegiatan =  Kegiatan::where('mak_id', $id)->where('tahun', $tahun)->where('bidang_id', $bidang_id)->where('status', 'SELESAI')->sum('total_realisasi');
+            $realisasi_perjadin = Perjadin::where('mak_id', $id)->where('tahun', $tahun)->where('bidang_id', $bidang_id)->where('status', 'SELESAI')->sum('total_realisasi');
 
-            $unrealisasi_kegiatan =  Kegiatan::where('mak_id', $id)->where('tahun_id', $tahun_id)->where('bidang_id', $bidang_id)->where('status', '!=', 'SELESAI')->sum('total_anggaran');
-            $unrealisasi_perjadin = Perjadin::where('mak_id', $id)->where('tahun_id', $tahun_id)->where('bidang_id', $bidang_id)->where('status', '!=', 'SELESAI')->sum('total_anggaran');
+            $unrealisasi_kegiatan =  Kegiatan::where('mak_id', $id)->where('tahun', $tahun)->where('bidang_id', $bidang_id)->where('status', '!=', 'SELESAI')->sum('total_anggaran');
+            $unrealisasi_perjadin = Perjadin::where('mak_id', $id)->where('tahun', $tahun)->where('bidang_id', $bidang_id)->where('status', '!=', 'SELESAI')->sum('total_anggaran');
         } else {
-            $realisasi_kegiatan =  Kegiatan::where('mak_id', $id)->where('tahun_id', $tahun_id)->where('status', 'SELESAI')->sum('total_realisasi');
-            $realisasi_perjadin = Perjadin::where('mak_id', $id)->where('tahun_id', $tahun_id)->where('status', 'SELESAI')->sum('total_realisasi');
+            $realisasi_kegiatan =  Kegiatan::where('mak_id', $id)->where('tahun', $tahun)->where('status', 'SELESAI')->sum('total_realisasi');
+            $realisasi_perjadin = Perjadin::where('mak_id', $id)->where('tahun', $tahun)->where('status', 'SELESAI')->sum('total_realisasi');
 
-            $unrealisasi_kegiatan =  Kegiatan::where('mak_id', $id)->where('tahun_id', $tahun_id)->where('status', '!=', 'SELESAI')->sum('total_anggaran');
-            $unrealisasi_perjadin = Perjadin::where('mak_id', $id)->where('tahun_id', $tahun_id)->where('status', '!=', 'SELESAI')->sum('total_anggaran');
+            $unrealisasi_kegiatan =  Kegiatan::where('mak_id', $id)->where('tahun', $tahun)->where('status', '!=', 'SELESAI')->sum('total_anggaran');
+            $unrealisasi_perjadin = Perjadin::where('mak_id', $id)->where('tahun', $tahun)->where('status', '!=', 'SELESAI')->sum('total_anggaran');
         }
 
 

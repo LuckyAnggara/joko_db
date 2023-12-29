@@ -240,7 +240,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::group(['prefix' => 'kegiatan'], function () {
         //GET
         Route::get('/', 'KegiatanController@index');
-        Route::get('/show', 'KegiatanController@show');
+        Route::get('/{id}', 'KegiatanController@show');
         Route::get('/download-lampiran', 'KegiatanController@downloadLampiran');
         Route::get('/laporan-rincian', 'KegiatanController@laporanRincian');
         //STORE

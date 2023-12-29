@@ -14,5 +14,25 @@ class Kegiatan extends Model
     ];
     public $primaryKey = 'id';
     public $timestamps = true;
-    public $date = ['tanggal_kegiatan','created_at','deleted_at'];
+    public $date = ['tanggal_kegiatan', 'created_at', 'deleted_at'];
+
+    public function mak()
+    {
+        return $this->hasOne(Mak::class, 'id', 'mak_id');
+    }
+
+    public function bidang()
+    {
+        return $this->hasOne(Bidang::class, 'id', 'bidang_id');
+    }
+
+    public function kegiatan()
+    {
+        return $this->hasOne(JenisKegiatan::class, 'id', 'jenis_kegiatan_id');
+    }
+
+    public function lampiran()
+    {
+        return $this->hasMany(KegiatanLampiran::class, 'kegiatan_id', 'id');
+    }
 }

@@ -25,14 +25,14 @@ class KegiatanController extends BaseController
 
         $user = $payload->input('user');
         $status = $payload->input('status');
-        $tahun = $payload->input('tahun');
+        $tahun_id = $payload->input('tahun_id');
         $perPage = $payload->input('limit', 10);
         $name = $payload->input('query');
 
         $perPage = $perPage == 'SEMUA' ? '1000000' : $perPage;
 
-        $data = Kegiatan::with('mak', 'kegiatan', 'bidang')->when($tahun, function ($query, $tahun) {
-            return $query->where('tahun', $tahun);
+        $data = Kegiatan::with('mak', 'bidang')->when($tahun_id, function ($query, $tahun_id) {
+            return $query->where('tahun_id', $tahun_id);
         })->when($user, function ($query) {
             return $query->where('bidang_id', Auth::user()->bidang_id);
         })->when($status, function ($query, $status) {
@@ -52,7 +52,7 @@ class KegiatanController extends BaseController
     public function show($id)
     {
         $result = Kegiatan::where('id', $id)
-            ->with('mak', 'kegiatan', 'bidang', 'lampiran')
+            ->with('mak', 'bidang', 'user.pegawai', 'user.bidang', 'lampiran', 'log.user.pegawai')
             ->first();
         if ($result) {
             return $this->sendResponse($result, 'Data fetched');
@@ -72,12 +72,12 @@ class KegiatanController extends BaseController
                 'output' => $data->output,
                 'total_anggaran' => $data->total_anggaran,
                 'lokasi' => $data->lokasi,
-                'jenis_kegiatan_id' => $data->jenis_kegiatan->id,
+                'jenis_kegiatan' => $data->jenis_kegiatan,
                 'status' => 'RENCANA',
                 'status_realisasi' => 'BELUM',
                 'mak_id' => $data->mak->id,
                 'tanggal_rencana_kegiatan' => $data->tanggal_rencana_kegiatan,
-                'tahun' => $data->tahun,
+                'tahun_id' => $data->tahun,
                 'bidang_id' => Auth::user()->bidang_id,
                 'user_id' => Auth::user()->id,
             ]);
@@ -239,7 +239,7 @@ class KegiatanController extends BaseController
     {
         $id = $payload->id;
         $master = Kegiatan::find($id);
-        $master->tahun = $payload->tahun;
+        $master->tahun_id = $payload->tahun_id;
         $master->tanggal_rencana_kegiatan = $payload->tanggal_rencana_kegiatan;
         $master->total_anggaran = $payload->total_anggaran;
         $master->jenis_kegiatan_id = $payload->jenis_kegiatan['id'];
@@ -262,22 +262,22 @@ class KegiatanController extends BaseController
         return $output;
     }
 
-    public function cekSaldoMak($id, $tahun, $bidang_id)
+    public function cekSaldoMak($id, $tahun_id, $bidang_id)
     {
 
         $mak = Mak::find($id);
         if ($bidang_id != 0) {
-            $realisasi_kegiatan =  Kegiatan::where('mak_id', $id)->where('tahun', $tahun)->where('bidang_id', $bidang_id)->where('status', 'SELESAI')->sum('total_realisasi');
-            $realisasi_perjadin = Perjadin::where('mak_id', $id)->where('tahun', $tahun)->where('bidang_id', $bidang_id)->where('status', 'SELESAI')->sum('total_realisasi');
+            $realisasi_kegiatan =  Kegiatan::where('mak_id', $id)->where('tahun_id', $tahun_id)->where('bidang_id', $bidang_id)->where('status', 'SELESAI')->sum('total_realisasi');
+            $realisasi_perjadin = Perjadin::where('mak_id', $id)->where('tahun_id', $tahun_id)->where('bidang_id', $bidang_id)->where('status', 'SELESAI')->sum('total_realisasi');
 
-            $unrealisasi_kegiatan =  Kegiatan::where('mak_id', $id)->where('tahun', $tahun)->where('bidang_id', $bidang_id)->where('status', '!=', 'SELESAI')->sum('total_anggaran');
-            $unrealisasi_perjadin = Perjadin::where('mak_id', $id)->where('tahun', $tahun)->where('bidang_id', $bidang_id)->where('status', '!=', 'SELESAI')->sum('total_anggaran');
+            $unrealisasi_kegiatan =  Kegiatan::where('mak_id', $id)->where('tahun_id', $tahun_id)->where('bidang_id', $bidang_id)->where('status', '!=', 'SELESAI')->sum('total_anggaran');
+            $unrealisasi_perjadin = Perjadin::where('mak_id', $id)->where('tahun_id', $tahun_id)->where('bidang_id', $bidang_id)->where('status', '!=', 'SELESAI')->sum('total_anggaran');
         } else {
-            $realisasi_kegiatan =  Kegiatan::where('mak_id', $id)->where('tahun', $tahun)->where('status', 'SELESAI')->sum('total_realisasi');
-            $realisasi_perjadin = Perjadin::where('mak_id', $id)->where('tahun', $tahun)->where('status', 'SELESAI')->sum('total_realisasi');
+            $realisasi_kegiatan =  Kegiatan::where('mak_id', $id)->where('tahun_id', $tahun_id)->where('status', 'SELESAI')->sum('total_realisasi');
+            $realisasi_perjadin = Perjadin::where('mak_id', $id)->where('tahun_id', $tahun_id)->where('status', 'SELESAI')->sum('total_realisasi');
 
-            $unrealisasi_kegiatan =  Kegiatan::where('mak_id', $id)->where('tahun', $tahun)->where('status', '!=', 'SELESAI')->sum('total_anggaran');
-            $unrealisasi_perjadin = Perjadin::where('mak_id', $id)->where('tahun', $tahun)->where('status', '!=', 'SELESAI')->sum('total_anggaran');
+            $unrealisasi_kegiatan =  Kegiatan::where('mak_id', $id)->where('tahun_id', $tahun_id)->where('status', '!=', 'SELESAI')->sum('total_anggaran');
+            $unrealisasi_perjadin = Perjadin::where('mak_id', $id)->where('tahun_id', $tahun_id)->where('status', '!=', 'SELESAI')->sum('total_anggaran');
         }
 
 

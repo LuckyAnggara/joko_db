@@ -25,14 +25,22 @@ class Kegiatan extends Model
     {
         return $this->hasOne(Bidang::class, 'id', 'bidang_id');
     }
-
-    public function kegiatan()
+    public function log()
     {
-        return $this->hasOne(JenisKegiatan::class, 'id', 'jenis_kegiatan_id');
+        return $this->hasMany(KegiatanLog::class, 'kegiatan_id', 'id');
     }
+    // public function kegiatan()
+    // {
+    //     return $this->hasOne(JenisKegiatan::class, 'id', 'jenis_kegiatan_id');
+    // }
 
     public function lampiran()
     {
         return $this->hasMany(KegiatanLampiran::class, 'kegiatan_id', 'id');
+    }
+
+    public function user()
+    {
+        return $this->hasOne(User::class, 'id', 'user_id');
     }
 }

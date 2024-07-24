@@ -15,4 +15,9 @@ class KegiatanLog extends Model
     public $primaryKey = 'id';
     public $timestamps = true;
     // public $date = ['created_at','deleted_at'];
+
+    public function user()
+    {
+        return $this->hasOne(User::class, 'id', 'user_id');
+    }
 }

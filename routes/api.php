@@ -220,6 +220,10 @@ Route::group(['prefix' => 'scrap'], function () {
 });
 
 Route::middleware('auth:sanctum')->group(function () {
+    // AUTH
+    Route::group(['prefix' => 'auth'], function () {
+        Route::get('/user', 'AuthController@user');
+    });
     // MAK
     Route::group(['prefix' => 'mak'], function () {
         //GET

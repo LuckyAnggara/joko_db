@@ -45,4 +45,14 @@ class User extends Authenticatable
     protected $casts = [
         'ability' => 'array',
     ];
+
+    public function pegawai()
+    {
+        return $this->hasOne(Pegawai::class, 'id', 'pegawai_id');
+    }
+
+    public function bidang()
+    {
+        return $this->hasOne(Bidang::class, 'id', 'bidang_id');
+    }
 }

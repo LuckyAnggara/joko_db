@@ -50,7 +50,7 @@ class AuthController extends BaseController
         if (!Auth::attempt($request->only('username', 'password'))) {
             return response()->json([
                 'message' => 'Unauthorized'
-            ], 401);
+            ], 404);
         }
 
         $user = User::where('username', $request->username)->firstOrFail();
@@ -122,5 +122,10 @@ class AuthController extends BaseController
             DB::rollBack();
             return $this->sendError('Terjadi kesalahan', $e->getMessage(), 500);
         }
+    }
+
+    public function user(Request $request)
+    {
+        return Auth::user();
     }
 }
